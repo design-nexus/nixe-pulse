@@ -1,0 +1,16 @@
+{
+  "application": "pulse",
+  "directory": "pulse",
+  "packages": [
+    "nixe-pulse",
+    "nixe-pulse-glimpse"
+  ],
+  "manifest": "Cargo.toml",
+  "prepare": [
+    [
+      "bash",
+      "apps/pulse/packaging/prepare-native.sh"
+    ]
+  ],
+  "binaries": []
+}
