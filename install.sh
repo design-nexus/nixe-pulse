@@ -239,9 +239,9 @@ for a in "${apps[@]}"; do
     install -m 755 "$src/target/native/ntgcalls/lib/libntgcalls.so" "$share/nixe/lib/libntgcalls.so"
     install -m 644 "$src/target/native/ntgcalls/THIRD_PARTY_NOTICES.md" "$share/nixe/lib/NTGCALLS-NOTICES.md"
     install -m 644 "$src/crates/nixe-telegram-calls/native/NTGCALLS-LICENSE" "$share/nixe/lib/NTGCALLS-LICENSE"
-    if [[ ! -f "$share/nixe/lib/libtdjson.so" && -f "$HOME/.local/share/nixe/lib/libtdjson.so" ]]; then
-      install -m 755 "$HOME/.local/share/nixe/lib/libtdjson.so" "$share/nixe/lib/libtdjson.so"
-    fi
+    install -m 755 "$src/target/native/tdlib/libtdjson.so" "$share/nixe/lib/libtdjson.so"
+    install -m 644 "$src/target/native/tdlib/LICENSE" "$share/nixe/lib/TDLIB-PREBUILT-LICENSE"
+    install -m 644 "$src/crates/nixe-telegram-core/TDLIB-LICENSE" "$share/nixe/lib/TDLIB-LICENSE"
     if [[ -f ${CARGO_TARGET_DIR:-$src/target}/release/nixe-pulse-glimpse ]]; then
       plug="$share/nixe-pulse/glimpse"
       mkdir -p "$plug"

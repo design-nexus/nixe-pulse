@@ -68,6 +68,9 @@ def main():
             if not source.is_file():
                 raise RuntimeError(f'Missing native runtime resource {source}')
             resources['target/native/ntgcalls/' + name] = source
+    if spec['application'] == 'pulse':
+        for name in ['libtdjson.so', 'LICENSE', 'package.json']:
+            resources['target/native/tdlib/' + name] = ROOT / 'target/native/tdlib' / name
     if spec['application'] == 'git':
         run('env', 'NIXE_SKIP_BUILD=1', 'bash', 'apps/git/packaging/build.sh')
         (ROOT / 'dist').mkdir(exist_ok=True)
