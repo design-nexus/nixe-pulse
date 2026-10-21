@@ -12,5 +12,16 @@
       "apps/pulse/packaging/prepare-native.sh"
     ]
   ],
-  "binaries": []
+  "binaries": [],
+  "test_commands": [
+    [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "nixe-pulse",
+      "--bin",
+      "nixe-pulse"
+    ]
+  ]
 }
