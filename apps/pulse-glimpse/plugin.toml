@@ -1,0 +1,12 @@
+id = "nixe-pulse"
+name = "Telegram"
+version = "0.1.0"
+api_version = 1
+exec = ["./nixe-pulse-glimpse"]
+capabilities = ["search", "preview"]
+description = "Search loaded Telegram conversations and recent previews in Pulse. Pulse must be running."
+
+[permissions]
+network = false
+selected_sources = false
+read = []

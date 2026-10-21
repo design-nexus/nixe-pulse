@@ -1,0 +1,739 @@
+/* Nixe Pulse Application Stylesheet - Follows STYLE.md */
+
+.pulse-window {
+    background-color: @theme_bg;
+    color: @theme_text;
+    font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+    font-weight: 500;
+}
+
+/* Zero-size scrollbars everywhere */
+.pulse-window scrollbar,
+.pulse-window scrollbar trough,
+.pulse-window scrollbar slider {
+    min-width: 0;
+    min-height: 0;
+    opacity: 0;
+    background: transparent;
+    border: none;
+}
+
+/* Sidebar Search Entry */
+entry.sidebar-search {
+    margin: 0 6px 8px;
+    padding: 0 8px;
+    border-radius: 6px;
+    border: 1px solid @hairline;
+    background: transparent;
+    color: @theme_text;
+    min-height: 32px;
+}
+
+entry.sidebar-search:focus-within {
+    border-color: @theme_accent;
+}
+
+/* Chat navigation items inside .settings-navigation */
+.settings-navigation button.nav-item.chat-item {
+    min-height: 48px;
+    padding: 6px 10px;
+    margin: 1px 0;
+}
+
+.settings-navigation.compact button.nav-item.chat-item {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    margin: 2px 0;
+}
+
+.unread-pip {
+    min-width: 9px;
+    min-height: 9px;
+    border-radius: 9999px;
+    background-color: @theme_accent;
+    border: 2px solid @theme_bg;
+    margin-top: -2px;
+    margin-right: -2px;
+}
+
+.chat-avatar-mini {
+    border-radius: 9999px;
+    min-width: 32px;
+    min-height: 32px;
+    background-color: @lift;
+}
+
+.chat-avatar-mini image,
+.chat-avatar-mini picture {
+    border-radius: 9999px;
+}
+
+.chat-avatar-mini.saved-messages-avatar {
+    background-color: @theme_accent;
+    color: @theme_on_accent;
+}
+
+.chat-avatar-mini.saved-messages-avatar image {
+    color: @theme_on_accent;
+}
+
+.chat-avatar-initials {
+    color: @theme_accent;
+    font-weight: 700;
+    font-size: 0.82em;
+    padding: 0;
+    margin: 0;
+}
+
+.settings-navigation.compact button.nav-item {
+    min-width: 40px;
+    min-height: 40px;
+    margin: 4px 0;
+    padding: 0;
+    border-radius: 9999px;
+}
+
+.settings-navigation.compact button.nav-item.active {
+    background: @nav_active;
+}
+
+.settings-navigation.compact .chat-item {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+}
+
+.settings-navigation button.nav-item.active .chat-avatar-mini {
+    background-color: mix(@lift, @theme_accent, 0.2);
+    color: @theme_accent;
+}
+
+.chat-title {
+    font-weight: 600;
+    font-size: 0.95em;
+    color: @theme_text;
+}
+
+.chat-snippet {
+    font-size: 0.8em;
+    color: @theme_dim_text;
+}
+
+.chat-time {
+    font-size: 0.74em;
+    color: @theme_dim_text;
+}
+
+.unread-badge {
+    background-color: @theme_accent;
+    color: @theme_on_accent;
+    font-size: 0.74em;
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 1px 6px;
+    min-width: 16px;
+}
+
+/* Active chat view */
+.chat-view-column {
+    background-color: @theme_bg;
+}
+
+.chat-header {
+    min-height: 46px;
+    padding: 0 16px;
+    border-bottom: 1px solid @hairline;
+    background-color: @theme_bg;
+}
+
+.chat-header-title {
+    font-weight: 600;
+    font-size: 1.0em;
+    color: @theme_text;
+}
+
+.chat-header-status {
+    font-size: 0.82em;
+    color: @theme_dim_text;
+}
+
+.chat-header-status.typing {
+    color: @theme_accent;
+    font-weight: 600;
+}
+
+/* Date separator in chat history */
+.date-separator {
+    background-color: @theme_surface;
+    border: 1px solid @hairline;
+    border-radius: 9999px;
+    padding: 3px 12px;
+    font-size: 0.76em;
+    color: @theme_dim_text;
+    font-weight: 600;
+    margin: 8px 0;
+}
+
+/* Message history list */
+.chat-wallpaper {
+    background-color: @theme_bg;
+}
+
+.transparent-scroll {
+    background-color: transparent;
+}
+
+.message-history-list {
+    padding: 12px 20px;
+}
+
+.message-row {
+    margin: 4px 0;
+}
+
+.message-bubble {
+    border-radius: 10px;
+    padding: 8px 14px;
+}
+
+.message-sender-name {
+    color: @theme_accent;
+    font-weight: 600;
+    font-size: 0.82em;
+    margin-bottom: 2px;
+}
+
+.message-photo-frame {
+    border-radius: 8px;
+    margin-bottom: 4px;
+}
+
+.message-photo-img {
+    border-radius: 8px;
+}
+
+.message-video-card,
+.message-document-card,
+.message-voice-card,
+.message-call-card {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid @hairline;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+}
+
+.message-media-icon {
+    background-color: @theme_surface;
+    border-radius: 6px;
+    padding: 6px;
+    color: @theme_accent;
+}
+
+.message-media-title {
+    font-weight: 600;
+    font-size: 0.88em;
+    color: @theme_text;
+}
+
+.message-media-sub {
+    font-size: 0.76em;
+    color: @theme_dim_text;
+}
+
+.message-download-icon {
+    color: @theme_dim_text;
+    margin-left: 8px;
+}
+
+.message-voice-play {
+    background-color: @theme_accent;
+    border-radius: 9999px;
+    padding: 6px;
+    color: @theme_on_accent;
+}
+
+.message-waveform {
+    margin: 0 8px;
+}
+
+.waveform-bar {
+    min-width: 2px;
+    min-height: 14px;
+    background-color: @theme_accent;
+    border-radius: 1px;
+    opacity: 0.7;
+}
+
+.message-voice-duration {
+    font-size: 0.76em;
+    color: @theme_dim_text;
+    font-weight: 600;
+}
+
+.sticker-bubble {
+    background-color: transparent;
+    border-color: transparent;
+    padding: 0;
+}
+
+.message-media-placeholder {
+    background-color: alpha(@theme_text,0.03);
+    border: 1px dashed @hairline;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: @theme_dim_text;
+}
+
+.message-placeholder-text {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: @theme_dim_text;
+}
+
+.message-bubble.incoming {
+    background-color: @theme_bg;
+    border: 1px solid @hairline;
+    color: @theme_text;
+}
+
+.message-bubble.outgoing {
+    background-color: @nav_active;
+    border: 1px solid transparent;
+    color: @theme_text;
+}
+
+.message-text {
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.message-footer {
+    margin-top: 4px;
+    font-size: 0.76em;
+    color: @theme_dim_text;
+}
+
+.message-status-tick {
+    color: @theme_accent;
+    font-size: 0.85em;
+    margin-left: 4px;
+}
+
+/* In-bubble reply quote */
+.message-reply-quote {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid @theme_accent;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-bottom: 6px;
+}
+
+.message-reply-quote-sender {
+    color: @theme_accent;
+    font-size: 0.78em;
+    font-weight: 600;
+}
+
+.message-reply-quote-text {
+    font-size: 0.76em;
+    color: @theme_dim_text;
+}
+
+/* Composer reply banner */
+.reply-banner {
+    background-color: @theme_surface;
+    border-top: 1px solid @hairline;
+    padding: 6px 16px;
+    min-height: 38px;
+}
+
+.reply-accent-bar {
+    background-color: @theme_accent;
+    min-width: 3px;
+    border-radius: 2px;
+    margin-right: 8px;
+}
+
+.reply-sender {
+    color: @theme_accent;
+    font-size: 0.82em;
+    font-weight: 600;
+}
+
+.reply-snippet {
+    color: @theme_dim_text;
+    font-size: 0.78em;
+}
+
+/* Composer */
+.message-composer {
+    min-height: 52px;
+    padding: 8px 16px;
+    border-top: 1px solid @hairline;
+    background-color: @theme_bg;
+}
+
+.composer-input-box {
+    background-color: @lift;
+    border: 1px solid @hairline;
+    border-radius: 6px;
+    padding: 4px 10px;
+    min-height: 36px;
+}
+
+.composer-input-box:focus-within {
+    border-color: @theme_accent;
+}
+
+.message-composer > scrolledwindow {
+    background-color: @lift;
+    border: 1px solid @hairline;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+.message-composer > scrolledwindow:focus-within {
+    border-color: @theme_accent;
+}
+
+.composer-input {
+    background: transparent;
+    border: none;
+    color: @theme_text;
+    font-size: 0.95em;
+}
+
+/* Collapsible right detail panel */
+.detail-panel {
+    background-color: @theme_bg;
+    border-left: 1px solid @hairline;
+    min-width: 280px;
+}
+
+.detail-header {
+    min-height: 30px;
+    border-bottom: 1px solid @hairline;
+}
+
+.detail-avatar-large {
+    border-radius: 9999px;
+    min-width: 80px;
+    min-height: 80px;
+    background-color: @lift;
+    color: @theme_accent;
+    font-weight: 700;
+    font-size: 1.8em;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+/* Status Bar */
+.status-bar {
+    min-height: 34px;
+    padding: 0 12px;
+    border-top: 1px solid @hairline;
+    font-size: 0.86em;
+    color: @theme_dim_text;
+}
+
+.status-key {
+    color: @theme_text;
+    font-weight: 600;
+}
+
+/* Authentication Card */
+.auth-card {
+    background-color: @theme_surface;
+    border: 1px solid @hairline;
+    border-radius: 14px;
+    padding: 32px 28px;
+    min-width: 400px;
+}
+
+.auth-qr-frame {
+    background-color: @theme_on_accent;
+    border-radius: 12px;
+    padding: 12px;
+    margin: 8px 0;
+}
+
+/* Voice & Video Calling UI */
+.call-overlay-backdrop {
+    background-color: rgba(10, 12, 16, 0.85);
+}
+
+.incoming-call-card {
+    background-color: @theme_surface;
+    border: 1px solid @hairline;
+    border-radius: 12px;
+    padding: 16px 20px;
+    min-width: 380px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.call-overlay-card {
+    background-color: @theme_surface;
+    border: 1px solid @hairline;
+    border-radius: 16px;
+    padding: 24px 28px;
+    min-width: 420px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+}
+
+.call-emojis-pill {
+    background-color: @lift;
+    border: 1px solid @hairline;
+    border-radius: 9999px;
+    padding: 4px 16px;
+    font-size: 1.3em;
+    letter-spacing: 4px;
+}
+
+.call-duration {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: @theme_dim_text;
+}
+
+.call-avatar-large {
+    border-radius: 9999px;
+    min-width: 96px;
+    min-height: 96px;
+    background-color: @lift;
+    color: @theme_accent;
+    font-weight: 700;
+    font-size: 2.2em;
+    border: 2px solid @theme_accent;
+}
+
+.call-video-stream {
+    background-color: @theme_video;
+    border-radius: 10px;
+    border: 1px solid @hairline;
+}
+
+.call-controls {
+    margin-top: 16px;
+}
+
+button.call-control-btn {
+    border-radius: 9999px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    background-color: @lift;
+    border: 1px solid @hairline;
+    color: @theme_text;
+}
+
+button.call-control-btn:hover {
+    background-color: mix(@lift, @theme_text, 0.1);
+}
+
+button.call-control-btn.active {
+    background-color: @theme_accent;
+    color: @theme_on_accent;
+    border-color: @theme_accent;
+}
+
+button.call-control-btn.call-btn-hangup {
+    background-color: @theme_danger;
+    color: @theme_on_accent;
+    border-color: @theme_danger;
+}
+
+button.call-control-btn.call-btn-hangup:hover {
+    background-color: @theme_danger;
+}
+
+/* Picker Popover (Emoji, Stickers, GIFs) */
+.picker-popover {
+    background-color: @theme_surface;
+    border: 1px solid @hairline;
+    border-radius: 12px;
+}
+
+.picker-tab-bar {
+    background-color: @lift;
+    border-radius: 8px;
+    padding: 2px;
+}
+
+.picker-tab-bar button {
+    border-radius: 6px;
+    font-size: 0.85em;
+    padding: 4px 10px;
+    color: @theme_dim_text;
+}
+
+.picker-tab-bar button.active {
+    background-color: @theme_accent;
+    color: @theme_on_accent;
+}
+
+.picker-cat-title {
+    font-size: 0.75em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: @theme_dim_text;
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+
+button.emoji-btn {
+    font-size: 1.4em;
+    padding: 4px;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 6px;
+}
+
+button.emoji-btn:hover {
+    background-color: @row_hover;
+}
+
+button.sticker-btn {
+    background-color: @lift;
+    border: 1px solid @hairline;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+button.sticker-btn:hover {
+    background-color: @row_hover;
+    border-color: @theme_accent;
+}
+
+.sticker-glyph {
+    font-size: 2.2em;
+}
+
+.sticker-name {
+    font-size: 0.75em;
+    color: @theme_dim_text;
+}
+
+button.gif-btn {
+    background-color: @lift;
+    border: 1px solid @hairline;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+button.gif-btn:hover {
+    background-color: @row_hover;
+}
+
+.gif-icon {
+    font-size: 1.2em;
+}
+
+.gif-title {
+    font-size: 0.85em;
+    color: @theme_text;
+}
+
+/* Media Viewer / Lightbox Overlay */
+.media-viewer-backdrop {
+    background-color: @veil;
+}
+
+.media-viewer-header {
+    border-bottom: 1px solid @hairline;
+    padding-bottom: 8px;
+}
+
+.media-viewer-title {
+    font-weight: 700;
+    font-size: 1.1em;
+    color: @theme_text;
+}
+
+.media-viewer-subtitle {
+    font-size: 0.8em;
+    color: @theme_dim_text;
+}
+
+.media-viewer-card {
+    background-color: @theme_video;
+    border: 1px solid @hairline;
+    border-radius: 12px;
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.7);
+}
+
+.media-viewer-glyph {
+    font-size: 4em;
+    color: @theme_dim_text;
+}
+
+.media-viewer-footer {
+    border-top: 1px solid @hairline;
+    padding-top: 8px;
+}
+
+.media-viewer-meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8em;
+    color: @theme_dim_text;
+}
+
+/* Secret Chats & Badges */
+.secret-chat {
+    color: @theme_accent;
+    font-weight: 600;
+}
+
+.badge-admin {
+    background-color: @nav_active;
+    color: @theme_accent;
+    border-radius: 4px;
+    font-size: 0.7em;
+    padding: 2px 6px;
+    font-weight: 700;
+}
+
+.online-dot {
+    color: @theme_accent;
+    font-size: 0.75em;
+}
+
+button.shared-media-thumb {
+    background-color: @lift;
+    border: 1px solid @hairline;
+    border-radius: 8px;
+    padding: 8px 4px;
+}
+
+button.shared-media-thumb:hover {
+    background-color: @row_hover;
+    border-color: @theme_accent;
+}
+
+.thumb-icon {
+    font-size: 1.8em;
+}
+
+.thumb-name {
+    font-size: 0.75em;
+    color: @theme_dim_text;
+}
+
+
+.message-inline, .message-inline text { background: transparent; color: @theme_text; }
+
+.message-selection-bar {
+    padding: 6px 12px;
+    border-bottom: 1px solid @hairline;
+}
+.selected-message .message-bubble {
+    background-color: @nav_active;
+    outline: 1px solid @theme_accent;
+}
+
+.folder-tags {
+    font-size: 0.72em;
+    color: @theme_dim_text;
+}
