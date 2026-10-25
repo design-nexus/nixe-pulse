@@ -2,7 +2,13 @@
 
 Native Telegram client for the Nixe suite, using Rust, GTK4, TDLib, shared Nixe widgets, and Media Player's playback engine and controls.
 
-Install from the repository root with `./install.sh pulse`. The installer prepares the SHA-256-pinned NTgCalls 3.0.5 runtime, installs required system dependencies, and installs Pulse, its launcher/icon, and its Glimpse plugin. It does not launch Pulse.
+Install with:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/design-nexus/nixe-pulse/main/install.sh | bash
+```
+
+The installer prepares the SHA-256-pinned NTgCalls 3.0.5 runtime, installs required system dependencies, and installs Pulse, its launcher/icon, and its Glimpse plugin. It does not launch Pulse.
 
 Pulse supports account-isolated sessions, paginated chat history, drafts and replies, message search, receipts and failed-send retry, file/photo/video/animation uploads, voice recording, downloads, real media previews, albums, custom emoji, stickers, and media save/copy/navigation. Account, privacy, proxy, notification, membership, shared-media, and secret-chat information comes from Telegram rather than demonstration data.
 
