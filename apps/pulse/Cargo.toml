@@ -12,13 +12,13 @@ name = "nixe-pulse"
 path = "src/main.rs"
 
 [dependencies]
-nixe-playback = { git = "https://github.com/design-nexus/nixe-design.git", rev = "f29d088290a00887e1dfe0277a830b082faf1f9f" }
+nixe-playback = { git = "https://github.com/design-nexus/nixe-design.git", rev = "64786dc295708951013c126351f1830664a7d15d" }
 flate2 = "1"
 base64 = "0.22"
 libloading = "0.8"
 nixe-core = { git = "https://github.com/design-nexus/nixe-core.git", rev = "87682e6c936b6a4f006639b1a1c099e96346c07c" }
-nixe-theme = { git = "https://github.com/design-nexus/nixe-design.git", rev = "f29d088290a00887e1dfe0277a830b082faf1f9f" }
-nixe-ui = { git = "https://github.com/design-nexus/nixe-design.git", rev = "f29d088290a00887e1dfe0277a830b082faf1f9f" }
+nixe-theme = { git = "https://github.com/design-nexus/nixe-design.git", rev = "64786dc295708951013c126351f1830664a7d15d" }
+nixe-ui = { git = "https://github.com/design-nexus/nixe-design.git", rev = "64786dc295708951013c126351f1830664a7d15d" }
 nixe-telegram-core = { path = "../../crates/nixe-telegram-core" }
 nixe-telegram-calls = { path = "../../crates/nixe-telegram-calls" }
 gtk = { version = "0.11", package = "gtk4", features = ["v4_18"] }
