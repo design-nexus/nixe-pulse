@@ -937,7 +937,7 @@ dependencies = [
 [[package]]
 name = "nixe-playback"
 version = "0.1.0"
-source = "git+https://github.com/design-nexus/nixe-design.git?rev=b8204de80644e263e32783602f2e0ae393578c9e#b8204de80644e263e32783602f2e0ae393578c9e"
+source = "git+https://github.com/design-nexus/nixe-design.git?rev=f29d088290a00887e1dfe0277a830b082faf1f9f#f29d088290a00887e1dfe0277a830b082faf1f9f"
 dependencies = [
  "async-channel",
  "gtk4",
@@ -1021,7 +1021,7 @@ dependencies = [
 [[package]]
 name = "nixe-theme"
 version = "0.1.0"
-source = "git+https://github.com/design-nexus/nixe-design.git?rev=b8204de80644e263e32783602f2e0ae393578c9e#b8204de80644e263e32783602f2e0ae393578c9e"
+source = "git+https://github.com/design-nexus/nixe-design.git?rev=f29d088290a00887e1dfe0277a830b082faf1f9f#f29d088290a00887e1dfe0277a830b082faf1f9f"
 dependencies = [
  "gtk4",
  "nixe-core",
@@ -1032,7 +1032,7 @@ dependencies = [
 [[package]]
 name = "nixe-ui"
 version = "0.1.0"
-source = "git+https://github.com/design-nexus/nixe-design.git?rev=b8204de80644e263e32783602f2e0ae393578c9e#b8204de80644e263e32783602f2e0ae393578c9e"
+source = "git+https://github.com/design-nexus/nixe-design.git?rev=f29d088290a00887e1dfe0277a830b082faf1f9f#f29d088290a00887e1dfe0277a830b082faf1f9f"
 dependencies = [
  "gtk4",
  "nixe-core",
