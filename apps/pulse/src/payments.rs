@@ -131,7 +131,7 @@ pub fn review(input: Value, done: Option<Done>) {
                 ),
             );
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let saved = &form["type"]["saved_order_info"];
         let name = entry(&fields, "Name", saved["name"].as_str().unwrap_or(""), 255);
@@ -274,8 +274,8 @@ status.set_text(&e);
                 if !scope.valid() {
                     return;
                 }
-                let (d, b) = nixe_ui::widgets::dialog("Unlock saved payment method", 440);
-                let fields = nixe_ui::widgets::vbox(8);
+                let (d, b) = nyx_ui::widgets::dialog("Unlock saved payment method", 440);
+                let fields = nyx_ui::widgets::vbox(8);
                 b.append(&fields);
                 let password = gtk::PasswordEntry::new();
                 password.set_show_peek_icon(true);

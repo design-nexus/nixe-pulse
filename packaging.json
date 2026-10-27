@@ -2,8 +2,8 @@
   "application": "pulse",
   "directory": "pulse",
   "packages": [
-    "nixe-pulse",
-    "nixe-pulse-glimpse"
+    "nyx-pulse",
+    "nyx-pulse-glimpse"
   ],
   "manifest": "Cargo.toml",
   "prepare": [
@@ -19,9 +19,9 @@
       "test",
       "--locked",
       "-p",
-      "nixe-pulse",
+      "nyx-pulse",
       "--bin",
-      "nixe-pulse"
+      "nyx-pulse"
     ]
   ]
 }

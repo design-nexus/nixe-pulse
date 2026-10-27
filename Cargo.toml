@@ -1,12 +1,12 @@
 [workspace]
 resolver = "3"
-members = ["apps/pulse", "apps/pulse-glimpse", "crates/nixe-telegram-core", "crates/nixe-telegram-calls"]
+members = ["apps/pulse", "apps/pulse-glimpse", "crates/nyx-telegram-core", "crates/nyx-telegram-calls"]
 
 [workspace.package]
 edition = "2024"
 license = "MIT"
 authors = ["Ken Smith"]
-repository = "https://github.com/design-nexus/nixe-pulse"
+repository = "https://github.com/design-nexus/nyx-pulse"
 
 [profile.release]
 lto = "thin"

@@ -1,6 +1,6 @@
 //! Call state and controls driven by the native media engine.
 use gtk::{gdk, glib, prelude::*};
-use nixe_ui::widgets as w;
+use nyx_ui::widgets as w;
 use std::{
     cell::{Cell, RefCell},
     rc::Rc,
@@ -117,7 +117,7 @@ impl CallingUi {
             if let Some(start) = ui.started.get() {
                 ui.status.set_text(&format!(
                     "Connected · {}",
-                    nixe_telegram_calls::format_call_duration(start.elapsed().as_secs() as u32)
+                    nyx_telegram_calls::format_call_duration(start.elapsed().as_secs() as u32)
                 ));
             }
             glib::ControlFlow::Continue

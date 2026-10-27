@@ -47,7 +47,7 @@ pub fn profile() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let first = entry(&fields, "First name", me["first_name"].as_str().unwrap_or(""), 64);
         let last = entry(&fields, "Last name", me["last_name"].as_str().unwrap_or(""), 64);
@@ -109,8 +109,8 @@ pub fn profile() {
     });
 }
 fn photo(scope: Scope) {
-    let (d, b) = nixe_ui::widgets::dialog("Profile photo", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Profile photo", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let selected = crate::poll_media::picker(&fields, &d, &scope, "Choose a photo", true);
     submit(&d, &b, &fields, scope, "Set profile photo", move |s| {
@@ -138,7 +138,7 @@ fn photo(scope: Scope) {
 pub fn contacts() {
     features::load("Contacts", |s, d, b| async move {
         let query = entry(&b, "Find contact", "", 128);
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let search = gtk::Button::with_label("Search");
         b.append(&search);
@@ -206,7 +206,7 @@ pub fn contacts() {
 }
 fn contact_row(b: &gtk::Box, s: &Scope, u: &Value) {
     let id = u["id"].as_i64().unwrap_or(0);
-    let row = nixe_ui::widgets::vbox(3);
+    let row = nyx_ui::widgets::vbox(3);
     note(
         &row,
         &format!(
@@ -262,8 +262,8 @@ fn contact_row(b: &gtk::Box, s: &Scope, u: &Value) {
 }
 fn add_contact() {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Add contact", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Add contact", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let first = entry(&fields, "First name", "", 64);
     let last = entry(&fields, "Last name", "", 64);
@@ -463,7 +463,7 @@ fn notification_scope(typ: &str) {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let preview = check(&fields, "Show message previews", original["show_preview"] == true);
         let mentions = check(
@@ -522,7 +522,7 @@ fn notification_scope(typ: &str) {
 }
 pub fn blocked() {
     features::load("Blocked users", |s, d, b| async move {
-        let list = nixe_ui::widgets::vbox(4);
+        let list = nyx_ui::widgets::vbox(4);
         b.append(&list);
         let more = gtk::Button::with_label("Load more");
         b.append(&more);
@@ -612,7 +612,7 @@ fn lifetime() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         note(&fields, "Telegram deletes an inactive account after this many days.");
         let account = gtk::SpinButton::with_range(30., 730., 1.);

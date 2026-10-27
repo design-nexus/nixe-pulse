@@ -1,8 +1,8 @@
-id = "nixe-pulse"
+id = "nyx-pulse"
 name = "Telegram"
 version = "0.1.0"
 api_version = 1
-exec = ["./nixe-pulse-glimpse"]
+exec = ["./nyx-pulse-glimpse"]
 capabilities = ["search", "preview"]
 description = "Search loaded Telegram conversations and recent previews in Pulse. Pulse must be running."
 

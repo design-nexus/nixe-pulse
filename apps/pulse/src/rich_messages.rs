@@ -5,8 +5,8 @@ use crate::{
     window,
 };
 use gtk::{glib, prelude::*};
-use nixe_telegram_core::{client::parse_message, models::MessageSummary};
-use nixe_ui::widgets as w;
+use nyx_telegram_core::{client::parse_message, models::MessageSummary};
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
@@ -75,7 +75,7 @@ pub fn compose_poll(chat: i64) {
     fields.append(&quiz);
     let anonymous = gtk::CheckButton::with_label("Anonymous voting");
     anonymous.set_active(true);
-    let channel = window::chat(chat).is_some_and(|c| c.chat_type == nixe_telegram_core::models::ChatType::Channel);
+    let channel = window::chat(chat).is_some_and(|c| c.chat_type == nyx_telegram_core::models::ChatType::Channel);
     anonymous.set_sensitive(!channel);
     fields.append(&anonymous);
     let multiple = gtk::CheckButton::with_label("Allow multiple answers");

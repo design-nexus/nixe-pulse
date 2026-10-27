@@ -52,7 +52,7 @@ pub fn browse() {
         button(&b, "My active stories", move || chat_stories(id, false));
         button(&b, "My story archive", move || chat_stories(id, true));
         button(&b, "Post a story…", move || post(id));
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let refresh = gtk::Button::with_label("Refresh active stories");
         b.append(&refresh);
@@ -82,7 +82,7 @@ pub fn browse() {
 }
 pub fn chat_stories(chat: i64, archive: bool) {
     features::load(if archive { "Story archive" } else { "Stories" }, move |s, d, b| async move {
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let more = gtk::Button::with_label("Load more");
         b.append(&more);
@@ -207,7 +207,7 @@ pub fn view(chat: i64, id: i64) {
             }
             }
             );
-            if let Some(message) = nixe_telegram_core::client::parse_message(&raw) {
+            if let Some(message) = nyx_telegram_core::client::parse_message(&raw) {
                 crate::poll_media::render(&b, &message, &media);
             }
         } else {
@@ -355,8 +355,8 @@ fn privacy(kind: u32, ids: Vec<i64>) -> Value {
 }
 fn privacy_edit(chat: i64, id: i64, original: Value) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Story privacy", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Story privacy", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let (kind, ids) = privacy_fields(&fields, &original);
     submit(&d, &b, &fields, s, "Save privacy", move |s| {
@@ -380,8 +380,8 @@ fn privacy_edit(chat: i64, id: i64, original: Value) {
 }
 fn caption_edit(chat: i64, id: i64, caption: String) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Story caption", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Story caption", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let text = entry(&fields, "Caption", &caption, 4096);
     submit(&d, &b, &fields, s, "Save caption", move |s| {
@@ -456,8 +456,8 @@ fn react(chat: i64, id: i64) {
 }
 fn reply(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Reply to story", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Reply to story", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let text = entry(&fields, "Reply", "", 4096);
     submit(&d, &b, &fields, s, "Send reply", move |s| {
@@ -507,7 +507,7 @@ pub fn post(chat: i64) {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let media = crate::poll_media::story_picker(&fields, &d, &s, "Photo or H.264 MP4 video");
         let caption = entry(&fields, "Caption", "", 4096);

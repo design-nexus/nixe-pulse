@@ -1,6 +1,6 @@
-//! User preferences and settings for Nixe Pulse.
+//! User preferences and settings for Nyx Pulse.
 
-pub use nixe_theme::ThemeMode;
+pub use nyx_theme::ThemeMode;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -53,7 +53,7 @@ impl Default for Prefs {
     }
 }
 
-nixe_core::prefs_store!(Prefs);
+nyx_core::prefs_store!(Prefs);
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(default)]

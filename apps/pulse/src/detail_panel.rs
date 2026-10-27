@@ -1,7 +1,7 @@
 //! Conversation information and shared media fetched from Telegram.
 use gtk::{glib, prelude::*};
-use nixe_telegram_core::{client::parse_message, models::*};
-use nixe_ui::widgets as w;
+use nyx_telegram_core::{client::parse_message, models::*};
+use nyx_ui::widgets as w;
 use serde_json::json;
 use std::{
     cell::{Cell, RefCell},

@@ -19,7 +19,7 @@ fn try_native() -> Result<&'static Native, String> {
             let mut paths = Vec::new();
             if let Ok(exe) = std::env::current_exe() {
                 if let Some(bin) = exe.parent() {
-                    paths.push(bin.join("../share/nixe/lib/libntgcalls.so"));
+                    paths.push(bin.join("../share/nyx/lib/libntgcalls.so"));
                 }
             }
             paths.push(std::path::PathBuf::from(env!("PULSE_NTG_LIBRARY")));

@@ -1,6 +1,6 @@
-# Nixe Pulse Feature Parity Matrix
+# Nyx Pulse Feature Parity Matrix
 
-This document tracks feature parity between **Nixe Pulse** and the official **Telegram Desktop** application.
+This document tracks feature parity between **Nyx Pulse** and the official **Telegram Desktop** application.
 
 Status markers:
 - 🔴 **Not started**
@@ -14,7 +14,7 @@ Status markers:
 
 ## 1. Authentication and Accounts
 
-| Feature | Telegram Desktop | Nixe Pulse Target | Status | Implementation Strategy / Notes |
+| Feature | Telegram Desktop | Nyx Pulse Target | Status | Implementation Strategy / Notes |
 |---|---|---|---|---|
 | QR code login | Yes | Yes | 🔵 **Tested** | Cairo-rendered dynamic QR barcode (`qrcode` crate), mode switcher |
 | Phone number authentication | Yes | Yes | 🔵 **Tested** | Styled phone entry with format validation and `.suggested-action` |
@@ -29,7 +29,7 @@ Status markers:
 
 ## 2. Messaging Core
 
-| Feature | Telegram Desktop | Nixe Pulse Target | Status | Implementation Strategy / Notes |
+| Feature | Telegram Desktop | Nyx Pulse Target | Status | Implementation Strategy / Notes |
 |---|---|---|---|---|
 | Private 1-on-1 chats | Yes | Yes | 🔵 **Tested** | Real-time chat sync, message bubbles, read receipts |
 | Group chats & Supergroups | Yes | Yes | 🔵 **Tested** | Supergroup member lists, online dots, administration card |
@@ -63,7 +63,7 @@ Status markers:
 
 ## 3. Media & Attachments
 
-| Feature | Telegram Desktop | Nixe Pulse Target | Status | Implementation Strategy / Notes |
+| Feature | Telegram Desktop | Nyx Pulse Target | Status | Implementation Strategy / Notes |
 |---|---|---|---|---|
 | Image attachments | Yes | Yes | 🔵 **Tested** | Full-screen translucent lightbox (`MediaViewer`) with zoom |
 | Video attachments & streaming | Yes | Yes | 🔵 **Tested** | Video stream preview container with PipeWire integration |
@@ -73,7 +73,7 @@ Status markers:
 | Audio file playback & Music player | Yes | Yes | 🟢 **Implemented** | Integrated playback controls |
 | Media galleries (grouped albums) | Yes | Yes | 🔵 **Tested** | Clickable thumbnail grid in right detail panel |
 | Download manager & progress | Yes | Yes | 🔵 **Tested** | "Save As..." native file chooser dialog in media viewer |
-| Drag-and-drop file sending | Yes | Yes | 🔵 **Tested** | GTK4 `DropTarget` on main window supporting Nixe Capture |
+| Drag-and-drop file sending | Yes | Yes | 🔵 **Tested** | GTK4 `DropTarget` on main window supporting Nyx Capture |
 | Clipboard image pasting | Yes | Yes | 🔵 **Tested** | Direct paste from Wayland clipboard (<kbd>Ctrl</kbd>+<kbd>V</kbd>) |
 | Shared media & Links browser | Yes | Yes | 🔵 **Tested** | Right panel tabs: Media, Files, Links, Audio |
 
@@ -81,7 +81,7 @@ Status markers:
 
 ## 4. Voice and Video Calling
 
-| Feature | Telegram Desktop | Nixe Pulse Target | Status | Implementation Strategy / Notes |
+| Feature | Telegram Desktop | Nyx Pulse Target | Status | Implementation Strategy / Notes |
 |---|---|---|---|---|
 | 1-on-1 Voice calls | Yes | Yes | 🔵 **Tested** | Native GTK4 cockpit overlay, live duration ticker, hang-up |
 | 1-on-1 Video calls | Yes | Yes | 🔵 **Tested** | Video container toggle, PipeWire camera stream preview |
@@ -101,7 +101,7 @@ Status markers:
 
 ## 5. Advanced Telegram Functionality
 
-| Feature | Telegram Desktop | Nixe Pulse Target | Status | Implementation Strategy / Notes |
+| Feature | Telegram Desktop | Nyx Pulse Target | Status | Implementation Strategy / Notes |
 |---|---|---|---|---|
 | Secret Chats (End-to-End Encrypted) | Partial / No | Yes (where supported) | 🔵 **Tested** | TDLib `createNewSecretChat`, 🔒 green badge, self-destruct timers |
 | Stories | Yes | Yes | 🟡 **Investigating** | Story strip above chat list, full-screen story viewer |
@@ -114,19 +114,19 @@ Status markers:
 
 ---
 
-## 6. Nixe Suite & Omarchy Desktop Integration
+## 6. Nyx Suite & Omarchy Desktop Integration
 
-| Feature | Telegram Desktop | Nixe Pulse Target | Status | Implementation Strategy / Notes |
+| Feature | Telegram Desktop | Nyx Pulse Target | Status | Implementation Strategy / Notes |
 |---|---|---|---|---|
-| Follow Omarchy live theme | No | Yes (native) | 🔵 **Tested** | Live polling of Omarchy `colors.toml` and Nixe `theme.toml` |
+| Follow Omarchy live theme | No | Yes (native) | 🔵 **Tested** | Live polling of Omarchy `colors.toml` and Nyx `theme.toml` |
 | Monospace JetBrains typography | No | Yes | 🔵 **Tested** | JetBrains Mono 500, tabular figures throughout |
 | Flat single `bg` surface | No | Yes | 🔵 **Tested** | 1px `@hairline` borders, no elevation shadows |
 | Window chrome-free tiling | No | Yes | 🔵 **Tested** | Empty GTK titlebar, Hyprland window management |
-| Nixe Contacts integration | No | Yes | 🔵 **Tested** | Deep link URL dispatcher `tg://` & `t.me/`, `--chat <id>` |
-| Nixe Assistant integration | No | Yes | 🔵 **Tested** | `io.github.design_nexus.nixe.Control` D-Bus tools (`control.rs`) |
-| Nixe Glimpse search plugin | No | Yes | 🔵 **Tested** | `nixe-pulse-glimpse` binary querying chats and contacts |
-| Nixe Capture integration | No | Yes | 🔵 **Tested** | Direct screenshot drag-and-drop & clipboard paste |
-| Nixe Settings card integration | No | Yes | 🔵 **Tested** | Standard `nixe_ui::settings_card` modal |
+| Nyx Contacts integration | No | Yes | 🔵 **Tested** | Deep link URL dispatcher `tg://` & `t.me/`, `--chat <id>` |
+| Nyx Assistant integration | No | Yes | 🔵 **Tested** | `io.github.design_nexus.nyx.Control` D-Bus tools (`control.rs`) |
+| Nyx Glimpse search plugin | No | Yes | 🔵 **Tested** | `nyx-pulse-glimpse` binary querying chats and contacts |
+| Nyx Capture integration | No | Yes | 🔵 **Tested** | Direct screenshot drag-and-drop & clipboard paste |
+| Nyx Settings card integration | No | Yes | 🔵 **Tested** | Standard `nyx_ui::settings_card` modal |
 | Desktop notifications | Standard | Native GNotification | 🟢 **Implemented** | GIO notifications with direct reply action |
-| Keyboard navigation & Shortcuts | Qt shortcuts | Nixe shortcuts | 🔵 **Tested** | <kbd>F1</kbd> shortcuts dialog, <kbd>Ctrl</kbd>+<kbd>,</kbd>, <kbd>Ctrl</kbd>+<kbd>B</kbd>, <kbd>Ctrl</kbd>+<kbd>F</kbd> |
+| Keyboard navigation & Shortcuts | Qt shortcuts | Nyx shortcuts | 🔵 **Tested** | <kbd>F1</kbd> shortcuts dialog, <kbd>Ctrl</kbd>+<kbd>,</kbd>, <kbd>Ctrl</kbd>+<kbd>B</kbd>, <kbd>Ctrl</kbd>+<kbd>F</kbd> |
 | Responsive 800px tiled layout | Poor | Fully responsive | 🔵 **Tested** | Compact sidebar (52px), collapsible panels, zero overflow |

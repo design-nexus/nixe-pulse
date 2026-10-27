@@ -175,8 +175,8 @@ fn detail(id: String) {
 }
 fn transfer(id: String, cost: i64) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Transfer gift", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Transfer gift", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let username = entry(&fields, "New owner username", "", 64);
     note(&fields, &format!("Transfer costs {cost} Stars. The gift leaves your account."));
@@ -238,8 +238,8 @@ async fn resolve(s: &Scope, name: &str) -> Result<Value, String> {
 }
 fn resale(id: String) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Gift resale listing", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Gift resale listing", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let enabled = check(&fields, "List for resale", true);
     let currency = gtk::DropDown::from_strings(&["Stars", "Hundredths of TON"]);
@@ -313,8 +313,8 @@ fn collections(user: i64) {
 }
 fn collection_edit(user: i64, id: i64, name: String) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Gift collection", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Gift collection", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let name = entry(&fields, "Name", &name, 64);
     let ids = entry(&fields, "Gift identifiers to add (comma separated)", "", 4096);
@@ -392,8 +392,8 @@ fn collection_edit(user: i64, id: i64, name: String) {
 }
 fn market() {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Gift marketplace", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Gift marketplace", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let gift = entry(&fields, "Regular gift ID", "", 24);
     submit(&d, &b, &fields, s, "Browse resale offers", move |s| {
@@ -474,8 +474,8 @@ fn market() {
 }
 fn auction() {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Gift auction", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Gift auction", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let id = entry(&fields, "Auction ID", "", 128);
     submit(&d, &b, &fields, s, "View auction", move |s| {
@@ -490,9 +490,9 @@ fn auction() {
                 )
                 .await?;
             let gift = auction["gift"]["id"].clone();
-            let (d, b) = nixe_ui::widgets::dialog("Auction details", 480);
+            let (d, b) = nyx_ui::widgets::dialog("Auction details", 480);
             note(&b, &features::summary(&auction));
-            let fields = nixe_ui::widgets::vbox(8);
+            let fields = nyx_ui::widgets::vbox(8);
             b.append(&fields);
             let bid = entry(&fields, "Bid in Stars", "", 20);
             submit(&d, &b, &fields, s, "Review bid", move |s| {

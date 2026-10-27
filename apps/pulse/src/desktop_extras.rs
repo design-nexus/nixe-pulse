@@ -115,8 +115,8 @@ pub fn open() {
         let recording: Rc<Cell<Option<usize>>> = Rc::new(Cell::new(None));
         let entries = Rc::new(RefCell::new(Vec::<gtk::Entry>::new()));
         for (i, (action, title, default)) in ACTIONS.iter().enumerate() {
-            let row = nixe_ui::widgets::hbox(6);
-            let label = nixe_ui::widgets::label(title, "");
+            let row = nyx_ui::widgets::hbox(6);
+            let label = nyx_ui::widgets::label(title, "");
             label.set_hexpand(true);
             row.append(&label);
             let entry = gtk::Entry::new();

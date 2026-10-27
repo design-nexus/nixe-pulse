@@ -52,7 +52,7 @@ fn transactions() {
         let owner = json!({
         "@type":"messageSenderUser","user_id":me["id"]}
         );
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let more = gtk::Button::with_label("Load more");
         b.append(&more);
@@ -227,8 +227,8 @@ fn gifts() {
 }
 pub fn paid_reaction(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Paid reaction", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Paid reaction", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     note(
         &fields,
@@ -348,5 +348,5 @@ pub fn boost(chat: i64) {
     });
 }
 
-pub fn subscription_invite(chat:i64,link:Value){features::load("Paid channel invitation",move|s,d,b|async move{let c=crate::groups::context(&s,chat).await?;c.require("can_invite_users")?;if !c.channel(){return Err("Subscription invitations require a channel.".into())}if !alive(&s,&d){return Ok(())}let fields=nixe_ui::widgets::vbox(6);b.append(&fields);let name=entry(&fields,"Administrator label",link["name"].as_str().unwrap_or(""),32);let count=entry(&fields,"Stars per 30 days",&link["subscription_pricing"]["star_count"].as_i64().unwrap_or(100).to_string(),8);let edit=link.is_object();count.set_editable(!edit);note(&fields,"Members joining through this invitation pay the displayed amount every 30 days until they cancel. Existing subscription prices cannot be edited; create a new invitation to change the price.");submit(&d,&b,&fields,s,"Save paid invitation",move|s|{let(name,count,link)=(name.text().to_string(),count.text().parse::<i64>(),link.clone());async move{let c=crate::groups::context(&s,chat).await?;c.require("can_invite_users")?;if !c.channel(){return Err("Channel eligibility changed.".into())}let count=count.map_err(|_|"Enter a whole number of Stars.")?;if !(1..=10000).contains(&count){return Err("Use a subscription price from 1 to 10000 Stars.".into())}let result=if edit{let fresh=s.call("getChatInviteLink",json!({"chat_id":chat,"invite_link":link["invite_link"]})).await?;if fresh["subscription_pricing"]!=link["subscription_pricing"]||fresh["name"]!=link["name"]{return Err("The invitation changed. Reopen the editor.".into())}s.call("editChatSubscriptionInviteLink",json!({"chat_id":chat,"invite_link":link["invite_link"],"name":name})).await?}else{crate::groups::commit(&s,"createChatSubscriptionInviteLink",json!({"chat_id":chat,"name":name,"subscription_pricing":{"@type":"starSubscriptionPricing","period":2592000,"star_count":count}})).await?};let(d,b)=nixe_ui::widgets::dialog("Paid invitation",440);let url=result["invite_link"].as_str().unwrap_or("").to_string();note(&b,&url);button(&b,"Copy invitation",move||{if let Some(display)=gtk::gdk::Display::default(){display.clipboard().set_text(&url);}});d.present();Ok(())}});Ok(())});}
+pub fn subscription_invite(chat:i64,link:Value){features::load("Paid channel invitation",move|s,d,b|async move{let c=crate::groups::context(&s,chat).await?;c.require("can_invite_users")?;if !c.channel(){return Err("Subscription invitations require a channel.".into())}if !alive(&s,&d){return Ok(())}let fields=nyx_ui::widgets::vbox(6);b.append(&fields);let name=entry(&fields,"Administrator label",link["name"].as_str().unwrap_or(""),32);let count=entry(&fields,"Stars per 30 days",&link["subscription_pricing"]["star_count"].as_i64().unwrap_or(100).to_string(),8);let edit=link.is_object();count.set_editable(!edit);note(&fields,"Members joining through this invitation pay the displayed amount every 30 days until they cancel. Existing subscription prices cannot be edited; create a new invitation to change the price.");submit(&d,&b,&fields,s,"Save paid invitation",move|s|{let(name,count,link)=(name.text().to_string(),count.text().parse::<i64>(),link.clone());async move{let c=crate::groups::context(&s,chat).await?;c.require("can_invite_users")?;if !c.channel(){return Err("Channel eligibility changed.".into())}let count=count.map_err(|_|"Enter a whole number of Stars.")?;if !(1..=10000).contains(&count){return Err("Use a subscription price from 1 to 10000 Stars.".into())}let result=if edit{let fresh=s.call("getChatInviteLink",json!({"chat_id":chat,"invite_link":link["invite_link"]})).await?;if fresh["subscription_pricing"]!=link["subscription_pricing"]||fresh["name"]!=link["name"]{return Err("The invitation changed. Reopen the editor.".into())}s.call("editChatSubscriptionInviteLink",json!({"chat_id":chat,"invite_link":link["invite_link"],"name":name})).await?}else{crate::groups::commit(&s,"createChatSubscriptionInviteLink",json!({"chat_id":chat,"name":name,"subscription_pricing":{"@type":"starSubscriptionPricing","period":2592000,"star_count":count}})).await?};let(d,b)=nyx_ui::widgets::dialog("Paid invitation",440);let url=result["invite_link"].as_str().unwrap_or("").to_string();note(&b,&url);button(&b,"Copy invitation",move||{if let Some(display)=gtk::gdk::Display::default(){display.clipboard().set_text(&url);}});d.present();Ok(())}});Ok(())});}
 pub fn receipt(chat:i64,id:i64){features::load("Payment receipt",move|s,d,b|async move{let data=s.call("getPaymentReceipt",json!({"chat_id":chat,"message_id":id})).await?;if alive(&s,&d){note(&b,&features::summary(&data));}Ok(())});}

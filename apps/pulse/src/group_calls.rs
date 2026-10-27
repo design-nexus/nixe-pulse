@@ -7,7 +7,7 @@ use crate::{
     window,
 };
 use gtk::{glib, prelude::*};
-use nixe_telegram_calls::engine::{Engine, EngineEvent};
+use nyx_telegram_calls::engine::{Engine, EngineEvent};
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
@@ -266,8 +266,8 @@ pub fn open(chat: i64) {
 }
 fn create(chat: i64) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Create group call", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Create group call", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let title = entry(&fields, "Title", "", 128);
     submit(&d, &b, &fields, s, "Create call", move |s| {
@@ -466,7 +466,7 @@ fn participants(id: i64) {
         }
         let refresh = gtk::Button::with_label("Refresh");
         b.append(&refresh);
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         refresh.connect_clicked(move |_| {
             if !s.valid() {
@@ -626,7 +626,7 @@ fn screen(id: i64) {
         std::thread::spawn(move || {
             let result = tokio::runtime::Runtime::new()
                 .map_err(|e| e.to_string())
-                .and_then(|rt| rt.block_on(nixe_telegram_calls::capture::run(engine, key, flag)));
+                .and_then(|rt| rt.block_on(nyx_telegram_calls::capture::run(engine, key, flag)));
             let _ = tx.send_blocking(result);
         });
         glib::spawn_future_local(async move {
@@ -729,7 +729,7 @@ fn sync_video(session: &Rc<Session>) {
     }
 }
 fn add_video_tile(session: &Session, grid: &gtk::FlowBox, source: &Value, ssrc: u32) {
-    let row = nixe_ui::widgets::vbox(4);
+    let row = nyx_ui::widgets::vbox(4);
     note(&row, &format!("Participant {}", source["user"]));
     let pic = gtk::Picture::new();
     pic.set_can_shrink(true);
@@ -755,7 +755,7 @@ fn video_window(id: i64) {
         window::show_status("Join the group call first.");
         return;
     };
-    let (d, b) = nixe_ui::widgets::dialog("Group video", 800);
+    let (d, b) = nyx_ui::widgets::dialog("Group video", 800);
     let grid = gtk::FlowBox::new();
     grid.set_selection_mode(gtk::SelectionMode::None);
     grid.set_min_children_per_line(1);

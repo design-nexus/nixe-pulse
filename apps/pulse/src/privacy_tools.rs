@@ -10,8 +10,8 @@ use serde_json::{Value, json};
 use std::{cell::RefCell, rc::Rc};
 type Selection = Rc<RefCell<Vec<i64>>>;
 fn add_row(list: &gtk::Box, scope: &Scope, selection: &Selection, id: i64, name: String) {
-    let row = nixe_ui::widgets::hbox(4);
-    let label = nixe_ui::widgets::label(&name, "");
+    let row = nyx_ui::widgets::hbox(4);
+    let label = nyx_ui::widgets::label(&name, "");
     label.set_hexpand(true);
     label.set_wrap(true);
     row.append(&label);
@@ -32,7 +32,7 @@ fn add_row(list: &gtk::Box, scope: &Scope, selection: &Selection, id: i64, name:
 fn choose(body: &gtk::Box, scope: &Scope, title: &str, initial: Vec<i64>, groups: bool) -> Selection {
     note(body, title);
     let state = Rc::new(RefCell::new(initial.clone()));
-    let list = nixe_ui::widgets::vbox(4);
+    let list = nyx_ui::widgets::vbox(4);
     body.append(&list);
     for id in initial {
         if groups {
@@ -63,12 +63,12 @@ fn choose(body: &gtk::Box, scope: &Scope, title: &str, initial: Vec<i64>, groups
             return;
         }
         if groups {
-            let (d, b) = nixe_ui::widgets::dialog("Choose group", 440);
+            let (d, b) = nyx_ui::widgets::dialog("Choose group", 440);
             let rows = crate::groups::scroll(&b);
             for chat in window::list_chats(10000).into_iter().filter(|c| {
                 matches!(
                     c.chat_type,
-                    nixe_telegram_core::models::ChatType::BasicGroup | nixe_telegram_core::models::ChatType::Supergroup
+                    nyx_telegram_core::models::ChatType::BasicGroup | nyx_telegram_core::models::ChatType::Supergroup
                 )
             }) {
                 let (s, list, state, weak) = (s.clone(), list.clone(), state_.clone(), d.downgrade());
@@ -137,7 +137,7 @@ pub fn edit(title: &str, setting: &str) {
             return Ok(());
         }
         let rules = original["rules"].as_array().cloned().unwrap_or_default();
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let base = gtk::DropDown::from_strings(&["Everyone", "Contacts", "Nobody"]);
         base.set_selected(if rules.iter().any(|r| r["@type"] == "userPrivacySettingRuleAllowAll") {

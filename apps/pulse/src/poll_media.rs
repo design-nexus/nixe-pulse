@@ -1,8 +1,8 @@
 //! Poll attachment selection and rendering through the existing media viewer.
 use crate::{actions::Scope, groups::note, window};
 use gtk::{gio, glib, prelude::*};
-use nixe_telegram_core::{client::parse_message, models::MessageSummary};
-use nixe_ui::widgets as w;
+use nyx_telegram_core::{client::parse_message, models::MessageSummary};
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 use std::{
     cell::RefCell,

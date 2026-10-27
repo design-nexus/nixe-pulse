@@ -1,8 +1,8 @@
 //! Explicit voice/video note capture, validated uploads, and shared suite preview controls.
 use crate::actions::Scope;
 use gtk::{gio, glib, prelude::*};
-use nixe_playback::controls::{OsdControls, SeekWidgets};
-use nixe_ui::widgets as w;
+use nyx_playback::controls::{OsdControls, SeekWidgets};
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
@@ -217,7 +217,7 @@ fn show(parent: &gtk::Box, chat: i64, kind: Kind) {
     let import = gtk::Button::with_label("Use video file…");
     import.set_visible(kind == Kind::Video);
     body.append(&import);
-    let directory = nixe_core::paths::cache_dir().join("recordings");
+    let directory = nyx_core::paths::cache_dir().join("recordings");
     let _ = std::fs::create_dir_all(&directory);
     let path = directory.join(format!("{}.{}", uuid::Uuid::new_v4(), kind.extension()));
     let log = path.with_extension("log");
@@ -525,7 +525,7 @@ fn show(parent: &gtk::Box, chat: i64, kind: Kind) {
         if !s.valid()||content_.borrow().is_null()||uploading_.replace(true){return}let Some(d)=weak.upgrade()else{uploading_.set(false);return};
         keep.set(true);button.set_sensitive(false);can.set_sensitive(false);devices_.set_sensitive(false);import_.set_sensitive(false);start_.set_sensitive(false);pre.set_sensitive(false);
         let (s,content,topic,reply,uploading,st,button,can)=(s.clone(),content_.borrow().clone(),topic.clone(),reply.clone(),uploading_.clone(),st.clone(),button.clone(),can.clone());
-        glib::spawn_future_local(async move{let result=crate::groups::commit(&s,"sendMessage",json!({"chat_id":chat,"topic_id":topic,"reply_to":reply,"options":{"@type":"messageSendOptions","paid_message_star_count":0},"input_message_content":content})).await;uploading.set(false);if !s.valid(){d.close();return}match result{Ok(data)=>{if let Some(m)=nixe_telegram_core::client::parse_message(&data){crate::window::display_message(&m);}d.close();},Err(e)=>{st.set_text(&e);button.set_sensitive(!e.contains("status is unknown"));can.set_sensitive(true);}}});
+        glib::spawn_future_local(async move{let result=crate::groups::commit(&s,"sendMessage",json!({"chat_id":chat,"topic_id":topic,"reply_to":reply,"options":{"@type":"messageSendOptions","paid_message_star_count":0},"input_message_content":content})).await;uploading.set(false);if !s.valid(){d.close();return}match result{Ok(data)=>{if let Some(m)=nyx_telegram_core::client::parse_message(&data){crate::window::display_message(&m);}d.close();},Err(e)=>{st.set_text(&e);button.set_sensitive(!e.contains("status is unknown"));can.set_sensitive(true);}}});
     });
     let weak = dialog.downgrade();
     cancel.connect_clicked(move |_| {

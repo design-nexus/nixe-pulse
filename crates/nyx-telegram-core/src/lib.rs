@@ -1,5 +1,5 @@
-//! `nixe-telegram-core`: Telegram MTProto protocol handling, TDLib FFI,
-//! multi-account management, authentication, and chat synchronization for Nixe Pulse.
+//! `nyx-telegram-core`: Telegram MTProto protocol handling, TDLib FFI,
+//! multi-account management, authentication, and chat synchronization for Nyx Pulse.
 
 pub mod account;
 pub mod auth;

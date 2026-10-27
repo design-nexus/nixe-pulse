@@ -12,9 +12,9 @@ fn main() {
 fn chats(query: &str) -> Result<Vec<Value>> {
     let connection = gio::bus_get_sync(gio::BusType::Session, gio::Cancellable::NONE)?;
     let response = connection.call_sync(
-        Some("io.github.design_nexus.nixe.Pulse"),
-        "/io/github/design_nexus/nixe/Pulse",
-        "io.github.design_nexus.nixe.Control",
+        Some("io.github.design_nexus.nyx.Pulse"),
+        "/io/github/design_nexus/nyx/Pulse",
+        "io.github.design_nexus.nyx.Control",
         "Call",
         Some(&("pulse.chats.search", json!({"query":query}).to_string()).to_variant()),
         None,
@@ -40,7 +40,7 @@ fn answer(request: &Request) -> Result<Value> {
                         id: c["id"].as_i64()?.to_string(),
                         title: c["title"].as_str()?.into(),
                         subtitle: format!("Telegram · {} unread", c["unread_count"].as_i64().unwrap_or(0)),
-                        action: Action::Url { url: format!("nixe-pulse://chat/{}", c["id"]) },
+                        action: Action::Url { url: format!("nyx-pulse://chat/{}", c["id"]) },
                     })
                 })
                 .collect::<Vec<_>>();

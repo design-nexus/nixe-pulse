@@ -2,7 +2,7 @@
 use crate::service::TelegramService;
 use base64::{Engine as _, engine::general_purpose::STANDARD};
 use gtk::{gdk, glib, prelude::*};
-use nixe_telegram_calls::engine::{Engine, EngineEvent};
+use nyx_telegram_calls::engine::{Engine, EngineEvent};
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
@@ -353,7 +353,7 @@ pub fn share(on: bool) {
     std::thread::spawn(move || {
         let result = tokio::runtime::Runtime::new()
             .map_err(|e| e.to_string())
-            .and_then(|rt| rt.block_on(nixe_telegram_calls::capture::run(engine, user, stop)));
+            .and_then(|rt| rt.block_on(nyx_telegram_calls::capture::run(engine, user, stop)));
         let _ = tx.send_blocking(result);
     });
     glib::spawn_future_local(async move {
@@ -376,7 +376,7 @@ pub fn share(on: bool) {
 pub fn devices(button: &gtk::Button) {
     let Some(parent) = button.root().and_downcast::<gtk::Window>() else { return };
     let d = gtk::Window::builder().title("Call devices").transient_for(&parent).modal(true).default_width(440).build();
-    let body = nixe_ui::widgets::vbox(12);
+    let body = nyx_ui::widgets::vbox(12);
     let data = match Engine::devices() {
         Ok(d) => d,
         Err(e) => {
@@ -388,7 +388,7 @@ pub fn devices(button: &gtk::Button) {
     for (kind, title, selected) in
         [("microphone", "Microphone", p.microphone), ("speaker", "Speakers", p.speaker), ("camera", "Camera", p.camera)]
     {
-        body.append(&nixe_ui::widgets::label(title, "dim"));
+        body.append(&nyx_ui::widgets::label(title, "dim"));
         let options = data[kind].as_array().cloned().unwrap_or_default();
         let names = options.iter().map(|v| v["name"].as_str().unwrap_or("Device")).collect::<Vec<_>>();
         let drop = gtk::DropDown::from_strings(&names);

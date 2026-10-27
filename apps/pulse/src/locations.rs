@@ -84,7 +84,7 @@ impl Device {
         let path = result.child_value(0).str().ok_or("No device location client.")?.to_owned();
         let client = Self { bus, path };
         for (key, value) in [
-            ("DesktopId", "io.github.design_nexus.nixe.Pulse".to_variant()),
+            ("DesktopId", "io.github.design_nexus.nyx.Pulse".to_variant()),
             ("RequestedAccuracyLevel", 8u32.to_variant()),
         ] {
             call(
@@ -208,7 +208,7 @@ pub fn manage() {
                     return;
                 }
                 let scope = scope.clone();
-                let (d, b) = nixe_ui::widgets::dialog("Automatic live location", 440);
+                let (d, b) = nyx_ui::widgets::dialog("Automatic live location", 440);
                 note(
                     &b,
                     "Your device location will be sent to this conversation approximately every 15 seconds while Pulse runs and this account stays active. This requires GeoClue and location permission. The existing sharing expiry is retained.",

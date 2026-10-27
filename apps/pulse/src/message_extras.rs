@@ -6,7 +6,7 @@ use crate::{
     window,
 };
 use gtk::{glib, prelude::*};
-use nixe_telegram_core::models::MessageSummary;
+use nyx_telegram_core::models::MessageSummary;
 use serde_json::json;
 pub fn render(body: &gtk::Box, m: &MessageSummary) -> bool {
     let c = &m.data["content"];
@@ -179,8 +179,8 @@ pub fn render(body: &gtk::Box, m: &MessageSummary) -> bool {
 }
 fn add_tasks(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Add checklist tasks", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Add checklist tasks", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let text = gtk::TextView::new();
     text.set_wrap_mode(gtk::WrapMode::WordChar);
@@ -253,8 +253,8 @@ fn add_tasks(chat: i64, id: i64) {
 pub fn compose_checklist(chat: i64) {
     let Some(s) = Scope::current() else { return };
     let (topic, reply) = (window::composer_topic(chat), window::composer_reply(chat));
-    let (d, b) = nixe_ui::widgets::dialog("Send checklist", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Send checklist", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let title = entry(&fields, "Title", "", 255);
     let text = gtk::TextView::new();
@@ -311,7 +311,7 @@ pub fn compose_checklist(chat: i64) {
                 ),
             )
             .await?;
-            if let Some(m) = nixe_telegram_core::client::parse_message(&m) {
+            if let Some(m) = nyx_telegram_core::client::parse_message(&m) {
                 window::display_message(&m);
             }
             Ok(())
@@ -325,7 +325,7 @@ pub fn translate(chat: i64, id: i64) {
         s.error("Secret-chat messages cannot be sent to Telegram's translation service.");
         return;
     }
-    let (d, b) = nixe_ui::widgets::dialog("Translate message", 480);
+    let (d, b) = nyx_ui::widgets::dialog("Translate message", 480);
     let language = entry(&b, "Target language code (e.g. en, es, de)", "en", 16);
     let result = note(&b, "");
     let weak = d.downgrade();
@@ -435,7 +435,7 @@ pub fn suggested(chat: i64, id: i64) {
             });
         }
         if props["can_be_declined"] == true {
-            let fields = nixe_ui::widgets::vbox(8);
+            let fields = nyx_ui::widgets::vbox(8);
             b.append(&fields);
             let comment = entry(&fields, "Decline reason (optional)", "", 128);
             submit(&d, &b, &fields, s, "Decline suggestion", move |s| {
@@ -470,8 +470,8 @@ pub fn suggested(chat: i64, id: i64) {
 #[cfg(test)]
 pub(crate) fn check_widgets() {
     crate::desktop_extras::check_shortcuts();
-    let body = nixe_ui::widgets::vbox(6);
-    let mut m=nixe_telegram_core::client::parse_message(&json!({"id":77,"chat_id":7,"date":1,"content":{"@type":"messageChecklist","list":{"title":{"text":"Shopping"},"tasks":[{"id":1,"text":{"text":"Milk"},"completion_date":0}],"can_mark_tasks_as_done":false}}})).unwrap();
+    let body = nyx_ui::widgets::vbox(6);
+    let mut m=nyx_telegram_core::client::parse_message(&json!({"id":77,"chat_id":7,"date":1,"content":{"@type":"messageChecklist","list":{"title":{"text":"Shopping"},"tasks":[{"id":1,"text":{"text":"Milk"},"completion_date":0}],"can_mark_tasks_as_done":false}}})).unwrap();
     assert!(render(&body, &m));
     assert_eq!(
         body.first_child()
@@ -484,7 +484,7 @@ pub(crate) fn check_widgets() {
         false
     );
     m.data["reply_markup"] = json!({"@type":"replyMarkupInlineKeyboard","rows":[[{"text":"Copy","type":{"@type":"inlineKeyboardButtonTypeCopyText","text":"value"}}],[{"text":"Unavailable","type":{"@type":"inlineKeyboardButtonTypeDisabled"}}]]});
-    let keyboard = nixe_ui::widgets::vbox(4);
+    let keyboard = nyx_ui::widgets::vbox(4);
     crate::bots::render(&keyboard, &m);
     assert!(keyboard.first_child().is_some());
     assert!(keyboard.last_child().unwrap().last_child().unwrap().downcast::<gtk::FlowBox>().is_ok());

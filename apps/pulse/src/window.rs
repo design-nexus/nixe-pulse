@@ -1,4 +1,4 @@
-//! Main window assembly for Nixe Pulse, complying with STYLE.md.
+//! Main window assembly for Nyx Pulse, complying with STYLE.md.
 
 use crate::auth_view::AuthView;
 use crate::calling_ui::CallingUi;
@@ -11,9 +11,9 @@ use crate::{prefs, settings_dialog, theme};
 use gtk::gdk;
 use gtk::glib;
 use gtk::prelude::*;
-use nixe_telegram_core::models::{AuthState, ChatSummary, MessageContent, TelegramUpdate};
-use nixe_ui::chrome;
-use nixe_ui::widgets as w;
+use nyx_telegram_core::models::{AuthState, ChatSummary, MessageContent, TelegramUpdate};
+use nyx_ui::chrome;
+use nyx_ui::widgets as w;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -76,7 +76,7 @@ pub fn log_out() {
 }
 
 pub fn add_account() {
-    switch_account(nixe_telegram_core::account::AccountManager::create_new_account_id());
+    switch_account(nyx_telegram_core::account::AccountManager::create_new_account_id());
 }
 
 pub fn list_chats(limit: usize) -> Vec<ChatSummary> {
@@ -174,7 +174,7 @@ pub fn request_delete_chat(id: i64) {
     if !DELETING_CHATS.with(|pending| pending.borrow_mut().insert(key.clone())) {
         return;
     }
-    let leave = chat.chat_type != nixe_telegram_core::models::ChatType::Private;
+    let leave = chat.chat_type != nyx_telegram_core::models::ChatType::Private;
     let (dialog, card) = w::dialog(if leave { "Leave and delete chat?" } else { "Delete chat?" }, 420);
     let title = w::label(&chat.title, "");
     title.set_wrap(true);
@@ -308,7 +308,7 @@ pub fn request_delete_chat(id: i64) {
 pub fn chat(id: i64) -> Option<ChatSummary> {
     CHAT_LIST.with(|l| l.borrow().as_ref().and_then(|l| l.get_chat(id)))
 }
-pub fn current_chat_list() -> nixe_telegram_core::models::ChatListId {
+pub fn current_chat_list() -> nyx_telegram_core::models::ChatListId {
     CHAT_LIST.with(|l| l.borrow().as_ref().map(|l| l.current_list()).unwrap_or_default())
 }
 pub fn leave_conversation(id: i64) {
@@ -442,7 +442,7 @@ fn build_window(app: &gtk::Application) {
     window.add_css_class("pulse-window");
     // No client-side titlebar: Hyprland manages windows
     window.set_titlebar(Some(&gtk::Box::new(gtk::Orientation::Horizontal, 0)));
-    window.set_icon_name(Some("io.github.design_nexus.nixe.Pulse"));
+    window.set_icon_name(Some("io.github.design_nexus.nyx.Pulse"));
 
     let overlay = gtk::Overlay::new();
     let frame = w::vbox(0);
@@ -656,7 +656,7 @@ fn build_window(app: &gtk::Application) {
                 m.hide();
             }
         });
-        nixe_playback::video::shutdown();
+        nyx_playback::video::shutdown();
         with_service(|s| s.close());
         glib::Propagation::Proceed
     });
@@ -1244,7 +1244,7 @@ fn snapshot_and_quit(_app: &gtk::Application, _out: std::path::PathBuf) {
 
 pub fn resolve_link(uri: &str) {
     if let Some(id) = uri
-        .strip_prefix("nixe-pulse://chat/")
+        .strip_prefix("nyx-pulse://chat/")
         .or_else(|| uri.strip_prefix("tg://pulse?chat_id="))
         .and_then(|s| s.parse::<i64>().ok())
     {
@@ -1308,11 +1308,11 @@ pub fn composer_reply(chat: i64) -> serde_json::Value {
     CHAT_VIEW.with(|v| v.borrow().as_ref().filter(|v| *v.current_chat_id.borrow() == Some(chat)).map(|v| v.reply_target()).unwrap_or(serde_json::Value::Null))
 }
 
-pub fn display_message(message: &nixe_telegram_core::models::MessageSummary) {
+pub fn display_message(message: &nyx_telegram_core::models::MessageSummary) {
     CHAT_VIEW.with(|v| { if let Some(v) = v.borrow().as_ref() { v.append_message(message); } });
 }
 
-pub fn jump_message(message: &nixe_telegram_core::models::MessageSummary) {
+pub fn jump_message(message: &nyx_telegram_core::models::MessageSummary) {
     if active_chat_id()!=Some(message.chat_id)||!crate::topics::matches_message(&composer_topic(message.chat_id),&message.data){
         crate::topics::open_link(serde_json::json!({"chat_id":message.chat_id,"topic_id":message.data["topic_id"],"message":{"id":message.id}}));return;
     }
@@ -1396,7 +1396,7 @@ pub fn topic_deleted(chat:i64,id:i64){
     if composer_topic(chat)==topic{open_chat(chat);}
 }
 
-pub(crate) fn show_media(message: &nixe_telegram_core::models::MessageSummary) {
+pub(crate) fn show_media(message: &nyx_telegram_core::models::MessageSummary) {
     MEDIA_VIEWER.with(|m| { if let Some(m) = m.borrow().as_ref() { m.show_message(message); } });
 }
 

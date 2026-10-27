@@ -41,7 +41,7 @@ pub fn connected_bot() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         note(
             &fields,
@@ -167,7 +167,7 @@ pub fn hours() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let enabled = check(&fields, "Show opening hours", !original.is_null());
         let timezone = entry(&fields, "Time zone", original["time_zone_id"].as_str().unwrap_or("UTC"), 128);

@@ -20,7 +20,7 @@ pub fn chat(chat: i64) {
             return Ok(());
         }
         let original = data["notification_settings"].clone();
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let inherit_mute = check(&fields, "Use category mute setting", original["use_default_mute_for"] == true);
         let minutes =

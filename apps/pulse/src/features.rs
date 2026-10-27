@@ -1,7 +1,7 @@
 //! Shared account-scoped feature windows, without blocking GTK on Telegram requests.
 use crate::{actions::Scope, groups::note};
 use gtk::{glib, prelude::*};
-use nixe_ui::widgets as w;
+use nyx_ui::widgets as w;
 use serde_json::Value;
 use std::future::Future;
 pub fn load<F, Fut>(title: &str, work: F)
@@ -126,7 +126,7 @@ pub fn pages(
     load(title, move |s, d, b| async move {
         let more = gtk::Button::with_label("Load more");
         b.append(&more);
-        let rows = nixe_ui::widgets::vbox(6);
+        let rows = nyx_ui::widgets::vbox(6);
         b.append(&rows);
         let cursor = std::rc::Rc::new(std::cell::RefCell::new(String::new()));
         let row = std::rc::Rc::new(row);

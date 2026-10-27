@@ -5,7 +5,7 @@ use crate::{
     window,
 };
 use gtk::{gio, prelude::*};
-use nixe_ui::widgets as w;
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 
 async fn full(s: &Scope, c: &groups::Context) -> Result<Value, String> {

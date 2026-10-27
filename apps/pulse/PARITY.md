@@ -1,6 +1,6 @@
 # Telegram Desktop parity
 
-Reference: [Telegram Desktop v7.3.1](https://github.com/telegramdesktop/tdesktop/releases/tag/v7.3.1), frozen for this roadmap. Pulse retains native GTK and Nixe styling. “Implemented” means connected to TDLib; live interoperability is listed separately from local checks.
+Reference: [Telegram Desktop v7.3.1](https://github.com/telegramdesktop/tdesktop/releases/tag/v7.3.1), frozen for this roadmap. Pulse retains native GTK and Nyx styling. “Implemented” means connected to TDLib; live interoperability is listed separately from local checks.
 
 ## Release 1: chat and message actions
 

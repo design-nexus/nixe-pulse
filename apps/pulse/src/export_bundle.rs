@@ -41,7 +41,7 @@ fn originals(v: &Value, out: &mut Vec<i32>) {
 }
 pub fn open(chat: i64) {
     let Some(scope) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Export conversation", 480);
+    let (d, b) = nyx_ui::widgets::dialog("Export conversation", 480);
     let format = gtk::DropDown::from_strings(&["HTML", "JSON Lines"]);
     b.append(&format);
     let media = check(&b, "Include downloaded copies of media", false);

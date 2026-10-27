@@ -1,9 +1,9 @@
-//! D-Bus Control interface (`nixe_core::control`) for Nixe Assistant.
+//! D-Bus Control interface (`nyx_core::control`) for Nyx Assistant.
 //!
 //! Provides external access to list chats, search messages, open conversations,
 //! send text, and initiate voice/video calls.
 
-use nixe_core::control::text;
+use nyx_core::control::text;
 use serde_json::{Value, json};
 
 pub fn tools() -> Value {
@@ -168,7 +168,7 @@ mod tests {
 }
 
 /// Return acceptance and the actual TDLib message ID, never a fabricated delivery receipt.
-pub fn handle_async(name: &str, args: Value, reply: nixe_core::control::Reply) {
+pub fn handle_async(name: &str, args: Value, reply: nyx_core::control::Reply) {
     if name != "pulse.messages.send" {
         reply(handle(name, args));
         return;

@@ -11,7 +11,7 @@ fn command(verb: &str, account: &str) -> Command {
     if verb == "store" {
         c.arg("--label=Pulse database encryption key");
     }
-    c.args(["application", "nixe-pulse", "account", account, "kind", "database-key"]);
+    c.args(["application", "nyx-pulse", "account", account, "kind", "database-key"]);
     c
 }
 fn lookup(account: &str) -> Option<String> {
@@ -22,7 +22,7 @@ fn lookup(account: &str) -> Option<String> {
     String::from_utf8(r.stdout).ok().map(|s| s.trim().to_owned()).filter(|s| !s.is_empty())
 }
 fn marker(account: &str) -> PathBuf {
-    nixe_core::paths::data_dir().join("accounts").join(account).join("key-migration-pending")
+    nyx_core::paths::data_dir().join("accounts").join(account).join("key-migration-pending")
 }
 fn ensure(account: &str) -> Result<String, String> {
     if let Some(key) = lookup(account) {
@@ -53,7 +53,7 @@ pub async fn key(account: &str, new_database: bool) -> Result<Option<String>, St
 pub fn pending(account: &str) -> bool {
     marker(account).exists()
 }
-pub async fn encrypt(client: &nixe_telegram_core::TdClient, account: &str) -> Result<(), String> {
+pub async fn encrypt(client: &nyx_telegram_core::TdClient, account: &str) -> Result<(), String> {
     let a = account.to_owned();
     let key = tokio::task::spawn_blocking(move || ensure(&a)).await.map_err(|e| e.to_string())??;
     client.execute("setDatabaseEncryptionKey", serde_json::json!({"new_encryption_key":key})).await.map_err(|e| e.to_string())?;
@@ -70,7 +70,7 @@ pub fn store_proxy(account: &str, id: i64, proxy: &serde_json::Value) -> Result<
             "store",
             "--label=Pulse proxy",
             "application",
-            "nixe-pulse",
+            "nyx-pulse",
             "account",
             account,
             "kind",

@@ -60,7 +60,7 @@ fn spawn(
     if !url.starts_with("https://") {
         return Err("Mini Apps require an HTTPS URL.".into());
     }
-    let path = nixe_core::paths::cache_dir().join("webview-helper.py");
+    let path = nyx_core::paths::cache_dir().join("webview-helper.py");
     std::fs::create_dir_all(path.parent().unwrap()).map_err(|e| e.to_string())?;
     std::fs::write(&path, include_str!("../helpers/webview.py")).map_err(|e| e.to_string())?;
     let mut child = Command::new("/usr/bin/python3")
@@ -127,7 +127,7 @@ fn spawn(
     Ok(())
 }
 pub fn open(scope: Scope, chat: i64, bot: i64, url: String, button_text: String) {
-    let (d, b) = nixe_ui::widgets::dialog("Open Mini App", 440);
+    let (d, b) = nyx_ui::widgets::dialog("Open Mini App", 440);
     note(
         &b,
         "This bot will receive your basic Telegram profile and Mini App session data. Phone, location, clipboard, camera and microphone access require separate permission.",
@@ -176,7 +176,7 @@ fn permission(
     data: Value,
     work: impl FnOnce(Scope, Rc<Browser>, Value) + 'static,
 ) {
-    let (d, b) = nixe_ui::widgets::dialog(title, 440);
+    let (d, b) = nyx_ui::widgets::dialog(title, 440);
     note(&b, message);
     let pending = Rc::new(Cell::new(true));
     let state = pending.clone();

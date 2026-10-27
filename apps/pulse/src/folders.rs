@@ -4,8 +4,8 @@ use crate::{
     window,
 };
 use gtk::{gdk, glib, prelude::*};
-use nixe_telegram_core::models::*;
-use nixe_ui::widgets as w;
+use nyx_telegram_core::models::*;
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 use std::{
     cell::RefCell,

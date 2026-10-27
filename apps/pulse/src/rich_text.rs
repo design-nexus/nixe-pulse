@@ -1,6 +1,6 @@
 //! Telegram custom emoji occupy text anchors at their original UTF-16 positions.
 use gtk::{gdk, gio, glib, pango, prelude::*};
-use nixe_telegram_core::models::{FormattedText, TextEntityKind};
+use nyx_telegram_core::models::{FormattedText, TextEntityKind};
 use serde_json::json;
 use std::{cell::RefCell, collections::HashMap};
 thread_local! {static EMOJI:RefCell<HashMap<i64,String>>=RefCell::new(HashMap::new());}

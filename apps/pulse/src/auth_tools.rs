@@ -14,7 +14,7 @@ pub fn update(v: &Value) {
         Some("authorizationStateWaitEmailAddress") => email(false),
         Some("authorizationStateWaitEmailCode") => email(true),
         Some("authorizationStateWaitPremiumPurchase") => {
-            let (d, b) = nixe_ui::widgets::dialog("Telegram login requirement", 440);
+            let (d, b) = nyx_ui::widgets::dialog("Telegram login requirement", 440);
             note(
                 &b,
                 "Telegram requires a mobile-store Premium purchase before this phone number can log in. Pulse cannot perform an official mobile-store purchase.",
@@ -33,7 +33,7 @@ pub fn registration() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         note(
             &fields,
@@ -76,8 +76,8 @@ pub fn registration() {
 }
 fn email(code: bool) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog(if code { "Email verification" } else { "Login email" }, 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog(if code { "Email verification" } else { "Login email" }, 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let input = entry(
         &fields,
@@ -122,7 +122,7 @@ pub fn recover_login() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         note(
             &fields,
@@ -171,7 +171,7 @@ pub fn security() {
                 "Two-step verification is disabled."
             },
         );
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         note(&fields, "Current password (empty if none)");
         let old = gtk::PasswordEntry::new();
@@ -223,8 +223,8 @@ pub fn security() {
 }
 fn verify_email() {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Verify recovery email", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Verify recovery email", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let code = entry(&fields, "Verification code", "", 64);
     submit(&d, &b, &fields, s, "Verify", move |s| {

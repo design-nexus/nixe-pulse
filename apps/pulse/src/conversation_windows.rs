@@ -1,7 +1,7 @@
 //! Independent conversation windows sharing service updates and suite widgets.
 use crate::{actions::Scope, chat_view::ChatView, service::ServiceEvent, window};
 use gtk::{glib, prelude::*};
-use nixe_telegram_core::models::*;
+use nyx_telegram_core::models::*;
 use serde_json::json;
 use std::{cell::RefCell, collections::BTreeMap, rc::Rc};
 struct Conversation {

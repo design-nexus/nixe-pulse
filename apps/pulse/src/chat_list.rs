@@ -3,8 +3,8 @@
 use gtk::gdk;
 use gtk::gio;
 use gtk::prelude::*;
-use nixe_telegram_core::models::{ChatId, ChatListId, ChatSummary, MessageContent};
-use nixe_ui::widgets as w;
+use nyx_telegram_core::models::{ChatId, ChatListId, ChatSummary, MessageContent};
+use nyx_ui::widgets as w;
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 use std::rc::Rc;

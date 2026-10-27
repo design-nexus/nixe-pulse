@@ -1,10 +1,10 @@
-//! Emoji, Sticker, and GIF picker popover for Nixe Pulse message composer.
+//! Emoji, Sticker, and GIF picker popover for Nyx Pulse message composer.
 //!
 //! Complies with STYLE.md: flat @theme_surface card, tabbed navigation,
 //! and clean hover effects.
 
 use gtk::prelude::*;
-use nixe_ui::widgets as w;
+use nyx_ui::widgets as w;
 use std::cell::RefCell;
 use std::rc::Rc;
 

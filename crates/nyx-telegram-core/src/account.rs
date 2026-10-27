@@ -1,4 +1,4 @@
-//! Multi-account manager and directory isolation for Nixe Pulse.
+//! Multi-account manager and directory isolation for Nyx Pulse.
 
 use serde::{Deserialize, Serialize};
 use std::fs;

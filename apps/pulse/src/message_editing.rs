@@ -43,7 +43,7 @@ pub fn replace(chat: i64, id: i64) {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let media = crate::poll_media::picker(&fields, &d, &s, "Replacement file", false);
         let caption = entry(&fields, "Caption", original["content"]["caption"]["text"].as_str().unwrap_or(""), 4096);
@@ -92,7 +92,7 @@ pub fn replace(chat: i64, id: i64) {
                     ),
                 )
                 .await?;
-                if let Some(m) = nixe_telegram_core::client::parse_message(&m) {
+                if let Some(m) = nyx_telegram_core::client::parse_message(&m) {
                     window::display_message(&m);
                 }
                 Ok(())
@@ -117,7 +117,7 @@ pub fn offer(chat: i64, id: i64) {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let currency = gtk::DropDown::from_strings(&["Stars", "TON (hundredths)"]);
         fields.append(&currency);
@@ -186,7 +186,7 @@ pub fn proximity(chat: i64, id: i64) {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let radius = entry(
             &fields,

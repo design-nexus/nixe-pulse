@@ -5,7 +5,7 @@ use crate::{
     window,
 };
 use gtk::prelude::*;
-use nixe_ui::widgets as w;
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 
 pub async fn name(scope: &Scope, sender: &Value) -> Result<String, String> {

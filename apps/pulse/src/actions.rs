@@ -1,8 +1,8 @@
 //! Shared Telegram actions for sidebar menus, conversation menus, and message menus.
 use crate::{service::TelegramService, window};
 use gtk::{gdk, gio, glib, prelude::*};
-use nixe_telegram_core::models::*;
-use nixe_ui::widgets as w;
+use nyx_telegram_core::models::*;
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
@@ -1421,7 +1421,7 @@ fn accepted_forward_ids(source: &[i64], results: &[Value]) -> (Vec<i64>, bool) {
 #[cfg(test)]
 mod regression {
     use super::*;
-    use nixe_telegram_core::client::parse_message;
+    use nyx_telegram_core::client::parse_message;
     #[test]
     fn stage3c_forward_destinations_are_independent() {
         let a=json!({"@type":"messageTopicForum","forum_topic_id":1});let b=json!({"@type":"messageTopicForum","forum_topic_id":2});

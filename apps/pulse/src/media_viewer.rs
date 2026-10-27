@@ -1,8 +1,8 @@
 //! Actual photo and audiovisual viewer using the suite's playback engine and controls.
 use gtk::{gdk, gio, glib, prelude::*};
-use nixe_playback::{controls, mpv, video};
-use nixe_telegram_core::models::*;
-use nixe_ui::widgets as w;
+use nyx_playback::{controls, mpv, video};
+use nyx_telegram_core::models::*;
+use nyx_ui::widgets as w;
 use std::{cell::RefCell, rc::Rc};
 pub struct MediaViewer {
     pub root: gtk::Box,

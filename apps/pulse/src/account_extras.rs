@@ -32,7 +32,7 @@ fn birthday() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let enabled = check(&fields, "Show birthday", !info["birthdate"].is_null());
         let day = entry(&fields, "Day", &info["birthdate"]["day"].as_i64().unwrap_or(1).to_string(), 2);
@@ -75,7 +75,7 @@ fn photos() {
         let me = s.call("getMe", json!({})).await?;
         let more = gtk::Button::with_label("Load more");
         b.append(&more);
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let offset = std::rc::Rc::new(std::cell::Cell::new(0));
         let weak = d.downgrade();
@@ -107,7 +107,7 @@ let message=json!({
 }
 }
 );
-if let Some(message)=nixe_telegram_core::client::parse_message(&message){
+if let Some(message)=nyx_telegram_core::client::parse_message(&message){
 crate::poll_media::render(&list,&message,&json!({
 "@type":"pollMediaPhoto","photo":{
 "sizes":photo["sizes"]}
@@ -162,8 +162,8 @@ fn button_fn(b: &gtk::Box, title: &str, f: impl Fn() + 'static) {
 }
 fn phone() {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Change Telegram phone number", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Change Telegram phone number", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     note(
         &fields,
@@ -190,8 +190,8 @@ fn phone() {
     d.present();
 }
 fn phone_code(scope: Scope) {
-    let (d, b) = nixe_ui::widgets::dialog("Verify new phone number", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Verify new phone number", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let code = entry(&fields, "Verification code", "", 64);
     submit(&d, &b, &fields, scope, "Change phone number", move |s| {
@@ -280,7 +280,7 @@ fn sessions() {
     });
 }
 fn helper(create: bool, device: String, pin: String, parameters: Value) -> Result<Value, String> {
-    let script = nixe_core::paths::cache_dir().join("passkey-helper.py");
+    let script = nyx_core::paths::cache_dir().join("passkey-helper.py");
     std::fs::create_dir_all(script.parent().unwrap()).map_err(|e| e.to_string())?;
     std::fs::write(&script, include_str!("../helpers/passkey.py")).map_err(|e| e.to_string())?;
     let mut child = std::process::Command::new("/usr/bin/python3")
@@ -350,7 +350,7 @@ fn passkeys() {
 fn passkey_operation(create: bool) {
     features::load(if create { "Add passkey" } else { "Log in with passkey" }, move |s, d, b| async move {
         let devices = gio::spawn_blocking(|| {
-            let path = nixe_core::paths::cache_dir().join("passkey-helper.py");
+            let path = nyx_core::paths::cache_dir().join("passkey-helper.py");
             std::fs::create_dir_all(path.parent().unwrap()).map_err(|e| e.to_string())?;
             std::fs::write(&path, include_str!("../helpers/passkey.py")).map_err(|e| e.to_string())?;
             let output =
@@ -369,7 +369,7 @@ fn passkey_operation(create: bool) {
         if devices.is_empty() {
             return Err("Connect a FIDO2 security key and reopen this dialog.".into());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let names = devices.iter().map(|d| d["name"].as_str().unwrap_or("Security key")).collect::<Vec<_>>();
         let selected = gtk::DropDown::from_strings(&names);

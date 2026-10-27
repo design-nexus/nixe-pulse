@@ -52,7 +52,7 @@ pub fn tools(chat: i64, id: i64) {
                                     ),
                                 )
                                 .await?;
-                            if let Some(m) = nixe_telegram_core::client::parse_message(&m) {
+                            if let Some(m) = nyx_telegram_core::client::parse_message(&m) {
                                 window::jump_message(&m);
                             }
                             Ok(())
@@ -118,7 +118,7 @@ fn interactions(chat: i64, id: i64) {
         }
         let more = gtk::Button::with_label("Load more");
         b.append(&more);
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let cursor: Rc<RefCell<String>> = Default::default();
         let weak = d.downgrade();
@@ -183,8 +183,8 @@ fn interactions(chat: i64, id: i64) {
 }
 fn edit_media(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Edit story media", 480);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Edit story media", 480);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let selected = crate::poll_media::story_picker(&fields, &d, &s, "Replacement photo or video");
     let caption = entry(&fields, "New caption (empty keeps existing)", "", 4096);
@@ -317,8 +317,8 @@ pub fn albums(chat: i64) {
 }
 fn album_edit(chat: i64, id: i64, name: String) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Story album", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Story album", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let name = entry(&fields, "Name", &name, 64);
     let ids = entry(&fields, "Story numbers to add (comma separated)", "", 1024);
@@ -385,7 +385,7 @@ fn album_stories(chat: i64, id: i64) {
     features::load("Album stories", move |s, d, b| async move {
         let more = gtk::Button::with_label("Load more");
         b.append(&more);
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let offset = Rc::new(Cell::new(0));
         let weak = d.downgrade();
@@ -442,7 +442,7 @@ pub fn area_picker(body: &gtk::Box, parent: &gtk::Window, scope: &Scope) -> Rc<R
 }
 fn area_picker_initial(body: &gtk::Box, parent: &gtk::Window, scope: &Scope, initial: Vec<Value>) -> Rc<RefCell<Vec<Value>>> {
     let selected: Rc<RefCell<Vec<Value>>> = Rc::new(RefCell::new(initial.clone()));
-    let rows = nixe_ui::widgets::vbox(4);
+    let rows = nyx_ui::widgets::vbox(4);
     body.append(&rows);
     for area in initial {
         area_row(&rows, &selected, area);
@@ -453,7 +453,7 @@ fn area_picker_initial(body: &gtk::Box, parent: &gtk::Window, scope: &Scope, ini
             return;
         }
         let Some(parent) = weak.upgrade() else { return };
-        let (d, b) = nixe_ui::widgets::dialog("Interactive story area", 480);
+        let (d, b) = nyx_ui::widgets::dialog("Interactive story area", 480);
         d.set_transient_for(Some(&parent));
         let fields = crate::groups::scroll(&b);
         let kind = gtk::DropDown::from_strings(&["Link", "Location", "Reaction", "Message", "Weather", "Collectible gift"]);
@@ -549,7 +549,7 @@ fn area_picker_initial(body: &gtk::Box, parent: &gtk::Window, scope: &Scope, ini
 }
 
 fn area_row(rows: &gtk::Box, state: &Rc<RefCell<Vec<Value>>>, area: Value) {
-    let row = nixe_ui::widgets::hbox(6);
+    let row = nyx_ui::widgets::hbox(6);
     let title = area["type"]["@type"].as_str().unwrap_or("").strip_prefix("inputStoryAreaType").unwrap_or("Area");
     note(&row, &format!("{} at {}%, {}%", title, area["position"]["x_percentage"], area["position"]["y_percentage"]));
     let remove = gtk::Button::with_label("Remove");
@@ -597,7 +597,7 @@ fn edit_areas(chat: i64, id: i64) {
             return Ok(());
         }
         let initial = story["areas"].as_array().into_iter().flatten().map(input_area).collect::<Result<Vec<_>, _>>()?;
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let areas = area_picker_initial(&fields, &d, &s, initial);
         submit(&d, &b, &fields, s, "Save interactive areas", move |s| {

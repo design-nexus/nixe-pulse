@@ -7,7 +7,7 @@ mod desktop_extras;
 mod export_bundle;
 mod privacy_tools;
 mod notifications;
-// Nixe Pulse: Native Telegram Desktop Client for Omarchy Linux and the Nixe Suite.
+// Nyx Pulse: Native Telegram Desktop Client for Omarchy Linux and the Nyx Suite.
 
 mod actions;
 mod message_editing;
@@ -60,33 +60,33 @@ use gtk::glib;
 use gtk::prelude::*;
 
 fn main() -> glib::ExitCode {
-    nixe_core::app::init(nixe_core::app::App { slug: "nixe-pulse", name: "Pulse" });
+    nyx_core::app::init(nyx_core::app::App { slug: "nyx-pulse", name: "Pulse" });
 
     let args: Vec<_> = std::env::args().collect();
     if args.iter().any(|s| s == "--help" || s == "-h") {
-        println!("Usage: nixe-pulse [--help] [--version]");
-        println!("Native Telegram desktop client for Omarchy Linux and the Nixe Suite");
+        println!("Usage: nyx-pulse [--help] [--version]");
+        println!("Native Telegram desktop client for Omarchy Linux and the Nyx Suite");
         return glib::ExitCode::SUCCESS;
     }
     if args.iter().any(|s| s == "--version" || s == "-V") {
-        println!("nixe-pulse 0.1.0");
+        println!("nyx-pulse 0.1.0");
         return glib::ExitCode::SUCCESS;
     }
 
     tracing_subscriber::fmt()
         .with_env_filter(
             tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "nixe_pulse=info,nixe_telegram_core=info".into()),
+                .unwrap_or_else(|_| "nyx_pulse=info,nyx_telegram_core=info".into()),
         )
         .init();
 
     let app = gtk::Application::builder()
-        .application_id("io.github.design_nexus.nixe.Pulse")
+        .application_id("io.github.design_nexus.nyx.Pulse")
         .flags(gio::ApplicationFlags::HANDLES_COMMAND_LINE | gio::ApplicationFlags::HANDLES_OPEN)
         .build();
 
     app.connect_startup(|app| {
-        nixe_core::control::serve_async(app, control::tools(), control::handle_async);
+        nyx_core::control::serve_async(app, control::tools(), control::handle_async);
     });
 
     app.connect_shutdown(|_| {crate::conversation_windows::reset(); crate::group_calls::stop(); crate::locations::reset(); crate::webapps::reset(); });
@@ -106,7 +106,7 @@ fn main() -> glib::ExitCode {
                     target_chat = Some(id);
                 }
                 i += 1;
-            } else if s.starts_with("nixe-pulse://") || s.starts_with("tg://") || s.starts_with("https://t.me/") {
+            } else if s.starts_with("nyx-pulse://") || s.starts_with("tg://") || s.starts_with("https://t.me/") {
                 let uri = s.to_string();
                 glib::idle_add_local_once(move || window::resolve_link(&uri));
             }

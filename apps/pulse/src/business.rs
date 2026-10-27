@@ -76,7 +76,7 @@ fn location() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let address = entry(&fields, "Address", original["location"]["address"].as_str().unwrap_or(""), 512);
         let lat = entry(
@@ -146,7 +146,7 @@ fn automation(away: bool) {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let enabled = check(&fields, "Enable automatic message", !original.is_null());
         let shortcut = entry(
@@ -277,7 +277,7 @@ fn start_page() {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(8);
+        let fields = nyx_ui::widgets::vbox(8);
         b.append(&fields);
         let title = entry(&fields, "Title", current["start_page"]["title"].as_str().unwrap_or(""), 64);
         let message = entry(&fields, "Description", current["start_page"]["message"].as_str().unwrap_or(""), 512);
@@ -331,7 +331,7 @@ fn start_page() {
 pub fn quick_replies() {
     features::load("Quick replies", |s, _d, b| async move {
         s.call("loadQuickReplyShortcuts", json!({})).await?;
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let refresh = gtk::Button::with_label("Refresh shortcuts");
         b.append(&refresh);
@@ -412,8 +412,8 @@ fn new_shortcut() {
 }
 fn new_shortcut_named(initial_name: &str) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Quick reply message", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Quick reply message", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let name = entry(&fields, "Shortcut name", initial_name, 32);
     let text = entry(&fields, "Message or caption (Markdown)", "", 4096);
@@ -490,8 +490,8 @@ fn links() {
         }
         button(&b, "Create link…", || {
             let Some(s) = Scope::current() else { return };
-            let (d, b) = nixe_ui::widgets::dialog("Business chat link", 440);
-            let fields = nixe_ui::widgets::vbox(8);
+            let (d, b) = nyx_ui::widgets::dialog("Business chat link", 440);
+            let fields = nyx_ui::widgets::vbox(8);
             b.append(&fields);
             let title = entry(&fields, "Title", "", 64);
             let text = entry(&fields, "Prefilled message", "", 4096);
@@ -538,7 +538,7 @@ fn edit_shortcut(id: i64, name: String) {
         if !alive(&s, &d) {
             return Ok(());
         }
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let rename = entry(&fields, "Shortcut name", &name, 32);
         let scope = s.clone();
@@ -628,7 +628,7 @@ fn edit_shortcut(id: i64, name: String) {
 fn edit_quick_message(shortcut: i64, message: Value) {
     features::load("Edit quick reply message", move |s, d, b| async move {
         let id = message["id"].as_i64().unwrap_or(0);
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let original = if message["content"]["@type"] == "messageText" {
             message["content"]["text"].clone()
@@ -680,7 +680,7 @@ fn edit_quick_message(shortcut: i64, message: Value) {
 
 fn edit_link(original: Value) {
     features::load("Edit Business chat link", move |s, d, b| async move {
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let title = entry(&fields, "Title", original["title"].as_str().unwrap_or(""), 64);
         let text = entry(&fields, "Prefilled message", original["text"]["text"].as_str().unwrap_or(""), 4096);

@@ -209,7 +209,7 @@ impl RawClient {
                         );
                     }
                     "requestQrCodeAuthentication" => {
-                        let token = "tg://login?token=nixe_pulse_login_token_demo_987654321";
+                        let token = "tg://login?token=nyx_pulse_login_token_demo_987654321";
                         if let Some(ref ex) = extra {
                             q.push_back(
                                 serde_json::json!({
@@ -308,7 +308,7 @@ impl RawClient {
                     "getChat" => {
                         let chat_id = val.get("chat_id").and_then(|v| v.as_i64()).unwrap_or(101);
                         let (title, chat_type, unread, pinned, snippet) = match chat_id {
-                            101 => ("Saved Messages", "chatTypePrivate", 0, true, "Nixe Pulse configuration notes"),
+                            101 => ("Saved Messages", "chatTypePrivate", 0, true, "Nyx Pulse configuration notes"),
                             102 => ("Telegram Team", "chatTypeChannel", 1, false, "Welcome to Telegram on Linux."),
                             103 => (
                                 "Omarchy Community",
@@ -318,7 +318,7 @@ impl RawClient {
                                 "New Hyprland dynamic blur profile is awesome!",
                             ),
                             104 => ("Durov", "chatTypeSecret", 0, false, "🔒 End-to-end encrypted secret chat active"),
-                            _ => ("Nixe Developers", "chatTypeBasicGroup", 0, false, "Pulse GTK4 integration verified."),
+                            _ => ("Nyx Developers", "chatTypeBasicGroup", 0, false, "Pulse GTK4 integration verified."),
                         };
                         let now = chrono::Utc::now().timestamp();
                         if let Some(ref ex) = extra {
@@ -401,7 +401,7 @@ impl RawClient {
                                         "@type": "messageText",
                                         "text": {
                                             "@type": "formattedText",
-                                            "text": "Nixe Pulse configuration notes",
+                                            "text": "Nyx Pulse configuration notes",
                                             "entities": []
                                         }
                                     }
@@ -425,7 +425,7 @@ impl RawClient {
                                                     "photo": {
                                                         "id": 501,
                                                         "local": {
-                                                            "path": "/home/ken/.local/share/nixe-pulse/avatars/durov.jpg",
+                                                            "path": "/home/ken/.local/share/nyx-pulse/avatars/durov.jpg",
                                                             "is_downloading_completed": true
                                                         }
                                                     }
@@ -835,7 +835,7 @@ fn candidate_paths() -> Vec<PathBuf> {
     paths.push(PathBuf::from("/usr/local/lib/libtdjson.so"));
     paths.push(PathBuf::from("/usr/lib64/libtdjson.so"));
     if let Some(home) = std::env::var_os("HOME") {
-        paths.push(PathBuf::from(home).join(".local/share/nixe/lib/libtdjson.so"));
+        paths.push(PathBuf::from(home).join(".local/share/nyx/lib/libtdjson.so"));
     }
     paths
 }

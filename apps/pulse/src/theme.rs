@@ -1,13 +1,13 @@
-//! Theme integration for Nixe Pulse, supporting Omarchy live restyling.
+//! Theme integration for Nyx Pulse, supporting Omarchy live restyling.
 
 use crate::prefs;
-pub use nixe_theme::*;
+pub use nyx_theme::*;
 
 pub fn install() {
-    nixe_theme::install(Style {
+    nyx_theme::install(Style {
         window_class: "pulse-window",
         base_skip: &[],
-        css: nixe_playback::controls::stylesheet(include_str!("style.css")),
+        css: nyx_playback::controls::stylesheet(include_str!("style.css")),
         no_glow_css: "",
         extra_colors: Some(|p| format!("@define-color theme_video {};\n", p.bg)),
         prefs: || {

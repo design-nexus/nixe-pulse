@@ -1,6 +1,6 @@
 //! Formatted Telegram text backed by GTK tags, preserving UTF-16 entity offsets.
 use gtk::{gdk, pango, prelude::*};
-use nixe_ui::widgets as w;
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, HashSet};
 const PREFIX: &str = "pulse-entity:";

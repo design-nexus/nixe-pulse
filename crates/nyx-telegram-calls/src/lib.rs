@@ -1,4 +1,4 @@
-//! `nixe-telegram-calls`: Voice and video calling media engine for Nixe Pulse.
+//! `nyx-telegram-calls`: Voice and video calling media engine for Nyx Pulse.
 //!
 //! Interfaces with Telegram's WebRTC/tgcalls calling infrastructure, PipeWire audio/video,
 //! and Wayland screen casting via XDG Desktop Portal.
@@ -158,7 +158,7 @@ mod tests {
 
     #[test]
     fn emoji_derivation_and_formatting() {
-        let key = b"nixe_pulse_test_voip_encryption_key_2026";
+        let key = b"nyx_pulse_test_voip_encryption_key_2026";
         let emojis = derive_call_emojis(key);
         assert_eq!(emojis.len(), 4);
 

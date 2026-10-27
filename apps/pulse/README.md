@@ -1,6 +1,6 @@
 # Pulse
 
-Native Telegram client for the Nixe suite, using Rust, GTK4, TDLib, shared Nixe widgets, and Media Player's playback engine and controls.
+Native Telegram client for the Nyx suite, using Rust, GTK4, TDLib, shared Nyx widgets, and Media Player's playback engine and controls.
 
 Install from the repository root with `./install.sh pulse`. The installer prepares the SHA-256-pinned NTgCalls 3.0.5 runtime, installs required system dependencies, and installs Pulse, its launcher/icon, and its Glimpse plugin. It does not launch Pulse.
 
@@ -14,8 +14,8 @@ The Tools menu includes profile history, birthday/phone changes, hardware passke
 
 Notifications run while Pulse is open. Account switching selects the active account's client and data directories.
 
-- Preferences: `$XDG_CONFIG_HOME/nixe-pulse/settings.toml`
-- Account databases: `$XDG_DATA_HOME/nixe-pulse/accounts/<id>/data/`
-- Media cache: `$XDG_CACHE_HOME/nixe-pulse/accounts/<id>/files/`
+- Preferences: `$XDG_CONFIG_HOME/nyx-pulse/settings.toml`
+- Account databases: `$XDG_DATA_HOME/nyx-pulse/accounts/<id>/data/`
+- Media cache: `$XDG_CACHE_HOME/nyx-pulse/accounts/<id>/files/`
 
 Shortcuts: Ctrl+F searches chats; Ctrl+B toggles the sidebar; Ctrl+, opens settings; F1 shows shortcuts; Escape closes overlays; Enter sends; Shift+Enter inserts a newline; Ctrl+Q quits and Ctrl+W closes the window. Tool shortcuts are configurable under Tools → Accessibility and shortcuts. The media viewer also supports Ctrl+S, Ctrl+C, and +/-.

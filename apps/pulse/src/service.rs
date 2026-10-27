@@ -1,6 +1,6 @@
 //! One isolated TDLib client and update stream per account.
 use async_channel::{Receiver, Sender};
-use nixe_telegram_core::{
+use nyx_telegram_core::{
     TdJsonLib,
     account::AccountManager,
     auth::{AuthManager, TdlibParameters},
@@ -35,10 +35,10 @@ pub struct TelegramService {
     pub generation: String,
 }
 impl TelegramService {
-    pub fn start(tx: Sender<ServiceEvent>) -> Result<Self, nixe_telegram_core::client::ClientError> {
+    pub fn start(tx: Sender<ServiceEvent>) -> Result<Self, nyx_telegram_core::client::ClientError> {
         Self::start_account(tx, crate::prefs::get().active_account_id)
     }
-    pub fn start_account(out: Sender<ServiceEvent>, account: String) -> Result<Self, nixe_telegram_core::client::ClientError> {
+    pub fn start_account(out: Sender<ServiceEvent>, account: String) -> Result<Self, nyx_telegram_core::client::ClientError> {
         let runtime = Arc::new(tokio::runtime::Builder::new_multi_thread().worker_threads(2).enable_all().build()?);
         let client = TdClient::new(&TdJsonLib::load()?)?;
         let auth = Arc::new(AuthManager::new(client.clone()));
@@ -67,7 +67,7 @@ impl TelegramService {
             while let Ok(update) = rx.recv().await {
                 if let TelegramUpdate::AuthStateChanged(state) = &update {
                     if matches!(state, AuthState::WaitTdlibParameters) {
-                        let mgr = AccountManager::new(nixe_core::paths::data_dir(), nixe_core::paths::cache_dir());
+                        let mgr = AccountManager::new(nyx_core::paths::data_dir(), nyx_core::paths::cache_dir());
                         let prefs = crate::prefs::get();
                         let database = mgr.account_data_dir(&account);
                         let key = match crate::secrets::key(&account, !database.join("td.binlog").exists()).await {

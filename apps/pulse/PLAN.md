@@ -1,4 +1,4 @@
-# Nixe Pulse Development Plan
+# Nyx Pulse Development Plan
 
 ## Phase Overview
 
@@ -18,7 +18,7 @@ Phase 3: Voice and Video Calling (Signaling, tgcalls/ntgcalls, PipeWire, Screen 
 Phase 4: Advanced Telegram Features (Secret Chats, Stories, Mini Apps, Channel Admin)
    │
    ▼
-Phase 5: Nixe Suite Integration (Contacts, Assistant, Glimpse, Capture, Settings)
+Phase 5: Nyx Suite Integration (Contacts, Assistant, Glimpse, Capture, Settings)
    │
    ▼
 Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
@@ -31,8 +31,8 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
 **Goal**: Establish system architecture, audit dependencies, evaluate calling stacks, and deliver planning documentation.
 
 ### Milestones & Tasks:
-- [x] Inspect existing Nixe codebase and application conventions (`apps/chat`, `apps/contacts`, `apps/music`, `STYLE.md`).
-- [x] Audit licenses (TDLib: BSL-1.0, tgcalls: LGPL-3.0, Nixe: MIT).
+- [x] Inspect existing Nyx codebase and application conventions (`apps/chat`, `apps/contacts`, `apps/music`, `STYLE.md`).
+- [x] Audit licenses (TDLib: BSL-1.0, tgcalls: LGPL-3.0, Nyx: MIT).
 - [x] Evaluate TDLib integration options and C JSON FFI binding strategy.
 - [x] Investigate Telegram Desktop calling architecture and Linux media streaming options (`tgcalls`, `ntgcalls`, WebRTC, PipeWire, XDG Desktop Portal).
 - [x] Deliver `ARCHITECTURE.md`.
@@ -50,19 +50,19 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
 
 ### Milestones & Tasks:
 1. **Workspace Setup**:
-   - Create `crates/nixe-telegram-core` and configure dependencies (`tokio`, `serde`, `serde_json`, `libloading`, `dashmap`).
-   - Create `apps/pulse` and configure dependencies (`nixe-core`, `nixe-ui`, `nixe-theme`, `gtk4`, `oo7`).
+   - Create `crates/nyx-telegram-core` and configure dependencies (`tokio`, `serde`, `serde_json`, `libloading`, `dashmap`).
+   - Create `apps/pulse` and configure dependencies (`nyx-core`, `nyx-ui`, `nyx-theme`, `gtk4`, `oo7`).
    - Add packages to root `Cargo.toml`.
-2. **TDLib Bridge & Client (`nixe-telegram-core`)**:
+2. **TDLib Bridge & Client (`nyx-telegram-core`)**:
    - Implement FFI bindings to `libtdjson.so` with dynamic loading and path detection.
    - Implement asynchronous worker thread polling `td_json_client_receive`.
    - Implement request dispatcher with `@extra` tokens and `tokio::sync::oneshot` channels.
    - Implement typed Telegram update event stream.
-3. **Authentication & Multi-Account (`nixe-telegram-core`)**:
+3. **Authentication & Multi-Account (`nyx-telegram-core`)**:
    - State machine for TDLib initialization (`setTdlibParameters`).
    - Phone number authentication, verification code, and 2FA password check.
    - QR code login initiation and SVG barcode rendering.
-   - Account directory isolation in `~/.local/share/nixe-pulse/accounts/<id>/`.
+   - Account directory isolation in `~/.local/share/nyx-pulse/accounts/<id>/`.
    - Credential & database encryption key storage via Linux Secret Service (`oo7`).
 4. **Native GTK4 Three-Column UI (`apps/pulse`)**:
    - Window setup: Flat `bg` surface, no titlebar (`window.set_titlebar(Some(&gtk::Box::new()))`), 1120x800 default size.
@@ -78,7 +78,7 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
    - Typing indicator broadcast and display.
    - Desktop notifications via `gio::Notification`.
 
-**Exit Criteria**: User can log into Telegram, view their chat list, open conversations, and send/receive real-time text messages in a polished Nixe GTK4 window.
+**Exit Criteria**: User can log into Telegram, view their chat list, open conversations, and send/receive real-time text messages in a polished Nyx GTK4 window.
 
 ---
 
@@ -88,7 +88,7 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
 
 ### Milestones & Tasks:
 1. **Rich Media Support**:
-   - Image attachments: Thumbnail rendering, full-size zoom viewer, caching in `~/.cache/nixe-pulse/`.
+   - Image attachments: Thumbnail rendering, full-size zoom viewer, caching in `~/.cache/nyx-pulse/`.
    - Video attachments: Inline playback via GStreamer `gtk4paintablesink`.
    - File attachments: Document cards with file type icons, size, and download progress.
    - Drag-and-drop file sending (<kbd>DropTarget</kbd>) and clipboard image pasting (<kbd>Ctrl</kbd>+<kbd>V</kbd>).
@@ -109,7 +109,7 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
    - Mute and notification duration controls.
    - Saved Messages cloud shortcut.
 
-**Exit Criteria**: User can use Nixe Pulse as their daily Telegram messenger for all routine multimedia and group chat tasks.
+**Exit Criteria**: User can use Nyx Pulse as their daily Telegram messenger for all routine multimedia and group chat tasks.
 
 ---
 
@@ -118,7 +118,7 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
 **Goal**: Native GTK4 voice and video calling infrastructure replacing Telegram Desktop for calling.
 
 ### Milestones & Tasks:
-1. **Calling Protocol & Media Bridge (`nixe-telegram-calls`)**:
+1. **Calling Protocol & Media Bridge (`nyx-telegram-calls`)**:
    - Intercept TDLib `updateCall` and `CallStateReady`.
    - Extract Diffie-Hellman derived encryption key, server endpoints, and protocol options.
    - Bind Telegram's C++ calling engine (`tgcalls`/`ntgcalls`) via Rust FFI.
@@ -174,27 +174,27 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
 
 ---
 
-## Phase 5: Nixe Suite Integration
+## Phase 5: Nyx Suite Integration
 
-**Goal**: Deep native integration with the rest of the Nixe application suite on Omarchy Linux.
+**Goal**: Deep native integration with the rest of the Nyx application suite on Omarchy Linux.
 
 ### Milestones & Tasks:
-1. **Nixe Contacts**:
+1. **Nyx Contacts**:
    - Associate Telegram users with local contacts via phone number or `@username`.
    - Action button in Contacts to "Send Telegram Message" or "Call on Telegram" via Pulse.
-2. **Nixe Assistant**:
-   - Implement `io.github.design_nexus.nixe.Control` D-Bus tools:
+2. **Nyx Assistant**:
+   - Implement `io.github.design_nexus.nyx.Control` D-Bus tools:
      - `pulse.chats.list`
      - `pulse.chats.search`
      - `pulse.messages.send` (with safety policy / user confirmation)
      - `pulse.calls.start`
-3. **Nixe Glimpse**:
+3. **Nyx Glimpse**:
    - Create `apps/pulse-glimpse` search plugin using `glimpse-plugin-sdk`.
    - Index contact names and recent message snippets for quick desktop launching.
-4. **Nixe Capture**:
+4. **Nyx Capture**:
    - Direct screenshot pasting and attachment workflow.
-5. **Nixe Settings**:
-   - Configuration panel in Nixe Settings for Pulse preferences.
+5. **Nyx Settings**:
+   - Configuration panel in Nyx Settings for Pulse preferences.
 
 **Exit Criteria**: Seamless interoperability between Pulse, Contacts, Assistant, Glimpse, and Capture.
 
@@ -213,9 +213,9 @@ Phase 6: Release Preparation (Security Review, Profiling, Packaging, Testing)
    - Measure startup time, idle RAM, and CPU usage.
    - Optimize GTK4 `ListView` recycling for large chat histories.
 3. **Packaging & Installation**:
-   - Desktop entry `io.github.design_nexus.nixe.Pulse.desktop`.
-   - Icon asset in `crates/nixe-icons`.
-   - Installation integration in `install.sh` and `bin/nixe`.
-   - Hyprland window rules in `~/.config/hypr/nixe.lua`.
+   - Desktop entry `io.github.design_nexus.nyx.Pulse.desktop`.
+   - Icon asset in `crates/nyx-icons`.
+   - Installation integration in `install.sh` and `bin/nyx`.
+   - Hyprland window rules in `~/.config/hypr/nyx.lua`.
 
-**Exit Criteria**: Stable, production-ready release of Nixe Pulse running on Omarchy Linux.
+**Exit Criteria**: Stable, production-ready release of Nyx Pulse running on Omarchy Linux.

@@ -29,7 +29,7 @@ pub fn open() {
 pub fn downloads() {
     features::load("Downloads", |s, d, b| async move {
         let query = entry(&b, "Search downloads", "", 128);
-        let list = nixe_ui::widgets::vbox(6);
+        let list = nyx_ui::widgets::vbox(6);
         b.append(&list);
         let next = gtk::Button::with_label("Load more");
         let refresh = gtk::Button::with_label("Search / refresh");
@@ -144,7 +144,7 @@ pub fn downloads() {
                                                 ),
                                             )
                                             .await?;
-                                        if let Some(m) = nixe_telegram_core::client::parse_message(&data) {
+                                        if let Some(m) = nyx_telegram_core::client::parse_message(&data) {
                                             window::jump_message(&m);
                                         }
                                         Ok(())
@@ -347,8 +347,8 @@ pub fn proxies() {
 }
 fn proxy_edit(original: Option<Value>) {
     let Some(scope) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Proxy", 440);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Proxy", 440);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let p = original.as_ref().map(|p| p["proxy"].clone()).unwrap_or(Value::Null);
     let server = entry(&fields, "Hostname", p["server"].as_str().unwrap_or(""), 255);
@@ -411,7 +411,7 @@ fn proxy_edit(original: Option<Value>) {
 }
 pub fn export_chat(chat: i64) {
     let Some(scope) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Export conversation", 440);
+    let (d, b) = nyx_ui::widgets::dialog("Export conversation", 440);
     note(
         &b,
         "Export message text and metadata as JSON Lines. Protected messages are omitted. Media files are not copied.",

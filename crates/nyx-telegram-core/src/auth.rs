@@ -28,7 +28,7 @@ impl Default for TdlibParameters {
             api_id: 611335,
             api_hash: "d524b414d21f4d37f08684c1df41ac9c".into(),
             system_language_code: "en".into(),
-            device_model: "Nixe Desktop (Omarchy Linux)".into(),
+            device_model: "Nyx Desktop (Omarchy Linux)".into(),
             application_version: "0.1.0".into(),
             use_message_database: true,
             use_secret_chats: true,

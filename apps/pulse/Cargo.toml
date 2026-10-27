@@ -1,26 +1,26 @@
 [package]
-name = "nixe-pulse"
+name = "nyx-pulse"
 version = "0.1.0"
-description = "Native Telegram desktop client for Omarchy Linux and the Nixe Suite"
+description = "Native Telegram desktop client for Omarchy Linux and the Nyx Suite"
 edition.workspace = true
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
 
 [[bin]]
-name = "nixe-pulse"
+name = "nyx-pulse"
 path = "src/main.rs"
 
 [dependencies]
-nixe-playback = { git = "https://github.com/design-nexus/nixe-design.git", rev = "64786dc295708951013c126351f1830664a7d15d" }
+nyx-playback = { git = "https://github.com/design-nexus/nyx-design.git", rev = "938c638951a53f5874a8276d07ac9dcd68b191ad" }
 flate2 = "1"
 base64 = "0.22"
 libloading = "0.8"
-nixe-core = { git = "https://github.com/design-nexus/nixe-core.git", rev = "87682e6c936b6a4f006639b1a1c099e96346c07c" }
-nixe-theme = { git = "https://github.com/design-nexus/nixe-design.git", rev = "64786dc295708951013c126351f1830664a7d15d" }
-nixe-ui = { git = "https://github.com/design-nexus/nixe-design.git", rev = "64786dc295708951013c126351f1830664a7d15d" }
-nixe-telegram-core = { path = "../../crates/nixe-telegram-core" }
-nixe-telegram-calls = { path = "../../crates/nixe-telegram-calls" }
+nyx-core = { git = "https://github.com/design-nexus/nyx-core.git", rev = "52cba5e27a3dd5f00c780f53e423302b4b5f9c9c" }
+nyx-theme = { git = "https://github.com/design-nexus/nyx-design.git", rev = "938c638951a53f5874a8276d07ac9dcd68b191ad" }
+nyx-ui = { git = "https://github.com/design-nexus/nyx-design.git", rev = "938c638951a53f5874a8276d07ac9dcd68b191ad" }
+nyx-telegram-core = { path = "../../crates/nyx-telegram-core" }
+nyx-telegram-calls = { path = "../../crates/nyx-telegram-calls" }
 gtk = { version = "0.11", package = "gtk4", features = ["v4_18"] }
 anyhow = "1"
 tokio = { version = "1", features = ["rt-multi-thread", "sync", "time", "macros"] }

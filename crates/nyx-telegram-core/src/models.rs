@@ -1,4 +1,4 @@
-//! Strongly typed representations of Telegram and TDLib entities for Nixe Pulse.
+//! Strongly typed representations of Telegram and TDLib entities for Nyx Pulse.
 
 use serde::{Deserialize, Serialize};
 

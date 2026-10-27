@@ -1,7 +1,7 @@
 //! Conversation UI backed by stable Telegram message identities.
 use gtk::{gdk, gio, glib, prelude::*};
-use nixe_telegram_core::{client::parse_message, models::*};
-use nixe_ui::widgets as w;
+use nyx_telegram_core::{client::parse_message, models::*};
+use nyx_ui::widgets as w;
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
@@ -1294,7 +1294,7 @@ impl ChatView {
                     }
                 }
             } else if let Ok(Some(texture)) = clipboard.read_texture_future().await {
-                let path = nixe_core::paths::cache_dir().join(format!("paste-{}.png", uuid::Uuid::new_v4()));
+                let path = nyx_core::paths::cache_dir().join(format!("paste-{}.png", uuid::Uuid::new_v4()));
                 if texture.save_to_png(&path).is_ok() {
                     if let Some(v) = weak.upgrade() {
                         if *v.current_chat_id.borrow() == chat && v.topic_id()==topic && crate::prefs::get().active_account_id == account {
@@ -1565,11 +1565,11 @@ mod ui_regression {
     use super::*;
     #[test]
     fn tiled_layout_media_replacement_albums_and_drafts() {
-        let protocol=nixe_telegram_calls::engine::Engine::protocol().expect("Load native call library before checking GTK isolation");
+        let protocol=nyx_telegram_calls::engine::Engine::protocol().expect("Load native call library before checking GTK isolation");
         assert!(protocol["library_versions"].as_array().is_some_and(|v|!v.is_empty()));
         gtk::init().expect("Run this check with a dedicated Broadway display");
         crate::actions::check_forward_selection();
-        nixe_core::app::init(nixe_core::app::App { slug: "nixe-pulse-ui-test", name: "Pulse UI test" });
+        nyx_core::app::init(nyx_core::app::App { slug: "nyx-pulse-ui-test", name: "Pulse UI test" });
         crate::theme::install();
         let view = ChatView::new();
         let chat = ChatSummary {

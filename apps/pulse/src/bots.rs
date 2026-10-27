@@ -6,7 +6,7 @@ use crate::{
     window,
 };
 use gtk::{gio, glib, prelude::*};
-use nixe_telegram_core::{client::parse_message, models::MessageSummary};
+use nyx_telegram_core::{client::parse_message, models::MessageSummary};
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
@@ -174,7 +174,7 @@ pub fn render(body: &gtk::Box, m: &MessageSummary) {
     {
         return;
     }
-    let container = nixe_ui::widgets::vbox(3);
+    let container = nyx_ui::widgets::vbox(3);
     body.append(&container);
     let body = &container;
     if keyboard {
@@ -320,7 +320,7 @@ async fn callback(s: &Scope, chat: i64, id: i64, payload: Value) -> Result<(), S
         .await?;
     let text = result["text"].as_str().unwrap_or("");
     if result["show_alert"] == true {
-        let (d, b) = nixe_ui::widgets::dialog("Bot response", 420);
+        let (d, b) = nyx_ui::widgets::dialog("Bot response", 420);
         note(&b, text);
         d.present();
     } else if !text.is_empty() {
@@ -328,7 +328,7 @@ async fn callback(s: &Scope, chat: i64, id: i64, payload: Value) -> Result<(), S
     }
     if let Some(url) = result["url"].as_str().filter(|u| !u.is_empty()) {
         let url = url.to_owned();
-        let (d, b) = nixe_ui::widgets::dialog("Bot link", 420);
+        let (d, b) = nyx_ui::widgets::dialog("Bot link", 420);
         note(&b, &url);
         button(&b, "Open link", move || launch(&url));
         d.present();
@@ -336,8 +336,8 @@ async fn callback(s: &Scope, chat: i64, id: i64, payload: Value) -> Result<(), S
     Ok(())
 }
 fn password_callback(scope: Scope, chat: i64, id: i64, data: Value) {
-    let (d, b) = nixe_ui::widgets::dialog("Confirm bot action", 420);
-    let fields = nixe_ui::widgets::vbox(8);
+    let (d, b) = nyx_ui::widgets::dialog("Confirm bot action", 420);
+    let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     note(&fields, "This bot action requires your Telegram two-step verification password.");
     let password = gtk::PasswordEntry::new();
@@ -404,11 +404,11 @@ fn web_app(scope: Scope, chat: i64, bot: i64, url: String, text: String) {
     crate::webapps::open(scope, chat, bot, url, text);
 }
 fn share_request(scope: Scope, chat: i64, id: i64, key: Value) {
-    let (d, b) = nixe_ui::widgets::dialog("Share with bot", 460);
+    let (d, b) = nyx_ui::widgets::dialog("Share with bot", 460);
     let fields = crate::groups::scroll(&b);
     let users = key["type"]["@type"] == "keyboardButtonTypeRequestUsers";
     let selected: Rc<RefCell<Vec<i64>>> = Default::default();
-    let list = nixe_ui::widgets::vbox(4);
+    let list = nyx_ui::widgets::vbox(4);
     fields.append(&list);
     let maximum = if users { key["type"]["max_quantity"].as_u64().unwrap_or(1).clamp(1, 100) as usize } else { 1 };
     let disclosures = if users {
@@ -479,12 +479,12 @@ fn share_request(scope: Scope, chat: i64, id: i64, key: Value) {
                 }
             });
         } else {
-            let (pick, body) = nixe_ui::widgets::dialog("Share chat", 440);
+            let (pick, body) = nyx_ui::widgets::dialog("Share chat", 440);
             let chats = crate::groups::scroll(&body);
             for c in window::list_chats(10000) {
-                let channel = c.chat_type == nixe_telegram_core::models::ChatType::Channel;
+                let channel = c.chat_type == nyx_telegram_core::models::ChatType::Channel;
                 if channel != (key_["type"]["chat_is_channel"] == true)
-                    || c.chat_type == nixe_telegram_core::models::ChatType::Private
+                    || c.chat_type == nyx_telegram_core::models::ChatType::Private
                 {
                     continue;
                 }
@@ -543,7 +543,7 @@ fn sharing_row(rows: &gtk::Box, state: &Rc<RefCell<Vec<i64>>>, id: i64, name: St
         return;
     }
     state.borrow_mut().push(id);
-    let row = nixe_ui::widgets::hbox(6);
+    let row = nyx_ui::widgets::hbox(6);
     note(&row, &name);
     let remove = gtk::Button::with_label("Remove");
     row.append(&remove);
@@ -561,7 +561,7 @@ pub fn inline(chat: i64) {
 }
 pub fn inline_prefilled(chat: i64, initial_bot: &str, initial_query: &str) {
     let Some(s) = Scope::current() else { return };
-    let (d, b) = nixe_ui::widgets::dialog("Inline bot search", 520);
+    let (d, b) = nyx_ui::widgets::dialog("Inline bot search", 520);
     let fields = crate::groups::scroll(&b);
     let username = entry(&fields, "Bot username", initial_bot, 64);
     let query = entry(&fields, "Query", initial_query, 512);
@@ -569,7 +569,7 @@ pub fn inline_prefilled(chat: i64, initial_bot: &str, initial_query: &str) {
     let next = gtk::Button::with_label("More results");
     fields.append(&search);
     fields.append(&next);
-    let list = nixe_ui::widgets::vbox(6);
+    let list = nyx_ui::widgets::vbox(6);
     fields.append(&list);
     let offset: Rc<RefCell<String>> = Default::default();
     let baseline: Rc<RefCell<Option<(String, String)>>> = Default::default();
@@ -753,11 +753,11 @@ async fn switch_inline(s: &Scope, chat: i64, message: &Value, typ: &Value) -> Re
             window::resolve_link(link["link"].as_str().unwrap_or(""));
         }
         _ => {
-            let (d, b) = nixe_ui::widgets::dialog("Choose inline destination", 440);
+            let (d, b) = nyx_ui::widgets::dialog("Choose inline destination", 440);
             let rows = crate::groups::scroll(&b);
             let types = &typ["target_chat"]["types"];
             for c in window::list_chats(10000) {
-                use nixe_telegram_core::models::ChatType;
+                use nyx_telegram_core::models::ChatType;
                 let allowed = match c.chat_type {
                     ChatType::Private => types["allow_user_chats"] == true || types["allow_bot_chats"] == true,
                     ChatType::BasicGroup | ChatType::Supergroup => types["allow_group_chats"] == true,
@@ -810,7 +810,7 @@ fn managed_bot(s: &Scope, message: &Value, typ: &Value) {
     let scope = s.clone();
     features::load("Create managed bot", move |_s, d, b| async move {
         note(&b, "This creates a bot managed by the requesting bot. Review its identity before creating it.");
-        let fields = nixe_ui::widgets::vbox(6);
+        let fields = nyx_ui::widgets::vbox(6);
         b.append(&fields);
         let name = entry(&fields, "Bot name", &name, 64);
         let username = entry(&fields, "Bot username", &username, 64);

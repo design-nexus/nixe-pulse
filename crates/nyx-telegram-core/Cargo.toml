@@ -1,7 +1,7 @@
 [package]
-name = "nixe-telegram-core"
+name = "nyx-telegram-core"
 version = "0.1.0"
-description = "TDLib protocol engine, authentication, and chat synchronization for Nixe Pulse"
+description = "TDLib protocol engine, authentication, and chat synchronization for Nyx Pulse"
 edition.workspace = true
 license.workspace = true
 authors.workspace = true

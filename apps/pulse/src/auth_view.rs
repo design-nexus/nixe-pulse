@@ -1,8 +1,8 @@
 //! Native Telegram authentication view: QR code login, phone entry, SMS code, and 2FA cloud password.
 
 use gtk::prelude::*;
-use nixe_telegram_core::models::AuthState;
-use nixe_ui::widgets as w;
+use nyx_telegram_core::models::AuthState;
+use nyx_ui::widgets as w;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -42,7 +42,7 @@ impl AuthView {
         let header = w::vbox(6);
         header.set_halign(gtk::Align::Center);
 
-        let icon = gtk::Image::from_icon_name("io.github.design_nexus.nixe.Pulse");
+        let icon = gtk::Image::from_icon_name("io.github.design_nexus.nyx.Pulse");
         icon.set_pixel_size(48);
         header.append(&icon);
 

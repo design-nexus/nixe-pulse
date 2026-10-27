@@ -1,13 +1,13 @@
-//! Settings as a modal card over the window (`nixe_ui::settings_card`).
+//! Settings as a modal card over the window (`nyx_ui::settings_card`).
 
 use crate::prefs;
 use crate::theme;
 use gtk::prelude::*;
-use nixe_ui::settings_card::{self, Spec};
-use nixe_ui::widgets as w;
+use nyx_ui::settings_card::{self, Spec};
+use nyx_ui::widgets as w;
 
 use gtk::glib;
-pub use nixe_ui::settings_card::{close, escape, fit, focus_search, is_open};
+pub use nyx_ui::settings_card::{close, escape, fit, focus_search, is_open};
 use serde_json::{Value, json};
 
 const GROUPS: &[(&str, &str, &str)] = &[
@@ -94,7 +94,7 @@ fn build_account_group(body: &gtk::Box) {
             .unwrap_or_else(|e| e),
         );
     });
-    let mgr = nixe_telegram_core::account::AccountManager::new(nixe_core::paths::data_dir(), nixe_core::paths::cache_dir());
+    let mgr = nyx_telegram_core::account::AccountManager::new(nyx_core::paths::data_dir(), nyx_core::paths::cache_dir());
     for id in mgr.list_accounts() {
         let b = gtk::Button::with_label(&if id == prefs::get().active_account_id {
             format!("● {id}")
@@ -440,7 +440,7 @@ fn build_about_group(body: &gtk::Box) {
 
     let ver_lbl = w::label("v0.1.0", "accent");
     let version_row =
-        w::row("Pulse", "Native Telegram desktop client for the Nixe application suite", Some(ver_lbl.upcast_ref()));
+        w::row("Pulse", "Native Telegram desktop client for the Nyx application suite", Some(ver_lbl.upcast_ref()));
     card.append(&version_row);
 
     let td_lbl = w::label("TDLib JSON API", "dim");
@@ -448,7 +448,7 @@ fn build_about_group(body: &gtk::Box) {
     card.append(&backend_row);
 
     let lic_lbl = w::label("Open Source", "dim");
-    let license_row = w::row("License", "MIT License (Nixe) · BSL-1.0 (TDLib) · LGPL-3.0 (tgcalls)", Some(lic_lbl.upcast_ref()));
+    let license_row = w::row("License", "MIT License (Nyx) · BSL-1.0 (TDLib) · LGPL-3.0 (tgcalls)", Some(lic_lbl.upcast_ref()));
     card.append(&license_row);
 
     body.append(&wrap);

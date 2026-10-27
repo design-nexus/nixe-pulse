@@ -1,17 +1,17 @@
-# Nixe Pulse Architecture
+# Nyx Pulse Architecture
 
 ## 1. System Overview
 
-**Nixe Pulse** is a native Linux Telegram desktop client written in Rust and GTK4, built specifically for the Omarchy Linux desktop and the Nixe application suite.
+**Nyx Pulse** is a native Linux Telegram desktop client written in Rust and GTK4, built specifically for the Omarchy Linux desktop and the Nyx application suite.
 
 The system is designed with a clean architectural separation:
-1. **User Interface (`nixe-pulse`)**: Native GTK4 desktop application adhering to Nixe's `STYLE.md`, providing a responsive three-column interface, virtualized message rendering, calling interfaces, settings cards, and live Omarchy theme synchronization.
-2. **Protocol Engine (`nixe-telegram-core`)**: Asynchronous TDLib bridge managing client lifecycles, user authentication, multi-account persistence, chat synchronization, message dispatch, search, and event streaming.
-3. **Audio/Video Media Stack (`nixe-telegram-calls`)**: Real-time VoIP and WebRTC media processing subsystem interfacing with Telegram's calling infrastructure (`tgcalls`/`ntgcalls`), Linux PipeWire audio/video pipelines, and Wayland screen capture via the XDG Desktop Portal.
+1. **User Interface (`nyx-pulse`)**: Native GTK4 desktop application adhering to Nyx's `STYLE.md`, providing a responsive three-column interface, virtualized message rendering, calling interfaces, settings cards, and live Omarchy theme synchronization.
+2. **Protocol Engine (`nyx-telegram-core`)**: Asynchronous TDLib bridge managing client lifecycles, user authentication, multi-account persistence, chat synchronization, message dispatch, search, and event streaming.
+3. **Audio/Video Media Stack (`nyx-telegram-calls`)**: Real-time VoIP and WebRTC media processing subsystem interfacing with Telegram's calling infrastructure (`tgcalls`/`ntgcalls`), Linux PipeWire audio/video pipelines, and Wayland screen capture via the XDG Desktop Portal.
 
 ```mermaid
 flowchart TD
-    subgraph UI ["Nixe Pulse Frontend (apps/pulse)"]
+    subgraph UI ["Nyx Pulse Frontend (apps/pulse)"]
         Window["Pulse Window (Flat bg, no titlebar)"]
         NavCol["Navigation Sidebar\n(Accounts, Folders, Settings)"]
         ChatCol["Conversation List Column\n(ListView Virtualized, Filter)"]
@@ -20,7 +20,7 @@ flowchart TD
         CallUI["Call Overlay & Window\n(Participant Grid, Controls, Screen Share)"]
     end
 
-    subgraph Core ["Protocol Layer (crates/nixe-telegram-core)"]
+    subgraph Core ["Protocol Layer (crates/nyx-telegram-core)"]
         TDClient["TDLib Safe Client Wrapper"]
         EventLoop["Tokio Background Polling Loop\n(td_json_client_receive)"]
         Dispatcher["Request-Response Dispatcher\n(DashMap<RequestId, oneshot::Sender>)"]
@@ -28,7 +28,7 @@ flowchart TD
         SyncEngine["Chat & Message Sync Engine"]
     end
 
-    subgraph Calls ["Media Layer (crates/nixe-telegram-calls)"]
+    subgraph Calls ["Media Layer (crates/nyx-telegram-calls)"]
         CallMgr["Call Lifecycle Manager"]
         MediaEngine["tgcalls / ntgcalls WebRTC Engine"]
         PipeWireNode["PipeWire Audio/Camera Nodes"]
@@ -59,33 +59,33 @@ flowchart TD
 ## 2. Component Decomposition
 
 ### 2.1. `apps/pulse` (GUI Application)
-- **Binary**: `nixe-pulse`
-- **Application ID**: `io.github.design_nexus.nixe.Pulse`
+- **Binary**: `nyx-pulse`
+- **Application ID**: `io.github.design_nexus.nyx.Pulse`
 - **Responsibilities**:
-  - GTK4 application initialization and lifecycle (`nixe_core::app::init("pulse")`).
+  - GTK4 application initialization and lifecycle (`nyx_core::app::init("pulse")`).
   - Window frame setup without client-side titlebars or top bars.
   - Three-column layout management:
     - Left column: Account selector, chat folders, conversation list.
     - Center column: Conversation header, message history, composer.
     - Right column: Collapsible details, contact/group info, shared media.
   - Calling interface: floating overlay, compact active call box, and full video grid.
-  - Integration with `nixe-theme` (Follow Omarchy live restyling, bundled themes).
-  - Integration with `nixe-ui` (settings cards, option rows, shortcuts dialog).
-  - D-Bus control interface server (`nixe_core::control`) for Nixe Assistant.
+  - Integration with `nyx-theme` (Follow Omarchy live restyling, bundled themes).
+  - Integration with `nyx-ui` (settings cards, option rows, shortcuts dialog).
+  - D-Bus control interface server (`nyx_core::control`) for Nyx Assistant.
 
-### 2.2. `crates/nixe-telegram-core` (Protocol Engine)
-- **Crate**: `nixe-telegram-core`
+### 2.2. `crates/nyx-telegram-core` (Protocol Engine)
+- **Crate**: `nyx-telegram-core`
 - **Responsibilities**:
   - Safe Rust FFI bindings to TDLib's C JSON API (`libtdjson.so`).
   - Tokio-based asynchronous client managing request/response correlation using `@extra` tokens.
   - Background polling worker loop (`td_json_client_receive`).
   - Authentication state machine: phone number, SMS/Telegram code, QR code generation, and 2FA cloud password.
-  - Multi-account management: isolated database directories (`~/.local/share/nixe-pulse/accounts/<account_id>/`).
+  - Multi-account management: isolated database directories (`~/.local/share/nyx-pulse/accounts/<account_id>/`).
   - In-memory chat and user caches, typing status indicators, draft management, and offline queueing.
   - Media transfer management: background downloads, uploads, and progress monitoring.
 
-### 2.3. `crates/nixe-telegram-calls` (Audio/Video Media Stack)
-- **Crate**: `nixe-telegram-calls`
+### 2.3. `crates/nyx-telegram-calls` (Audio/Video Media Stack)
+- **Crate**: `nyx-telegram-calls`
 - **Responsibilities**:
   - Bridges TDLib call signaling (`CallStateReady` with encryption keys and reflector endpoints) to the media streaming engine.
   - 1-on-1 calls: P2P UDP or Telegram VoIP reflector transport with Opus audio and VP8/H.264 video.
@@ -99,7 +99,7 @@ flowchart TD
 
 ## 3. Concurrency and Async Runtime Architecture
 
-To ensure zero UI hitching while managing high-throughput message streams and media transfers, Nixe Pulse uses a hybrid Tokio + GLib concurrency model:
+To ensure zero UI hitching while managing high-throughput message streams and media transfers, Nyx Pulse uses a hybrid Tokio + GLib concurrency model:
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -147,7 +147,7 @@ const char* td_json_client_execute(void* client, const char* request);
 void  td_json_client_destroy(void* client);
 ```
 
-Nixe Pulse interfaces with `libtdjson.so` using dynamic library loading (`libloading`) or compile-time linking via `pkg-config`:
+Nyx Pulse interfaces with `libtdjson.so` using dynamic library loading (`libloading`) or compile-time linking via `pkg-config`:
 - **Dynamic Loading Priority**:
   1. `$TDLIB_PATH` (user-defined environment variable).
   2. `/usr/lib/libtdjson.so` or `/usr/local/lib/libtdjson.so` (from package `telegram-tdlib`).
@@ -188,8 +188,8 @@ Telegram uses two distinct architectures for calls:
    - Protocol: WebRTC SDP and ICE negotiation encapsulated in JSON payloads exchanged via TDLib.
    - Codecs: Opus for audio, VP8/VP9/AV1 for video.
 
-### 5.2. Media Engine Integration (`nixe-telegram-calls`)
-To achieve true native calling without relying on external conferencing platforms (e.g., Matrix or Jitsi), `nixe-telegram-calls` wraps Telegram's native C++ calling engine (`tgcalls`/`ntgcalls`):
+### 5.2. Media Engine Integration (`nyx-telegram-calls`)
+To achieve true native calling without relying on external conferencing platforms (e.g., Matrix or Jitsi), `nyx-telegram-calls` wraps Telegram's native C++ calling engine (`tgcalls`/`ntgcalls`):
 - **C++ FFI Bridge**: C++ classes are wrapped with a stable C ABI (`ntgcalls-sys`) or `cxx` bridge.
 - **Audio I/O**: Direct integration with Linux PipeWire via the PulseAudio/PipeWire layer or native `libpipewire`, providing lowest-latency capture and playback.
 - **Video Input**: V4L2 and PipeWire camera capture pipelines.
@@ -224,9 +224,9 @@ To ensure smooth scrolling and low memory usage even with tens of thousands of m
 2. **TDLib Database Encryption**:
    Each account's TDLib SQLite database is encrypted with a unique 256-bit encryption key stored in the Linux Secret Service keyring.
 3. **Data Directories**:
-   - Configuration: `~/.config/nixe-pulse/`
-   - State & Accounts: `~/.local/state/nixe-pulse/`
-   - Data & Cache: `~/.local/share/nixe-pulse/accounts/<id>/`
-   - Cache (Media): `~/.cache/nixe-pulse/`
+   - Configuration: `~/.config/nyx-pulse/`
+   - State & Accounts: `~/.local/state/nyx-pulse/`
+   - Data & Cache: `~/.local/share/nyx-pulse/accounts/<id>/`
+   - Cache (Media): `~/.cache/nyx-pulse/`
 4. **Log Privacy**:
    All sensitive payloads (authentication codes, passwords, private message contents) are scrubbed from logs.

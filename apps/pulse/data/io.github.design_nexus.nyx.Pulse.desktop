@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Pulse
+GenericName=Telegram Client
+Comment=Native Telegram desktop client for the Nyx Suite
+Exec=nyx-pulse %U
+Icon=io.github.design_nexus.nyx.Pulse
+Terminal=false
+Categories=Network;InstantMessaging;Chat;GTK;
+Keywords=telegram;chat;messaging;im;pulse;nyx;calls;
+MimeType=x-scheme-handler/nyx-pulse;x-scheme-handler/tg;
+StartupNotify=true
+StartupWMClass=io.github.design_nexus.nyx.Pulse
+SingleMainWindow=true
+DBusActivatable=false
