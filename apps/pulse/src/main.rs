@@ -80,8 +80,11 @@ fn main() -> glib::ExitCode {
         )
         .init();
 
+    // Developer aid: a different id gives a separate instance (a test copy on a virtual
+    // monitor), so it doesn't hand its arguments to the copy that's open.
+    let id = std::env::var("NYX_PULSE_APP_ID").unwrap_or_else(|_| "io.github.design_nexus.nyx.Pulse".to_string());
     let app = gtk::Application::builder()
-        .application_id("io.github.design_nexus.nyx.Pulse")
+        .application_id(id)
         .flags(gio::ApplicationFlags::HANDLES_COMMAND_LINE | gio::ApplicationFlags::HANDLES_OPEN)
         .build();
 

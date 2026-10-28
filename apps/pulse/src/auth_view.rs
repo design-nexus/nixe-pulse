@@ -71,12 +71,8 @@ impl AuthView {
 
         // Page Stack
         let stack = gtk::Stack::new();
-        if std::env::var_os("PULSE_SNAPSHOT").is_none() {
-            stack.set_transition_type(gtk::StackTransitionType::Crossfade);
-            stack.set_transition_duration(160);
-        } else {
-            stack.set_transition_type(gtk::StackTransitionType::None);
-        }
+        stack.set_transition_type(gtk::StackTransitionType::Crossfade);
+        stack.set_transition_duration(160);
 
         // 1. QR Code Page
         let qr_page = w::vbox(12);

@@ -1,10 +1,31 @@
-/* Nyx Pulse Application Stylesheet - Follows STYLE.md */
+/* Pulse on Nyx 2.0: only Pulse's own parts. One surface: the header, the chat list,
+   the conversation and the detail panel share the window's background; bubbles and
+   cards are soft fills, and spacing, not lines, separates the rest. */
+
+.header-status {
+    font-size: 11.5px;
+    color: @theme_dim_text;
+    font-feature-settings: "tnum";
+}
+
+window.pulse-window .app-header button.bar-button {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+    border-radius: var(--nyx-radius-small);
+    box-shadow: none;
+}
+
+/* The icon-only sidebar hides its group labels itself. The shared sheet's
+   font-size: 0 for them can stick after the sidebar expands again. */
+.settings-navigation .nav-group,
+.settings-navigation.compact .nav-group {
+    font-size: 11px;
+}
 
 .pulse-window {
     background-color: @theme_bg;
     color: @theme_text;
-    font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
-    font-weight: 500;
 }
 
 /* Zero-size scrollbars everywhere */
@@ -16,21 +37,6 @@
     opacity: 0;
     background: transparent;
     border: none;
-}
-
-/* Sidebar Search Entry */
-entry.sidebar-search {
-    margin: 0 6px 8px;
-    padding: 0 8px;
-    border-radius: 6px;
-    border: 1px solid @hairline;
-    background: transparent;
-    color: @theme_text;
-    min-height: 32px;
-}
-
-entry.sidebar-search:focus-within {
-    border-color: @theme_accent;
 }
 
 /* Chat navigation items inside .settings-navigation */
@@ -80,7 +86,7 @@ entry.sidebar-search:focus-within {
 
 .chat-avatar-initials {
     color: @theme_accent;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 0.82em;
     padding: 0;
     margin: 0;
@@ -143,7 +149,6 @@ entry.sidebar-search:focus-within {
 .chat-header {
     min-height: 46px;
     padding: 0 16px;
-    border-bottom: 1px solid @hairline;
     background-color: @theme_bg;
 }
 
@@ -165,14 +170,14 @@ entry.sidebar-search:focus-within {
 
 /* Date separator in chat history */
 .date-separator {
-    background-color: @theme_surface;
-    border: 1px solid @hairline;
+    border: none;
     border-radius: 9999px;
     padding: 3px 12px;
     font-size: 0.76em;
     color: @theme_dim_text;
     font-weight: 600;
     margin: 8px 0;
+    background-color: @theme_card;
 }
 
 /* Message history list */
@@ -193,7 +198,7 @@ entry.sidebar-search:focus-within {
 }
 
 .message-bubble {
-    border-radius: 10px;
+    border-radius: var(--nyx-radius-card);
     padding: 8px 14px;
 }
 
@@ -205,28 +210,28 @@ entry.sidebar-search:focus-within {
 }
 
 .message-photo-frame {
-    border-radius: 8px;
+    border-radius: var(--nyx-radius-card);
     margin-bottom: 4px;
 }
 
 .message-photo-img {
-    border-radius: 8px;
+    border-radius: var(--nyx-radius-card);
 }
 
 .message-video-card,
 .message-document-card,
 .message-voice-card,
 .message-call-card {
-    background-color: rgba(255, 255, 255, 0.04);
-    border: 1px solid @hairline;
-    border-radius: 8px;
+    border: none;
+    border-radius: var(--nyx-radius-card);
     padding: 8px 12px;
     margin-bottom: 4px;
+    background-color: @theme_card;
 }
 
 .message-media-icon {
     background-color: @theme_surface;
-    border-radius: 6px;
+    border-radius: var(--nyx-radius-small);
     padding: 6px;
     color: @theme_accent;
 }
@@ -280,8 +285,8 @@ entry.sidebar-search:focus-within {
 
 .message-media-placeholder {
     background-color: alpha(@theme_text,0.03);
-    border: 1px dashed @hairline;
-    border-radius: 8px;
+    border: 1px dashed alpha(@theme_text, 0.12);
+    border-radius: var(--nyx-radius-card);
     padding: 12px 16px;
     color: @theme_dim_text;
 }
@@ -293,14 +298,14 @@ entry.sidebar-search:focus-within {
 }
 
 .message-bubble.incoming {
-    background-color: @theme_bg;
-    border: 1px solid @hairline;
+    border: none;
     color: @theme_text;
+    background-color: @theme_card;
 }
 
 .message-bubble.outgoing {
     background-color: @nav_active;
-    border: 1px solid transparent;
+    border: none;
     color: @theme_text;
 }
 
@@ -323,7 +328,7 @@ entry.sidebar-search:focus-within {
 
 /* In-bubble reply quote */
 .message-reply-quote {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: alpha(@theme_text, 0.05);
     border-left: 3px solid @theme_accent;
     border-radius: 4px;
     padding: 4px 8px;
@@ -344,7 +349,6 @@ entry.sidebar-search:focus-within {
 /* Composer reply banner */
 .reply-banner {
     background-color: @theme_surface;
-    border-top: 1px solid @hairline;
     padding: 6px 16px;
     min-height: 38px;
 }
@@ -371,31 +375,30 @@ entry.sidebar-search:focus-within {
 .message-composer {
     min-height: 52px;
     padding: 8px 16px;
-    border-top: 1px solid @hairline;
     background-color: @theme_bg;
 }
 
 .composer-input-box {
-    background-color: @lift;
-    border: 1px solid @hairline;
-    border-radius: 6px;
+    border: none;
+    border-radius: var(--nyx-radius-small);
     padding: 4px 10px;
     min-height: 36px;
+    background-color: @theme_card;
 }
 
 .composer-input-box:focus-within {
-    border-color: @theme_accent;
+    box-shadow: inset 0 0 0 1px alpha(@theme_accent, 0.5);
 }
 
 .message-composer > scrolledwindow {
-    background-color: @lift;
-    border: 1px solid @hairline;
-    border-radius: 6px;
+    border: none;
+    border-radius: var(--nyx-radius-small);
     padding: 6px 10px;
+    background-color: @theme_card;
 }
 
 .message-composer > scrolledwindow:focus-within {
-    border-color: @theme_accent;
+    box-shadow: inset 0 0 0 1px alpha(@theme_accent, 0.5);
 }
 
 .composer-input {
@@ -408,13 +411,11 @@ entry.sidebar-search:focus-within {
 /* Collapsible right detail panel */
 .detail-panel {
     background-color: @theme_bg;
-    border-left: 1px solid @hairline;
     min-width: 280px;
 }
 
 .detail-header {
     min-height: 30px;
-    border-bottom: 1px solid @hairline;
 }
 
 .detail-avatar-large {
@@ -423,68 +424,54 @@ entry.sidebar-search:focus-within {
     min-height: 80px;
     background-color: @lift;
     color: @theme_accent;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.8em;
     margin-top: 16px;
     margin-bottom: 8px;
 }
 
-/* Status Bar */
-.status-bar {
-    min-height: 34px;
-    padding: 0 12px;
-    border-top: 1px solid @hairline;
-    font-size: 0.86em;
-    color: @theme_dim_text;
-}
-
-.status-key {
-    color: @theme_text;
-    font-weight: 600;
-}
-
 /* Authentication Card */
 .auth-card {
-    background-color: @theme_surface;
-    border: 1px solid @hairline;
-    border-radius: 14px;
+    border: none;
+    border-radius: var(--nyx-radius-dialog);
     padding: 32px 28px;
     min-width: 400px;
+    background-color: @theme_card;
 }
 
 .auth-qr-frame {
     background-color: @theme_on_accent;
-    border-radius: 12px;
+    border-radius: var(--nyx-radius-card);
     padding: 12px;
     margin: 8px 0;
 }
 
 /* Voice & Video Calling UI */
 .call-overlay-backdrop {
-    background-color: rgba(10, 12, 16, 0.85);
+    background-color: @veil;
 }
 
 .incoming-call-card {
-    background-color: @theme_surface;
-    border: 1px solid @hairline;
-    border-radius: 12px;
+    border: none;
+    border-radius: var(--nyx-radius-card);
     padding: 16px 20px;
     min-width: 380px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 32px alpha(@theme_shadow, 0.4);
+    background-color: @theme_card;
 }
 
 .call-overlay-card {
-    background-color: @theme_surface;
-    border: 1px solid @hairline;
-    border-radius: 16px;
+    border: none;
+    border-radius: var(--nyx-radius-dialog);
     padding: 24px 28px;
     min-width: 420px;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 48px alpha(@theme_shadow, 0.5);
+    background-color: @theme_card;
 }
 
 .call-emojis-pill {
     background-color: @lift;
-    border: 1px solid @hairline;
+    border: none;
     border-radius: 9999px;
     padding: 4px 16px;
     font-size: 1.3em;
@@ -492,7 +479,7 @@ entry.sidebar-search:focus-within {
 }
 
 .call-duration {
-    font-family: "JetBrains Mono", monospace;
+    font-feature-settings: "tnum";
     font-weight: 600;
     font-size: 0.9em;
     color: @theme_dim_text;
@@ -504,15 +491,15 @@ entry.sidebar-search:focus-within {
     min-height: 96px;
     background-color: @lift;
     color: @theme_accent;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 2.2em;
     border: 2px solid @theme_accent;
 }
 
 .call-video-stream {
     background-color: @theme_video;
-    border-radius: 10px;
-    border: 1px solid @hairline;
+    border-radius: var(--nyx-radius-card);
+    border: none;
 }
 
 .call-controls {
@@ -525,7 +512,7 @@ button.call-control-btn {
     min-height: 44px;
     padding: 0;
     background-color: @lift;
-    border: 1px solid @hairline;
+    border: none;
     color: @theme_text;
 }
 
@@ -552,18 +539,18 @@ button.call-control-btn.call-btn-hangup:hover {
 /* Picker Popover (Emoji, Stickers, GIFs) */
 .picker-popover {
     background-color: @theme_surface;
-    border: 1px solid @hairline;
-    border-radius: 12px;
+    border: none;
+    border-radius: var(--nyx-radius-card);
 }
 
 .picker-tab-bar {
     background-color: @lift;
-    border-radius: 8px;
+    border-radius: var(--nyx-radius-card);
     padding: 2px;
 }
 
 .picker-tab-bar button {
-    border-radius: 6px;
+    border-radius: var(--nyx-radius-small);
     font-size: 0.85em;
     padding: 4px 10px;
     color: @theme_dim_text;
@@ -576,8 +563,8 @@ button.call-control-btn.call-btn-hangup:hover {
 
 .picker-cat-title {
     font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     color: @theme_dim_text;
     margin-top: 6px;
     margin-bottom: 2px;
@@ -588,7 +575,7 @@ button.emoji-btn {
     padding: 4px;
     min-width: 32px;
     min-height: 32px;
-    border-radius: 6px;
+    border-radius: var(--nyx-radius-small);
 }
 
 button.emoji-btn:hover {
@@ -596,15 +583,14 @@ button.emoji-btn:hover {
 }
 
 button.sticker-btn {
-    background-color: @lift;
-    border: 1px solid @hairline;
-    border-radius: 8px;
+    border: none;
+    border-radius: var(--nyx-radius-card);
     padding: 6px;
+    background-color: @theme_card;
 }
 
 button.sticker-btn:hover {
-    background-color: @row_hover;
-    border-color: @theme_accent;
+    background-color: mix(@theme_card, @theme_text, 0.04);
 }
 
 .sticker-glyph {
@@ -617,10 +603,10 @@ button.sticker-btn:hover {
 }
 
 button.gif-btn {
-    background-color: @lift;
-    border: 1px solid @hairline;
-    border-radius: 6px;
+    border: none;
+    border-radius: var(--nyx-radius-small);
     padding: 8px 10px;
+    background-color: @theme_card;
 }
 
 button.gif-btn:hover {
@@ -642,12 +628,11 @@ button.gif-btn:hover {
 }
 
 .media-viewer-header {
-    border-bottom: 1px solid @hairline;
     padding-bottom: 8px;
 }
 
 .media-viewer-title {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.1em;
     color: @theme_text;
 }
@@ -659,9 +644,9 @@ button.gif-btn:hover {
 
 .media-viewer-card {
     background-color: @theme_video;
-    border: 1px solid @hairline;
-    border-radius: 12px;
-    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.7);
+    border: none;
+    border-radius: var(--nyx-radius-card);
+    box-shadow: 0 16px 64px alpha(@theme_shadow, 0.7);
 }
 
 .media-viewer-glyph {
@@ -670,12 +655,11 @@ button.gif-btn:hover {
 }
 
 .media-viewer-footer {
-    border-top: 1px solid @hairline;
     padding-top: 8px;
 }
 
 .media-viewer-meta {
-    font-family: "JetBrains Mono", monospace;
+    font-feature-settings: "tnum";
     font-size: 0.8em;
     color: @theme_dim_text;
 }
@@ -692,7 +676,7 @@ button.gif-btn:hover {
     border-radius: 4px;
     font-size: 0.7em;
     padding: 2px 6px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .online-dot {
@@ -701,15 +685,14 @@ button.gif-btn:hover {
 }
 
 button.shared-media-thumb {
-    background-color: @lift;
-    border: 1px solid @hairline;
-    border-radius: 8px;
+    border: none;
+    border-radius: var(--nyx-radius-card);
     padding: 8px 4px;
+    background-color: @theme_card;
 }
 
 button.shared-media-thumb:hover {
-    background-color: @row_hover;
-    border-color: @theme_accent;
+    background-color: mix(@theme_card, @theme_text, 0.04);
 }
 
 .thumb-icon {
@@ -726,11 +709,10 @@ button.shared-media-thumb:hover {
 
 .message-selection-bar {
     padding: 6px 12px;
-    border-bottom: 1px solid @hairline;
 }
 .selected-message .message-bubble {
     background-color: @nav_active;
-    outline: 1px solid @theme_accent;
+    box-shadow: inset 0 0 0 1px alpha(@theme_accent, 0.6);
 }
 
 .folder-tags {

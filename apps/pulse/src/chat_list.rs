@@ -116,7 +116,7 @@ impl ChatList {
             filter_unread_btn: unread_btn.clone(),
             archive_btn: archive_btn.clone(),
             folder_box,
-            folder_buttons: RefCell::new(vec![(-1, manage), (-2, find), (-3, saved), (-4, create)]),
+            folder_buttons: RefCell::new(vec![(-1, manage), (-2, find), (-3, saved), (-4, create), (-5, tools)]),
             load_limit: Cell::new(50),
             compact: Cell::new(false),
             inner,

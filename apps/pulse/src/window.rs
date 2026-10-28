@@ -52,11 +52,6 @@ pub fn present(app: &gtk::Application) {
     crate::desktop_extras::apply();
     build_window(app);
 
-    if let Some(out) = std::env::var_os("PULSE_SNAPSHOT") {
-        snapshot_and_quit(app, std::path::PathBuf::from(out));
-        return;
-    }
-
     if let Some(win) = WINDOW.with(|w| w.borrow().clone()) {
         win.present();
     }
@@ -437,7 +432,7 @@ pub fn switch_account(id: String) {
 
 fn build_window(app: &gtk::Application) {
     let window =
-        gtk::ApplicationWindow::builder().application(app).title("Pulse").default_width(1120).default_height(800).build();
+        gtk::ApplicationWindow::builder().application(app).title("Pulse").default_width(1280).default_height(800).build();
 
     window.add_css_class("pulse-window");
     // No client-side titlebar: Hyprland manages windows
@@ -456,11 +451,7 @@ fn build_window(app: &gtk::Application) {
     nav.add_css_class("settings-navigation");
     nav.set_hexpand(false);
 
-    let head = chrome::sidebar_head("Pulse", Some("Search chats (Ctrl+F)"));
-    nav.append(&head.root);
-
     let search = search_entry();
-    nav.append(&search);
 
     // The chat list is inside the sidebar scroller
     let chat_list = ChatList::new(&search);
@@ -481,12 +472,8 @@ fn build_window(app: &gtk::Application) {
     content.set_vexpand(true);
 
     let content_stack = gtk::Stack::new();
-    if std::env::var_os("PULSE_SNAPSHOT").is_none() {
-        content_stack.set_transition_type(gtk::StackTransitionType::Crossfade);
-        content_stack.set_transition_duration(160);
-    } else {
-        content_stack.set_transition_type(gtk::StackTransitionType::None);
-    }
+    content_stack.set_transition_type(gtk::StackTransitionType::Crossfade);
+    content_stack.set_transition_duration(160);
     content_stack.set_hexpand(true);
     content_stack.set_vexpand(true);
 
@@ -514,11 +501,24 @@ fn build_window(app: &gtk::Application) {
     content_stack.set_visible_child_name("main");
     content.append(&content_stack);
     body.append(&content);
-    frame.append(&body);
 
-    // 3. Status Bar (34px)
-    let (status_bar, status_readout) = status_bar(&overlay, &window);
-    frame.append(&status_bar);
+    // The header: the app and the sidebar toggle; the chat search in the middle; the
+    // connection and Settings at the end.
+    let header = chrome::app_header(&window, "mail-send-symbolic", "Pulse");
+    let collapse = w::bar_button("sidebar-show-symbolic", "Collapse the sidebar (Ctrl+B)");
+    collapse.connect_clicked(|_| toggle_sidebar());
+    header.start.append(&collapse);
+    header.center.append(&search);
+    header.end.set_spacing(4);
+    let status_readout = w::label("Connecting…", "header-status");
+    status_readout.set_ellipsize(gtk::pango::EllipsizeMode::End);
+    status_readout.set_max_width_chars(40);
+    status_readout.set_margin_end(6);
+    header.end.append(&status_readout);
+    let (ov, win) = (overlay.clone(), window.clone());
+    header.end.append(&chrome::settings_button(move || settings_dialog::open(&ov, &win)));
+    frame.append(&header.root);
+    frame.append(&body);
 
     overlay.set_child(Some(&frame));
     window.set_child(Some(&overlay));
@@ -546,17 +546,6 @@ fn build_window(app: &gtk::Application) {
     WINDOW.with(|w| *w.borrow_mut() = Some(window.clone()));
     OVERLAY.with(|o| *o.borrow_mut() = Some(overlay.clone()));
 
-    // Sidebar head toggle button
-    head.toggle.connect_clicked(|_| toggle_sidebar());
-
-    // Sidebar head search button
-    if let Some(find) = &head.search {
-        let s = search.clone();
-        let n = nav.clone();
-        find.connect_clicked(move |_| {
-            open_search(&s, &n);
-        });
-    }
 
     // Connect conversation selection to view and detail panel
     let cv = chat_view.clone();
@@ -946,16 +935,18 @@ fn build_window(app: &gtk::Application) {
     install_shortcuts(&window, &overlay, &search, &nav, &detail_panel, &chat_view, &chat_list);
 }
 
+/// The search's width in characters, in a full window and a narrow one.
+const SEARCH_WIDE: i32 = 30;
+const SEARCH_NARROW: i32 = 14;
+
+/// The chat search, always in the header; the chats it finds list in the sidebar.
 fn search_entry() -> gtk::SearchEntry {
     let search = gtk::SearchEntry::new();
-    search.set_placeholder_text(Some("Search chats"));
-    search.add_css_class("sidebar-search");
-    search.add_css_class("compact-hide");
-    search.set_visible(false);
-    search.connect_stop_search(|e| {
-        e.set_text("");
-        e.set_visible(false);
-    });
+    search.set_placeholder_text(Some("Search chats  (Ctrl+F)"));
+    search.add_css_class("bar-search");
+    search.set_width_chars(SEARCH_WIDE);
+    search.update_property(&[gtk::accessible::Property::Label("Search chats")]);
+    search.connect_stop_search(|e| e.set_text(""));
     search
 }
 
@@ -966,12 +957,7 @@ fn open_search(search: &gtk::SearchEntry, nav: &gtk::Box) {
             relayout(&w);
         }
     }
-    if search.is_visible() && search.text().is_empty() {
-        search.set_visible(false);
-    } else {
-        search.set_visible(true);
-        search.grab_focus();
-    }
+    search.grab_focus();
 }
 
 pub fn toggle_sidebar() {
@@ -1013,6 +999,9 @@ fn relayout(w: &gtk::ApplicationWindow) {
     if narrow != NARROW.with(|n| n.get()) || !nav.has_css_class("sized") {
         nav.add_css_class("sized");
         NARROW.with(|n| n.set(narrow));
+        if let Some(search) = SEARCH.with(|s| s.borrow().clone()) {
+            search.set_width_chars(if narrow { SEARCH_NARROW } else { SEARCH_WIDE });
+        }
     }
 
     let compact = narrow || prefs::get().sidebar_collapsed;
@@ -1023,12 +1012,6 @@ fn relayout(w: &gtk::ApplicationWindow) {
 }
 
 fn apply_compact(nav: &gtk::Box, compact: bool) {
-    if let Some(head) = nav.first_child().and_downcast::<gtk::Box>() {
-        chrome::set_head_compact(&head, compact);
-        if let Some(search) = head.next_sibling().and_downcast::<gtk::SearchEntry>() {
-            search.set_visible(!compact);
-        }
-    }
     if compact {
         nav.add_css_class("compact");
     } else {
@@ -1065,30 +1048,6 @@ fn apply_compact(nav: &gtk::Box, compact: bool) {
     if let Some(chat_list) = CHAT_LIST.with(|l| l.borrow().clone()) {
         chat_list.set_compact(compact);
     }
-}
-
-fn status_bar(overlay: &gtk::Overlay, window: &gtk::ApplicationWindow) -> (gtk::Box, gtk::Label) {
-    let bar = w::hbox(16);
-    bar.add_css_class("status-bar");
-
-    let shortcuts_btn = chrome::shortcuts_button(|| {
-        show_shortcuts();
-    });
-    bar.append(&shortcuts_btn);
-
-    let readout = w::label("Connecting…", "status-readout");
-    readout.set_hexpand(true);
-    readout.set_xalign(1.0);
-    bar.append(&readout);
-
-    let ov = overlay.clone();
-    let win = window.clone();
-    let gear_btn = chrome::gear(move || {
-        settings_dialog::open(&ov, &win);
-    });
-    bar.append(&gear_btn);
-
-    (bar, readout)
 }
 
 const SHORTCUTS: &[(&str, &str)] = &[
@@ -1203,9 +1162,11 @@ fn install_shortcuts(
                 cv_key.clear_selection();
                 return glib::Propagation::Stop;
             }
-            if s.is_visible() {
+            if s.has_focus() || s.focus_child().is_some() || !s.text().is_empty() {
                 s.set_text("");
-                s.set_visible(false);
+                if let Some(win) = WINDOW.with(|w| w.borrow().clone()) {
+                    gtk::prelude::GtkWindowExt::set_focus(&win, None::<&gtk::Widget>);
+                }
                 return glib::Propagation::Stop;
             }
             if dp.root.is_visible() {
@@ -1236,10 +1197,6 @@ fn install_shortcuts(
         true
     });
     window.add_controller(drop);
-}
-
-fn snapshot_and_quit(_app: &gtk::Application, _out: std::path::PathBuf) {
-    show_status("Use an isolated test account for UI captures");
 }
 
 pub fn resolve_link(uri: &str) {

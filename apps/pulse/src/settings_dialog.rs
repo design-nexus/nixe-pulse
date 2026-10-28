@@ -223,11 +223,7 @@ fn build_appearance_group(body: &gtk::Box) {
     card.append(&theme_row);
     card.append(&w::row("Current colors", "", Some(swatches.upcast_ref())));
 
-    let (glow, _) = w::switch_row("Glow", "A soft light around selected and focused items.", p.glow, |on| {
-        prefs::update(|p| p.glow = on);
-        theme::apply();
-    });
-    card.append(&glow);
+    card.append(&nyx_ui::widgets::accent_row("pulse"));
 
     let (motion_row, _) = w::switch_row("Reduce Motion", "Disable UI animations and crossfades", p.reduce_motion, |active| {
         prefs::update(|p| {
