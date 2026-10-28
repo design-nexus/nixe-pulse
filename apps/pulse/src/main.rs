@@ -26,6 +26,7 @@ mod message_extras;
 mod statistics;
 mod business;
 mod animation;
+mod clip;
 mod auth_view;
 mod calling_ui;
 mod calls;

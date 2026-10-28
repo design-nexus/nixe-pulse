@@ -797,14 +797,9 @@ impl ChatView {
                     } else if matches!(m.content, MessageContent::Sticker { .. })
                         || m.data["content"]["@type"] == "messageAnimation"
                     {
-                        let video = gtk::Video::for_filename(Some(path));
-                        video.set_autoplay(!crate::prefs::get().reduce_motion);
-                        video.set_loop(true);
-                        video.set_size_request(180, 160);
-                        if let Some(stream) = video.media_stream() {
-                            stream.set_muted(true);
-                        }
-                        bubble.append(&video);
+                        let pic = gtk::Picture::new();
+                        crate::clip::play(&pic, path, 180, 160);
+                        bubble.append(&pic);
                         rendered = true;
                     }
                 }

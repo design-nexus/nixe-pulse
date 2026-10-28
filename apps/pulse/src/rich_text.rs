@@ -177,14 +177,9 @@ fn paint(container: &gtk::Box, path: &str) {
         pic.set_size_request(24, 24);
         pic.upcast()
     } else {
-        let video = gtk::Video::for_filename(Some(path));
-        video.set_size_request(24, 24);
-        video.set_autoplay(!crate::prefs::get().reduce_motion);
-        video.set_loop(true);
-        if let Some(stream) = video.media_stream() {
-            stream.set_muted(true);
-        }
-        video.upcast()
+        let pic = gtk::Picture::new();
+        crate::clip::play(&pic, path, 24, 24);
+        pic.upcast()
     };
     while let Some(c) = container.first_child() {
         container.remove(&c);
