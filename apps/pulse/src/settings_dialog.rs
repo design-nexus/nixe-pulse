@@ -1,9 +1,8 @@
 //! Settings as a modal card over the window (`nyx_ui::settings_card`).
 
 use crate::prefs;
-use crate::theme;
 use gtk::prelude::*;
-use nyx_ui::settings_card::{self, Spec};
+use nyx_ui::settings_card::{self, About, Spec, Standard};
 use nyx_ui::widgets as w;
 
 use gtk::glib;
@@ -12,15 +11,32 @@ use serde_json::{Value, json};
 
 const GROUPS: &[(&str, &str, &str)] = &[
     ("Account", "avatar-default-symbolic", "Phone number, active sessions, logout"),
-    ("Appearance", "applications-graphics-symbolic", "Follow Omarchy, theme, motion"),
     ("Privacy and security", "channel-secure-symbolic", "2FA password, last seen, phone visibility"),
     ("Connection and proxy", "preferences-system-network-symbolic", "MTProto proxy, SOCKS5, ping latency"),
     ("Notifications", "preferences-system-notifications-symbolic", "Desktop alerts, badges, sounds"),
     ("Voice and calls", "call-start-symbolic", "Microphone, speakers, camera"),
-    ("About", "help-about-symbolic", "Pulse, TDLib, licenses"),
 ];
 
-const SPEC: Spec = Spec { groups: GROUPS, search_text: None };
+const SPEC: Spec = Spec {
+    groups: GROUPS,
+    search_text: None,
+    standard: Some(Standard {
+        app: "pulse",
+        about: About {
+            name: "Pulse",
+            icon: "io.github.design_nexus.nyx.Pulse",
+            version: env!("CARGO_PKG_VERSION"),
+            description: "A native Telegram client.",
+            licence: "MIT (Pulse), BSL-1.0 (TDLib), LGPL-3.0 (tgcalls)",
+            website: "https://github.com/design-nexus/nyx-pulse",
+            issues: "https://github.com/design-nexus/nyx-pulse/issues",
+            credits: &[("TDLib", "the Telegram protocol"), ("tgcalls", "voice and video calls")],
+        },
+        shortcuts: crate::window::SHORTCUTS,
+        reduce_motion: || prefs::get().reduce_motion,
+        set_reduce_motion: |on| prefs::update(|p| p.reduce_motion = on),
+    }),
+};
 
 pub fn open(overlay: &gtk::Overlay, window: &gtk::ApplicationWindow) {
     settings_card::open(overlay, window, SPEC, || {
@@ -39,12 +55,10 @@ pub fn open(overlay: &gtk::Overlay, window: &gtk::ApplicationWindow) {
         let tools = gtk::Button::with_label("More account and app tools…");
         tools.connect_clicked(|_| crate::features::hub()); body.append(&tools);
         build_account_group(&body);
-        build_appearance_group(&body);
         build_privacy_group(&body);
         build_proxy_group(&body);
         build_notifications_group(&body);
         build_calls_group(&body);
-        build_about_group(&body);
 
         root.set_child(Some(&body));
         (root.upcast(), body)
@@ -151,88 +165,6 @@ fn build_account_group(body: &gtk::Box) {
             }
         }
     });
-    body.append(&wrap);
-}
-
-fn refresh_swatches(row: &gtk::Box) {
-    while let Some(c) = row.first_child() {
-        row.remove(&c);
-    }
-    let p = theme::current_palette();
-    for (colour, name) in [
-        (&p.bg, "Background"),
-        (&p.surface, "Surface"),
-        (&p.muted, "Muted"),
-        (&p.text, "Text"),
-        (&p.accent, "Accent"),
-        (&p.danger, "Danger"),
-    ] {
-        let s = gtk::Box::new(gtk::Orientation::Horizontal, 0);
-        s.add_css_class("swatch");
-        s.set_tooltip_text(Some(&format!("{name} {colour}")));
-        w::paint(&s, colour);
-        row.append(&s);
-    }
-}
-
-fn build_appearance_group(body: &gtk::Box) {
-    let (wrap, card) = group_box("Appearance");
-
-    let p = prefs::get();
-    let omarchy = theme::omarchy_available();
-    let following = omarchy && p.mode == prefs::ThemeMode::Omarchy;
-
-    let themes = theme::all();
-    let options: Vec<(String, String)> = themes.iter().map(|t| (t.id.clone(), t.name.clone())).collect();
-    let swatches = w::hbox(8);
-    swatches.set_halign(gtk::Align::End);
-    refresh_swatches(&swatches);
-
-    let (theme_row, dropdown) =
-        w::choice_row("Theme", "Colors for the window, when it isn't following Omarchy.", options, &p.theme, {
-            let swatches = swatches.clone();
-            move |id| {
-                prefs::update(|p| {
-                    p.mode = prefs::ThemeMode::Theme;
-                    p.theme = id.clone();
-                });
-                theme::apply();
-                refresh_swatches(&swatches);
-            }
-        });
-    dropdown.set_sensitive(!following);
-
-    if omarchy {
-        let (row, switch) =
-            w::switch_row("Follow Omarchy theme", "Match the colors of the current Omarchy theme as it changes.", following, {
-                let (dropdown, swatches) = (dropdown.clone(), swatches.clone());
-                move |on| {
-                    prefs::update(|p| p.mode = if on { prefs::ThemeMode::Omarchy } else { prefs::ThemeMode::Theme });
-                    theme::apply();
-                    dropdown.set_sensitive(!on);
-                    refresh_swatches(&swatches);
-                }
-            });
-        card.append(&row);
-        dropdown.connect_selected_notify(move |_| {
-            if switch.is_active() {
-                switch.set_active(false);
-            }
-        });
-    }
-    card.append(&theme_row);
-    card.append(&w::row("Current colors", "", Some(swatches.upcast_ref())));
-
-    card.append(&nyx_ui::widgets::accent_row("pulse"));
-
-    let (motion_row, _) = w::switch_row("Reduce Motion", "Disable UI animations and crossfades", p.reduce_motion, |active| {
-        prefs::update(|p| {
-            p.reduce_motion = active;
-        });
-        theme::apply();
-    });
-    card.append(&motion_row);
-
     body.append(&wrap);
 }
 
@@ -431,21 +363,3 @@ fn build_calls_group(body: &gtk::Box) {
     body.append(&wrap);
 }
 
-fn build_about_group(body: &gtk::Box) {
-    let (wrap, card) = group_box("About");
-
-    let ver_lbl = w::label("v0.1.0", "accent");
-    let version_row =
-        w::row("Pulse", "Native Telegram desktop client for the Nyx application suite", Some(ver_lbl.upcast_ref()));
-    card.append(&version_row);
-
-    let td_lbl = w::label("TDLib JSON API", "dim");
-    let backend_row = w::row("Protocol Engine", "Official Telegram Database Library (TDLib v1.8)", Some(td_lbl.upcast_ref()));
-    card.append(&backend_row);
-
-    let lic_lbl = w::label("Open Source", "dim");
-    let license_row = w::row("License", "MIT License (Nyx) · BSL-1.0 (TDLib) · LGPL-3.0 (tgcalls)", Some(lic_lbl.upcast_ref()));
-    card.append(&license_row);
-
-    body.append(&wrap);
-}

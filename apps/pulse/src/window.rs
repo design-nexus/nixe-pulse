@@ -1050,38 +1050,29 @@ fn apply_compact(nav: &gtk::Box, compact: bool) {
     }
 }
 
-const SHORTCUTS: &[(&str, &str)] = &[
-    ("Ctrl+F", "Search chats"),
-    ("Ctrl+Shift+F", "Search all messages"),
-    ("Ctrl+B / I / U", "Format selected composer text"),
-    ("Ctrl+B", "Collapse or expand sidebar"),
-    ("Ctrl+,", "Open settings"),
-    ("F1", "Show keyboard shortcuts"),
-    ("Esc", "Close dialogs, panels, or search"),
-    ("Ctrl+Q", "Quit application"),
-    ("Enter", "Send message"),
-    ("Shift+Enter", "Insert newline in message"),
-    ("Delete", "Delete focused chat (with confirmation)"),
-    ("Shift+F10", "Open focused chat menu"),
+pub const SHORTCUTS: &[(&[&str], &str)] = &[
+    (&["Ctrl", "F"], "Search chats"),
+    (&["Ctrl", "Shift", "F"], "Search all messages"),
+    (&["Ctrl", "B"], "Bold, in the composer; otherwise collapse the sidebar"),
+    (&["Ctrl", "I"], "Italic, in the composer"),
+    (&["Ctrl", "U"], "Underline, in the composer"),
+    (&["Ctrl", ","], "Open settings"),
+    (&["F1"], "Show keyboard shortcuts"),
+    (&["Esc"], "Close dialogs, panels, or search"),
+    (&["Ctrl", "Q"], "Quit application"),
+    (&["Enter"], "Send message"),
+    (&["Shift", "Enter"], "Insert newline in message"),
+    (&["Delete"], "Delete focused chat (with confirmation)"),
+    (&["Shift", "F10"], "Open focused chat menu"),
 ];
 
-fn keys_widget(combo: &str) -> gtk::Box {
-    let b = w::hbox(4);
-    for (i, k) in combo.split('+').enumerate() {
-        if i > 0 {
-            b.append(&w::label("+", "dim"));
-        }
-        b.append(&w::label(k.trim(), "key-cap"));
-    }
-    b
-}
 
 pub fn show_shortcuts() {
     let (dialog, card) = w::dialog("Keyboard shortcuts", 520);
     let list = w::vbox(0);
     list.add_css_class("group-list");
     for (keys, what) in SHORTCUTS {
-        list.append(&w::row(what, "", Some(keys_widget(keys).upcast_ref())));
+        list.append(&w::row(what, "", Some(w::key_caps(keys).upcast_ref())));
     }
     let scroll = gtk::ScrolledWindow::builder()
         .hscrollbar_policy(gtk::PolicyType::Never)
