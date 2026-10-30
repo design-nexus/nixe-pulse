@@ -348,6 +348,7 @@ pub fn proxies() {
 fn proxy_edit(original: Option<Value>) {
     let Some(scope) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Proxy", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let p = original.as_ref().map(|p| p["proxy"].clone()).unwrap_or(Value::Null);
@@ -412,6 +413,7 @@ fn proxy_edit(original: Option<Value>) {
 pub fn export_chat(chat: i64) {
     let Some(scope) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Export conversation", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     note(
         &b,
         "Export message text and metadata as JSON Lines. Protected messages are omitted. Media files are not copied.",

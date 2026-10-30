@@ -34,6 +34,7 @@ pub fn choose(chat: i64) {
         let me = scope.call("getMe", json!({})).await?;
         let current = scope.call("getChat", json!({"chat_id":chat})).await?["message_sender_id"].clone();
         let (dialog, body) = w::dialog("Send as", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         note(&body, "Choose the identity Telegram will use for new messages in this chat, including its topics.");
         let fields = scroll(&body);
         let group = gtk::CheckButton::new();

@@ -14,6 +14,7 @@ where
         return;
     };
     let (dialog, body) = w::dialog(title, 520);
+    crate::dialog_dismissal::add(&dialog, &body, "Close");
     let list = crate::groups::scroll(&body);
     let status = note(&list, "Loading…");
     dialog.present();

@@ -128,6 +128,7 @@ fn spawn(
 }
 pub fn open(scope: Scope, chat: i64, bot: i64, url: String, button_text: String) {
     let (d, b) = nyx_ui::widgets::dialog("Open Mini App", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     note(
         &b,
         "This bot will receive your basic Telegram profile and Mini App session data. Phone, location, clipboard, camera and microphone access require separate permission.",
@@ -177,6 +178,7 @@ fn permission(
     work: impl FnOnce(Scope, Rc<Browser>, Value) + 'static,
 ) {
     let (d, b) = nyx_ui::widgets::dialog(title, 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     note(&b, message);
     let pending = Rc::new(Cell::new(true));
     let state = pending.clone();

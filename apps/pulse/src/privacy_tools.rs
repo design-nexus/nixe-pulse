@@ -64,6 +64,7 @@ fn choose(body: &gtk::Box, scope: &Scope, title: &str, initial: Vec<i64>, groups
         }
         if groups {
             let (d, b) = nyx_ui::widgets::dialog("Choose group", 440);
+            crate::dialog_dismissal::add(&d, &b, "Cancel");
             let rows = crate::groups::scroll(&b);
             for chat in window::list_chats(10000).into_iter().filter(|c| {
                 matches!(

@@ -400,6 +400,7 @@ mod tests {
 
 fn data_attachment(parent: &gtk::Window, scope: &Scope, kind: String, state: Rc<RefCell<Option<Attachment>>>, name: gtk::Label) {
     let (d, b) = w::dialog("Poll attachment", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     d.set_transient_for(Some(parent));
     let fields = w::vbox(6);
     b.append(&fields);

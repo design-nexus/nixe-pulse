@@ -228,6 +228,7 @@ fn gifts() {
 pub fn paid_reaction(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Paid reaction", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     note(

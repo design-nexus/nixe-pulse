@@ -180,6 +180,7 @@ pub fn render(body: &gtk::Box, m: &MessageSummary) -> bool {
 fn add_tasks(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Add checklist tasks", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let text = gtk::TextView::new();
@@ -254,6 +255,7 @@ pub fn compose_checklist(chat: i64) {
     let Some(s) = Scope::current() else { return };
     let (topic, reply) = (window::composer_topic(chat), window::composer_reply(chat));
     let (d, b) = nyx_ui::widgets::dialog("Send checklist", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let title = entry(&fields, "Title", "", 255);
@@ -326,6 +328,7 @@ pub fn translate(chat: i64, id: i64) {
         return;
     }
     let (d, b) = nyx_ui::widgets::dialog("Translate message", 480);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let language = entry(&b, "Target language code (e.g. en, es, de)", "en", 16);
     let result = note(&b, "");
     let weak = d.downgrade();

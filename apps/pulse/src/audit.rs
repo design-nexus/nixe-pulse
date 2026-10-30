@@ -211,6 +211,7 @@ fn open(chat: i64, kind: Kind) {
         };
         let is_events = matches!(kind, Kind::Events);
         let (dialog, body) = w::dialog(if is_events { "Recent actions" } else { "Invite use history" }, 520);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         note(
             &body,
             if is_events {

@@ -15,6 +15,7 @@ pub fn update(v: &Value) {
         Some("authorizationStateWaitEmailCode") => email(true),
         Some("authorizationStateWaitPremiumPurchase") => {
             let (d, b) = nyx_ui::widgets::dialog("Telegram login requirement", 440);
+            crate::dialog_dismissal::add(&d, &b, "Cancel");
             note(
                 &b,
                 "Telegram requires a mobile-store Premium purchase before this phone number can log in. Pulse cannot perform an official mobile-store purchase.",
@@ -77,6 +78,7 @@ pub fn registration() {
 fn email(code: bool) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog(if code { "Email verification" } else { "Login email" }, 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let input = entry(
@@ -224,6 +226,7 @@ pub fn security() {
 fn verify_email() {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Verify recovery email", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let code = entry(&fields, "Verification code", "", 64);

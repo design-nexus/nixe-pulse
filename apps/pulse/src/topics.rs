@@ -100,6 +100,7 @@ fn browse_inner(chat: i64, on_select: Option<TopicChoice>) {
             return Err("This group does not have forum topics enabled.".into());
         }
         let (dialog, body) = w::dialog("Topics", 460);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let query = gtk::SearchEntry::new();
         query.set_placeholder_text(Some("Search topics"));
         body.append(&query);
@@ -286,6 +287,7 @@ fn manage(chat: i64, id: i64) {
         let c = groups::context(&s, chat).await?;
         let topic = s.call("getForumTopic", json!({"chat_id":chat,"forum_topic_id":id})).await?;
         let (dialog, body) = w::dialog("Topic actions", 420);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         note(&body, topic["info"]["name"].as_str().unwrap_or("Topic"));
         let add = |title: &str, work: Box<dyn Fn()>| {
             let b = gtk::Button::with_label(title);
@@ -397,6 +399,7 @@ fn edit(chat: i64, id: Option<i64>) {
             Value::Null
         };
         let (dialog, body) = w::dialog(if id.is_some() { "Edit topic" } else { "New topic" }, 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         let name = entry(&fields, "Name", original["name"].as_str().unwrap_or(""), 128);
@@ -623,6 +626,7 @@ fn arrange(chat: i64) {
     actions::run(chat, "pinned-topic-order", move |scope| async move {
         groups::context(&scope, chat).await?.require("can_manage_topics")?;
         let (dialog, body) = w::dialog("Arrange pinned topics", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let status = note(&body, "Loading pinned topics…");
         let fields = scroll(&body);
         dialog.present();

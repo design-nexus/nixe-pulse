@@ -69,6 +69,7 @@ pub fn compose_poll(chat: i64) {
         return;
     }
     let (dialog, body) = w::dialog("Send poll", 480);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = scroll(&body);
     let question = entry(&fields, "Question", "", 255);
     let quiz = gtk::CheckButton::with_label("Quiz");
@@ -287,6 +288,7 @@ pub fn compose_contact(chat: i64) {
     let topic = window::composer_topic(chat);
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Share contact", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = w::vbox(8);
     body.append(&fields);
     let first = entry(&fields, "First name", "", 255);
@@ -345,6 +347,7 @@ pub fn compose_location(chat: i64) {
     let topic = window::composer_topic(chat);
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Share location", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = w::vbox(8);
     body.append(&fields);
     note(
@@ -401,6 +404,7 @@ async fn editable_location(s: &Scope, chat: i64, id: i64) -> Result<Value, Strin
 fn edit_location(chat: i64, id: i64) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Update live location", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = w::vbox(8);
     body.append(&fields);
     note(&fields, "Enter your current position. This does not extend sharing time.");
@@ -666,6 +670,7 @@ fn answer_actions(message: MessageSummary, option: String) {
         let properties =
             scope.call("getPollOptionProperties", json!({"chat_id":chat,"message_id":id,"poll_option_id":option})).await?;
         let (dialog, body) = w::dialog("Poll answer", 400);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let fresh = scope.call("getMessage", json!({"chat_id":chat,"message_id":id})).await?;
         let answer = fresh["content"]["poll"]["options"]
             .as_array()
@@ -745,6 +750,7 @@ fn answer_actions(message: MessageSummary, option: String) {
 }
 fn reply_to_answer(scope: Scope, chat: i64, id: i64, option: String) {
     let (dialog, body) = w::dialog("Reply to poll answer", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = w::vbox(8);
     body.append(&fields);
     let view = gtk::TextView::new();
@@ -813,6 +819,7 @@ fn remap_answers(original: &[Value], fresh: &Value, chosen: &[usize]) -> Result<
 fn add_poll_option(chat: i64, id: i64) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Add poll answer", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = w::vbox(8);
     body.append(&fields);
     let answer = entry(&fields, "Answer", "", 100);
@@ -864,6 +871,7 @@ pub(crate) fn stop(chat: i64, id: i64) {
 fn voters(chat: i64, id: i64, option: usize, original: Vec<Value>) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Poll voters", 420);
+    crate::dialog_dismissal::add(&dialog, &body, "Close");
     let list = scroll(&body);
     let more = gtk::Button::with_label("Load more");
     body.append(&more);

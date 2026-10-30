@@ -356,6 +356,7 @@ fn privacy(kind: u32, ids: Vec<i64>) -> Value {
 fn privacy_edit(chat: i64, id: i64, original: Value) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Story privacy", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let (kind, ids) = privacy_fields(&fields, &original);
@@ -381,6 +382,7 @@ fn privacy_edit(chat: i64, id: i64, original: Value) {
 fn caption_edit(chat: i64, id: i64, caption: String) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Story caption", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let text = entry(&fields, "Caption", &caption, 4096);
@@ -457,6 +459,7 @@ fn react(chat: i64, id: i64) {
 fn reply(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Reply to story", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let text = entry(&fields, "Reply", "", 4096);

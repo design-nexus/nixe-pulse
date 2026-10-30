@@ -35,6 +35,7 @@ pub fn open(chat: i64) {
     actions::run(chat, "group-settings", move |s| async move {
         let c = groups::context(&s, chat).await?;
         let (dialog, body) = w::dialog("Group / channel settings", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let list = scroll(&body);
         if info(&c).is_ok() {
             action(&list, "Change photo…", &s, move || photo(chat));
@@ -87,6 +88,7 @@ fn username(chat: i64) {
         }
         let original = c.group["usernames"]["editable_username"].as_str().unwrap_or("").to_string();
         let (dialog, body) = w::dialog("Public username", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         note(
@@ -142,7 +144,8 @@ fn photo(chat: i64) {
     chooser.open(w::main_window().as_ref(),gio::Cancellable::NONE,move |result|{
         if !scope.valid(){return}let Ok(file)=result else{return};let Some(path)=file.path()else{return};
         let texture=match gtk::gdk::Texture::from_file(&file){Ok(t)=>t,Err(e)=>{scope.error(&format!("Unable to read image: {e}"));return}};
-        let (dialog,body)=w::dialog("Change chat photo",420);let fields=w::vbox(8);body.append(&fields);
+        let (dialog,body)=w::dialog("Change chat photo",420);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");let fields=w::vbox(8);body.append(&fields);
         let image=gtk::Picture::for_paintable(&texture);image.set_can_shrink(true);image.set_size_request(180,180);fields.append(&image);
         submit(&dialog,&body,&fields,scope.clone(),"Set photo",move |s|{let path=path.clone();async move{
             info(&groups::context(&s,chat).await?)?;
@@ -171,6 +174,7 @@ fn slow_mode(chat: i64) {
         c.require("can_restrict_members")?;
         let original = full(&s, &c).await?["slow_mode_delay"].as_i64().unwrap_or(0);
         let (dialog, body) = w::dialog("Slow mode", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         note(&fields, "Minimum time between messages from ordinary members.");
@@ -300,6 +304,7 @@ fn toggle(chat: i64, setting: Setting) {
             c.group[key].clone()
         };
         let (dialog, body) = w::dialog(title, 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         let enabled = gtk::CheckButton::with_label(description);
@@ -352,6 +357,7 @@ fn signatures(chat: i64) {
         info(&c)?;
         let original = (c.group["sign_messages"].clone(), c.group["show_message_sender"].clone());
         let (dialog, body) = w::dialog("Post signatures", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         let sign = gtk::CheckButton::with_label("Sign posts");
@@ -408,6 +414,7 @@ fn discussion(chat: i64) {
             labels.push(chat["title"].as_str().unwrap_or("Current discussion group").to_string());
         }
         let (dialog, body) = w::dialog("Discussion group", 460);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         note(

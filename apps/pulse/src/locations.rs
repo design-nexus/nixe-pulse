@@ -209,6 +209,7 @@ pub fn manage() {
                 }
                 let scope = scope.clone();
                 let (d, b) = nyx_ui::widgets::dialog("Automatic live location", 440);
+                crate::dialog_dismissal::add(&d, &b, "Cancel");
                 note(
                     &b,
                     "Your device location will be sent to this conversation approximately every 15 seconds while Pulse runs and this account stays active. This requires GeoClue and location permission. The existing sharing expiry is retained.",

@@ -261,6 +261,7 @@ pub fn manage(chat: i64) {
     actions::run(chat, "manage-group", move |scope| async move {
         let c = context(&scope, chat).await?;
         let (dialog, body) = w::dialog(if c.channel() { "Channel management" } else { "Group management" }, 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let body = scroll(&body);
         note(&body, c.chat["title"].as_str().unwrap_or(""));
         note(&body, status_label(&c.group["status"]));
@@ -300,6 +301,7 @@ pub fn manage(chat: i64) {
 pub fn create() {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("New group or channel", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     button(&body, "Open invitation…", &scope, invite_prompt);
     let fields = w::vbox(8);
     body.append(&fields);
@@ -338,6 +340,7 @@ fn edit_info(chat: i64, description: bool) {
             c.chat["title"].as_str().unwrap_or("").to_string()
         };
         let (dialog, body) = w::dialog(if description { "Edit description" } else { "Edit name" }, 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         let value =
@@ -370,6 +373,7 @@ fn permissions(chat: i64) {
         let c = context(&s, chat).await?;
         c.require("can_restrict_members")?;
         let (dialog, body) = w::dialog("Default member permissions", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         note(&body, "These permissions apply to all ordinary members.");
         let fields = scroll(&body);
         let original = c.chat["permissions"].clone();
@@ -396,6 +400,7 @@ fn permissions(chat: i64) {
 pub fn choose_user(title: &str, callback: impl Fn(Value) + 'static) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog(title, 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let query = gtk::SearchEntry::new();
     query.set_placeholder_text(Some("Search contacts, or enter @username"));
     body.append(&query);
@@ -502,6 +507,7 @@ pub fn members(chat: i64) {
     actions::run(chat, "group-members", move |s| async move {
         let c = context(&s, chat).await?;
         let (dialog, body) = w::dialog("Members and administrators", 460);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let query = gtk::SearchEntry::new();
         query.set_placeholder_text(Some("Search members"));
         body.append(&query);
@@ -685,6 +691,7 @@ pub(crate) fn member_actions(chat: i64, member: Value, title: String) {
         let c = context(&s, chat).await?;
         let data = s.call("getChatMember", json!({"chat_id":chat,"member_id":member})).await?;
         let (dialog, body) = w::dialog(&title, 420);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         note(&body, status_label(&data["status"]));
         if let Some(tag) = data["tag"].as_str().filter(|tag| !tag.is_empty()) {
             note(&body, &format!("Tag: {tag}"));
@@ -810,6 +817,7 @@ fn admin_editor(chat: i64, member: Value) {
             rights = json!({"@type":"chatAdministratorRights"});
         }
         let (dialog, body) = w::dialog("Administrator rights", 460);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         note(&body, "Only rights you can delegate are editable. Saving changes this member's administrator privileges.");
         let fields = scroll(&body);
         let checks = checkboxes(&fields, &rights, RIGHTS, |key| c.right(key));
@@ -861,6 +869,7 @@ fn restrict_editor(chat: i64, member: Value) {
         let restricted = original["@type"] == "chatMemberStatusRestricted";
         let permissions = if restricted { original["permissions"].clone() } else { c.chat["permissions"].clone() };
         let (dialog, body) = w::dialog("Member restrictions", 460);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         note(&body, "Checked permissions remain allowed, subject to the group's defaults.");
         let fields = scroll(&body);
         let checks = checkboxes(&fields, &permissions, PERMISSIONS, |_| true);
@@ -933,6 +942,7 @@ fn invites(chat: i64) {
         let c = context(&s, chat).await?;
         c.require("can_invite_users")?;
         let (dialog, body) = w::dialog("Invite links", 480);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let mut creators = vec![c.me];
         let mut names = vec!["My links".to_string()];
         if c.owner() {
@@ -1098,6 +1108,7 @@ fn invite_editor(chat: i64, link: Value) {
     let Some(s) = Scope::current() else { return };
     let edit = link.is_object();
     let (dialog, body) = w::dialog(if edit { "Edit invite link" } else { "Create invite link" }, 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = w::vbox(8);
     body.append(&fields);
     let name = entry(&fields, "Label (only administrators see this)", link["name"].as_str().unwrap_or(""), 32);
@@ -1153,6 +1164,7 @@ fn invite_editor(chat: i64, link: Value) {
             };
             let data=commit(&s,if edit{"editChatInviteLink"}else{"createChatInviteLink"},json!({"chat_id":chat,"invite_link":link["invite_link"],"name":name,"expiration_date":date,"member_limit":if approval{0}else{limit},"creates_join_request":approval})).await?;
             let (d, b) = w::dialog("Invite link", 440);
+            crate::dialog_dismissal::add(&d, &b, "Close");
             let url = data["invite_link"].as_str().unwrap_or("").to_string();
             let label = note(&b, &url);
             label.set_selectable(true);
@@ -1209,6 +1221,7 @@ fn join_requests(chat: i64) {
     actions::run(chat, "join-requests", move |s| async move {
         context(&s, chat).await?.require("can_invite_users")?;
         let (dialog, body) = w::dialog("Join requests", 460);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let query = gtk::SearchEntry::new();
         query.set_placeholder_text(Some("Search requests"));
         body.append(&query);
@@ -1370,6 +1383,7 @@ fn transfer(chat: i64, user: Value) {
             }
         }
         let (dialog, body) = w::dialog("Transfer ownership", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         note(&fields, &format!("{} will become the owner. You will give up ownership of this chat.", name(&user)));
@@ -1433,6 +1447,7 @@ pub fn join_public(chat: i64) {
 fn invite_prompt() {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Open invitation", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let fields = w::vbox(8);
     body.append(&fields);
     let link = entry(&fields, "Telegram invite link", "", 2048);
@@ -1476,6 +1491,7 @@ pub fn import_link(link: String) {
     actions::run(0, "chat-invite-preview", move |s| async move {
         let info = s.call("checkChatInviteLink", json!({"invite_link":link})).await?;
         let (dialog, body) = w::dialog("Chat invitation", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         note(&body, info["title"].as_str().unwrap_or("Telegram chat"));
         note(&body, info["description"].as_str().unwrap_or(""));
         note(&body, &format!("{} members", info["member_count"]));
@@ -1561,6 +1577,7 @@ fn tag_editor(chat: i64, user: i64) {
             s.call("getChatMember", json!({"chat_id":chat,"member_id":{"@type":"messageSenderUser","user_id":user}})).await?;
         let original = member["tag"].as_str().unwrap_or("").to_string();
         let (dialog, body) = w::dialog("Member tag", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = w::vbox(8);
         body.append(&fields);
         let tag = entry(&fields, "Tag or administrator title", &original, 16);

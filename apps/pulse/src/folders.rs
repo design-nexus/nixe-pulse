@@ -222,6 +222,7 @@ pub fn apply_membership(folder: &mut Value, chat: i64, include: bool) {
 pub fn membership(chat: i64) {
     actions::run(chat, "folder-membership", move |scope| async move {
         let (dialog, body) = w::dialog("Chat folders", 420);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let list = scroll(&body);
         for info in infos() {
             let id = info["id"].as_i64().unwrap_or(0) as i32;
@@ -273,6 +274,7 @@ fn edit(id: Option<i32>) {
         let baseline =
             if let Some(id) = id { scope.call("getChatFolder", json!({"chat_folder_id":id})).await? } else { fresh_folder() };
         let (dialog, body) = w::dialog(if id.is_some() { "Edit folder" } else { "New folder" }, 520);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let fields = scroll(&body);
         let name_entry = gtk::Entry::new();
         name_entry.set_max_length(12);
@@ -413,6 +415,7 @@ fn sharing(id: i32) {
     actions::run(0, "folder-sharing", move |scope| async move {
         let links = scope.call("getChatFolderInviteLinks", json!({"chat_folder_id":id})).await?;
         let (dialog, body) = w::dialog("Share folder", 520);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let list = scroll(&body);
         let refresh = gtk::Button::with_label("Refresh links");
         let s = scope.clone();
@@ -477,6 +480,7 @@ fn edit_link(id: i32, original: Option<Value>) {
     actions::run(0, "folder-link-edit", move |scope| async move {
         let eligible = scope.call("getChatsForChatFolderInviteLink", json!({"chat_folder_id":id})).await?;
         let (dialog, body) = w::dialog("Folder invite link", 500);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let list = scroll(&body);
         let name = gtk::Entry::new();
         name.set_placeholder_text(Some("Link name (optional)"));
@@ -528,6 +532,7 @@ pub fn import_link(link: String) {
     actions::run(0, "folder-import", move |scope| async move {
         let info = scope.call("checkChatFolderInviteLink", json!({"invite_link":link})).await?;
         let (dialog, body) = w::dialog("Add shared folder", 500);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let explanation = w::label(
             &format!(
                 "Add {}? Any checked conversations you have not joined will be joined. No chats are joined until you choose Add folder.",
@@ -597,6 +602,7 @@ fn shared_updates(id: i32) {
         });
         let data = scope.call("getChatFolderNewChats", json!({"chat_folder_id":id})).await?;
         let (dialog, body) = w::dialog("Shared folder updates", 500);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let list = scroll(&body);
         let explanation = w::label(
             "Select conversations to add and join. Unchecked conversations will be skipped when you apply your choices.",

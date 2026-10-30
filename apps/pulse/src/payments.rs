@@ -275,6 +275,7 @@ status.set_text(&e);
                     return;
                 }
                 let (d, b) = nyx_ui::widgets::dialog("Unlock saved payment method", 440);
+                crate::dialog_dismissal::add(&d, &b, "Cancel");
                 let fields = nyx_ui::widgets::vbox(8);
                 b.append(&fields);
                 let password = gtk::PasswordEntry::new();

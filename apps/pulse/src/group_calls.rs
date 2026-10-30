@@ -267,6 +267,7 @@ pub fn open(chat: i64) {
 fn create(chat: i64) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Create group call", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let title = entry(&fields, "Title", "", 128);
@@ -756,6 +757,7 @@ fn video_window(id: i64) {
         return;
     };
     let (d, b) = nyx_ui::widgets::dialog("Group video", 800);
+    crate::dialog_dismissal::add(&d, &b, "Close");
     let grid = gtk::FlowBox::new();
     grid.set_selection_mode(gtk::SelectionMode::None);
     grid.set_min_children_per_line(1);

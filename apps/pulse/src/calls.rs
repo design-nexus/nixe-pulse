@@ -411,6 +411,8 @@ pub fn devices(button: &gtk::Button) {
         body.append(&drop);
     }
     d.set_child(Some(&body));
+    crate::dialog_dismissal::add(&d, &body, "Close");
+    crate::dialog_dismissal::escape(&d);
     d.present();
 }
 pub(crate) fn i420_rgba(w: u16, h: u16, data: &[u8]) -> Option<Vec<u8>> {

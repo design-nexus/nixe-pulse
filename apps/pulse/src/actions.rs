@@ -239,6 +239,7 @@ fn set_mute(id: i64, seconds: i32) {
 fn mute_dialog(id: i64) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Notifications", 360);
+    crate::dialog_dismissal::add(&dialog, &body, "Close");
     for (title, seconds) in [
         ("Unmute", 0),
         ("Mute for 1 hour", 3600),
@@ -417,6 +418,7 @@ pub fn report(chat: i64, ids: Vec<i64>, option: String, text: String) {
             Some("reportChatResultOk") => window::show_status("Report submitted"),
             Some("reportChatResultOptionRequired") => {
                 let (dialog, body) = w::dialog(result["title"].as_str().unwrap_or("Report"), 400);
+                crate::dialog_dismissal::add(&dialog, &body, "Cancel");
                 for option in result["options"].as_array().into_iter().flatten() {
                     let Some(id) = option["id"].as_str() else { continue };
                     let id = id.to_owned();
@@ -440,6 +442,7 @@ pub fn report(chat: i64, ids: Vec<i64>, option: String, text: String) {
                 let option = result["option_id"].as_str().unwrap_or("").to_owned();
                 let optional = result["is_optional"] == true;
                 let (dialog, body) = w::dialog("Report details", 420);
+                crate::dialog_dismissal::add(&dialog, &body, "Cancel");
                 let entry = gtk::Entry::new();
                 entry.set_placeholder_text(Some("Describe the problem"));
                 body.append(&entry);
@@ -715,6 +718,7 @@ pub(crate) fn edit_message(message: MessageSummary) {
     let Some(scope) = Scope::current() else { return };
     let original = message_text(&message);
     let (dialog, body) = w::dialog("Edit message", 480);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let editor = gtk::TextView::new();
     editor.set_wrap_mode(gtk::WrapMode::WordChar);
     crate::compose::load(&editor.buffer(), &original);
@@ -853,6 +857,7 @@ fn reaction_picker(message: MessageSummary) {
     run(chat, "reaction-picker", move |scope| async move {
         let data = scope.call("getMessageAvailableReactions", json!({"chat_id":chat,"message_id":id,"row_size":8})).await?;
         let (dialog, body) = w::dialog("React to message", 400);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let default = gtk::CheckButton::with_label("Use selected reaction as my quick reaction");
         body.append(&default);
         let flow = gtk::FlowBox::new();
@@ -943,6 +948,7 @@ fn reaction_people(message: MessageSummary, reaction: Option<Value>, offset: Str
             )
             .await?;
         let (dialog, body) = w::dialog("Reactions", 400);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let list = w::vbox(4);
         let scroll = gtk::ScrolledWindow::builder()
             .max_content_height(400)
@@ -1068,6 +1074,7 @@ pub fn forward(mut messages: Vec<MessageSummary>, saved: bool) {
             return Ok(());
         }
         let (dialog, body) = w::dialog("Forward messages", 500);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let preview = w::vbox(4);
         for message in &messages {
             let label = w::label(&crate::chat_view::preview(message), "dim");

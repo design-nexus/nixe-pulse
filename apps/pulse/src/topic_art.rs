@@ -159,6 +159,7 @@ pub fn choose(callback: impl Fn(Value) + 'static) {
             }
         }
         let (dialog, body) = w::dialog("Topic icon", 440);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         if !premium {
             note(&body, "Your account can use Telegram's default topic icons. Premium also allows installed custom emoji packs.");
         }

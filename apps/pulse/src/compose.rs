@@ -158,6 +158,7 @@ pub fn menu(parent: &gtk::Widget, view: &gtk::TextView) {
         let start = buffer.create_mark(None, &start, true);
         let end = buffer.create_mark(None, &end, false);
         let (dialog, body) = w::dialog("Create link", 420);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         let entry = gtk::Entry::new();
         entry.set_placeholder_text(Some("https://…"));
         body.append(&entry);

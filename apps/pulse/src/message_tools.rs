@@ -98,6 +98,7 @@ pub fn schedule_options(chat: i64, callback: impl Fn(Value) + 'static) {
 fn schedule_dialog(chat: i64, allow_silent: bool, callback: impl Fn(Value) + 'static) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Schedule message", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     label(&body, "Choose a local date and time. Repeating messages require Telegram Premium.", "dim");
     let when = gtk::Entry::new();
     when.set_text(&(chrono::Local::now() + chrono::Duration::hours(1)).format("%Y-%m-%d %H:%M").to_string());
@@ -215,6 +216,7 @@ pub fn auto_delete(chat: i64) {
     actions::run(chat, "auto-delete-ui", move |scope| async move {
         let data = scope.call("getChat", json!({"chat_id":chat})).await?;
         let (dialog, body) = w::dialog("Auto-delete messages", 420);
+        crate::dialog_dismissal::add(&dialog, &body, "Cancel");
         label(
             &body,
             "New messages will be deleted after the selected period. Existing messages are unaffected. Telegram checks your permission to change this setting.",
@@ -272,6 +274,7 @@ pub fn auto_delete(chat: i64) {
 pub fn choose_member(chat: i64, callback: impl Fn(Value) + 'static) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Choose a member", 440);
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let query = gtk::SearchEntry::new();
     query.set_placeholder_text(Some("Search names or usernames"));
     body.append(&query);
@@ -414,6 +417,7 @@ fn browser(mode: SearchMode, filter: u32) {
         },
         560,
     );
+    crate::dialog_dismissal::add(&dialog, &body, "Cancel");
     let query = gtk::SearchEntry::new();
     query.set_placeholder_text(Some("Search messages"));
     body.append(&query);
@@ -675,6 +679,7 @@ impl Browser {
 pub fn scheduled(chat: i64) {
     let Some(scope) = Scope::current() else { return };
     let (dialog, body) = w::dialog("Scheduled messages", 540);
+    crate::dialog_dismissal::add(&dialog, &body, "Close");
     let list = scroll(&body, 500);
     let refresh = gtk::Button::with_label("Refresh");
     body.append(&refresh);
@@ -799,6 +804,7 @@ pub fn saved() {
         let own = scope.call("createPrivateChat", json!({"user_id":me["id"],"force":false})).await?;
         let own = own["id"].as_i64().ok_or("Saved Messages unavailable")?;
         let (dialog, body) = w::dialog("Saved Messages", 540);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         let buttons = w::hbox(6);
         let open = gtk::Button::with_label("All saved messages");
         let s = scope.clone();
@@ -926,6 +932,7 @@ fn saved_tags() {
     actions::run(0, "saved-tags", move |scope| async move {
         let data = scope.call("getSavedMessagesTags", json!({"saved_messages_topic_id":0})).await?;
         let (dialog, body) = w::dialog("Saved Messages tags", 500);
+        crate::dialog_dismissal::add(&dialog, &body, "Close");
         label(
             &body,
             "Add tags by reacting to messages in Saved Messages. Filtering and labels may require Telegram Premium.",
@@ -966,6 +973,7 @@ fn saved_tags() {
                     return;
                 }
                 let (dialog, body) = w::dialog("Tag label", 360);
+                crate::dialog_dismissal::add(&dialog, &body, "Cancel");
                 let entry = gtk::Entry::new();
                 entry.set_max_length(12);
                 entry.set_text(&old);

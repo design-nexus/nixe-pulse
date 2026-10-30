@@ -1430,6 +1430,7 @@ impl ChatView {
             }
             dd.close();
         });
+        crate::dialog_dismissal::escape(&d);
         d.present();
     }
     pub fn search_messages(self: &Rc<Self>) {

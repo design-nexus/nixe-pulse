@@ -321,6 +321,7 @@ async fn callback(s: &Scope, chat: i64, id: i64, payload: Value) -> Result<(), S
     let text = result["text"].as_str().unwrap_or("");
     if result["show_alert"] == true {
         let (d, b) = nyx_ui::widgets::dialog("Bot response", 420);
+        crate::dialog_dismissal::add(&d, &b, "Close");
         note(&b, text);
         d.present();
     } else if !text.is_empty() {
@@ -329,6 +330,7 @@ async fn callback(s: &Scope, chat: i64, id: i64, payload: Value) -> Result<(), S
     if let Some(url) = result["url"].as_str().filter(|u| !u.is_empty()) {
         let url = url.to_owned();
         let (d, b) = nyx_ui::widgets::dialog("Bot link", 420);
+        crate::dialog_dismissal::add(&d, &b, "Close");
         note(&b, &url);
         button(&b, "Open link", move || launch(&url));
         d.present();
@@ -337,6 +339,7 @@ async fn callback(s: &Scope, chat: i64, id: i64, payload: Value) -> Result<(), S
 }
 fn password_callback(scope: Scope, chat: i64, id: i64, data: Value) {
     let (d, b) = nyx_ui::widgets::dialog("Confirm bot action", 420);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     note(&fields, "This bot action requires your Telegram two-step verification password.");
@@ -405,6 +408,7 @@ fn web_app(scope: Scope, chat: i64, bot: i64, url: String, text: String) {
 }
 fn share_request(scope: Scope, chat: i64, id: i64, key: Value) {
     let (d, b) = nyx_ui::widgets::dialog("Share with bot", 460);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = crate::groups::scroll(&b);
     let users = key["type"]["@type"] == "keyboardButtonTypeRequestUsers";
     let selected: Rc<RefCell<Vec<i64>>> = Default::default();
@@ -480,6 +484,7 @@ fn share_request(scope: Scope, chat: i64, id: i64, key: Value) {
             });
         } else {
             let (pick, body) = nyx_ui::widgets::dialog("Share chat", 440);
+            crate::dialog_dismissal::add(&pick, &body, "Cancel");
             let chats = crate::groups::scroll(&body);
             for c in window::list_chats(10000) {
                 let channel = c.chat_type == nyx_telegram_core::models::ChatType::Channel;
@@ -562,6 +567,7 @@ pub fn inline(chat: i64) {
 pub fn inline_prefilled(chat: i64, initial_bot: &str, initial_query: &str) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Inline bot search", 520);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = crate::groups::scroll(&b);
     let username = entry(&fields, "Bot username", initial_bot, 64);
     let query = entry(&fields, "Query", initial_query, 512);
@@ -754,6 +760,7 @@ async fn switch_inline(s: &Scope, chat: i64, message: &Value, typ: &Value) -> Re
         }
         _ => {
             let (d, b) = nyx_ui::widgets::dialog("Choose inline destination", 440);
+            crate::dialog_dismissal::add(&d, &b, "Cancel");
             let rows = crate::groups::scroll(&b);
             let types = &typ["target_chat"]["types"];
             for c in window::list_chats(10000) {

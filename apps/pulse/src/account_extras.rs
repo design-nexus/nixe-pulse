@@ -163,6 +163,7 @@ fn button_fn(b: &gtk::Box, title: &str, f: impl Fn() + 'static) {
 fn phone() {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Change Telegram phone number", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     note(
@@ -191,6 +192,7 @@ fn phone() {
 }
 fn phone_code(scope: Scope) {
     let (d, b) = nyx_ui::widgets::dialog("Verify new phone number", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let code = entry(&fields, "Verification code", "", 64);

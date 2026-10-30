@@ -110,6 +110,7 @@ pub fn profile() {
 }
 fn photo(scope: Scope) {
     let (d, b) = nyx_ui::widgets::dialog("Profile photo", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let selected = crate::poll_media::picker(&fields, &d, &scope, "Choose a photo", true);
@@ -263,6 +264,7 @@ fn contact_row(b: &gtk::Box, s: &Scope, u: &Value) {
 fn add_contact() {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Add contact", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let first = entry(&fields, "First name", "", 64);

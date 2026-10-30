@@ -413,6 +413,7 @@ fn new_shortcut() {
 fn new_shortcut_named(initial_name: &str) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Quick reply message", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let name = entry(&fields, "Shortcut name", initial_name, 32);
@@ -491,6 +492,7 @@ fn links() {
         button(&b, "Create link…", || {
             let Some(s) = Scope::current() else { return };
             let (d, b) = nyx_ui::widgets::dialog("Business chat link", 440);
+            crate::dialog_dismissal::add(&d, &b, "Cancel");
             let fields = nyx_ui::widgets::vbox(8);
             b.append(&fields);
             let title = entry(&fields, "Title", "", 64);

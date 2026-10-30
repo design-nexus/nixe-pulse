@@ -184,6 +184,7 @@ fn interactions(chat: i64, id: i64) {
 fn edit_media(chat: i64, id: i64) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Edit story media", 480);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let selected = crate::poll_media::story_picker(&fields, &d, &s, "Replacement photo or video");
@@ -318,6 +319,7 @@ pub fn albums(chat: i64) {
 fn album_edit(chat: i64, id: i64, name: String) {
     let Some(s) = Scope::current() else { return };
     let (d, b) = nyx_ui::widgets::dialog("Story album", 440);
+    crate::dialog_dismissal::add(&d, &b, "Cancel");
     let fields = nyx_ui::widgets::vbox(8);
     b.append(&fields);
     let name = entry(&fields, "Name", &name, 64);
@@ -454,6 +456,7 @@ fn area_picker_initial(body: &gtk::Box, parent: &gtk::Window, scope: &Scope, ini
         }
         let Some(parent) = weak.upgrade() else { return };
         let (d, b) = nyx_ui::widgets::dialog("Interactive story area", 480);
+        crate::dialog_dismissal::add(&d, &b, "Cancel");
         d.set_transient_for(Some(&parent));
         let fields = crate::groups::scroll(&b);
         let kind = gtk::DropDown::from_strings(&["Link", "Location", "Reaction", "Message", "Weather", "Collectible gift"]);
